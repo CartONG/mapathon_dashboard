@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset=utf-8 />
+	<title>Tasking Manager Dashboard</title>
+	<meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+
+	<link href="css/stylish-portfolio.css" rel="stylesheet">
+	<link rel="stylesheet" href="src/leaflet/leaflet.css" />
+	<link rel="stylesheet" href="src/leaflet.label/leaflet.label.css" />
+	<link rel="stylesheet" href="src/bootstrap-3.3.6-dist/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="css/bootstrap-datetimepicker.css" />
+	<link rel="stylesheet" type="text/css" href="src/dc/dc.css">
+	<link rel="stylesheet" href="css/main.css" />
+
+	
+</head>
+<body>
+	
+	<script src="src/leaflet/leaflet.js"></script>
+	<script src="src/leaflet.label/leaflet.label.js"></script>
+	<script src='src/jquery/jquery-1.11.3.min.js'></script>
+	<script src="src/bootstrap-3.3.6-dist/js/bootstrap.min.js"></script>
+	<script src="src/d3/d3.min.js"></script>
+	<script type="text/javascript" src="src/crossfilter/crossfilter.js"></script>
+	<script type="text/javascript" src="src/dc/dc.js"></script>
+	<script src="src/turf/turf.min.js"></script>
+	<script src="http://tyrasd.github.io/osmtogeojson/osmtogeojson.js"></script>
+	<script src="src/moment.js"></script>
+	<script src="src/bootstrap-datetimepicker.js"></script>
+	
+	
+	
+	
+
+	
+
+    <!-- Header -->
+    <header id="top" class="header">
+        <div class="text-vertical-center">
+            <h1>Mapathon Dashboard</h1>
+          
+            <br>
+			 
+					<form class="form-inline">
+					
+						  <div class="form-group">
+							<label for="exampleInputName2">Task ID : </label>
+							<input type="number" class="form-control" id="task_number" placeholder="">
+						  </div>
+						  
+						   <label >Start Date : </label>
+								<div class='input-group date' id='datetimepicker1'>
+								
+									<input type='text' id="startdate" class="form-control" />
+									<span class="input-group-addon">
+										<span class="glyphicon glyphicon-calendar"></span>
+									</span>
+								</div>
+						
+						
+					<!--	  <div class="form-group">
+							<label for="exampleInputEmail2">Start time : </label>
+							<input type="date" class="form-control" id="exampleInputEmail2" placeholder="">
+						  </div> -->
+						  <button type="button" onclick="choosetask()"class="btn btn-danger">Go !</button>
+					
+					</form>
+			
+        </div>
+		
+    </header>
+	
+	<div id="logos">
+	<img src="images/cartong_logo.png" height="65px"><img src="images/mm_logo.png" height="75px">
+	</div>
+	
+	
+	
+	<body>
+	
+	<div id="dashboard">
+	
+		<div class="container-fluid">
+		
+		
+				<div class="row">
+					<div class="col-md-12" id="task_title"></div>
+				</div>
+				<div class="row">
+					<div class="col-md-4 contour_yellow">
+						
+						<div class="row">
+							<div id="map" class="col-md-12">
+							</div>
+						</div>
+						<div class="row">
+							<div id="progress_bars" class="col-md-12">
+									<h4>Task progression</h4>
+									<div class="progress">
+										  <div id="validated_bar" class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" style="width:0%">
+											Validated
+										  </div>
+										  <div id="done_bar" class="progress-bar progress-bar-warning progress-bar-striped active" role="progressbar" style="width:0%">
+											Done
+										  </div>
+									</div>
+							</div>
+						</div>
+						
+					</div>
+					<div class="col-md-8">
+						<div class="row">
+							<div class="col-md-12" id="task_date"></div>
+						</div>
+						<div class="row">
+							<div id="buildings_id" class="col-md-12">
+								<div id="nb_buildings"></div>
+									<h3>Buildings</h3>
+							</div>
+						</div>
+						<div class="row">
+					
+
+								<div id="landuse_id" class="col-md-6">
+									
+										<div id="area_landuse"></div>
+										<h3>km² of landuse</h3>
+									
+								</div>
+								
+								<div id="highways_id" class="col-md-6">
+									
+										<div id="km_highways"></div>
+										<h3>km of roads</h3>
+									
+								</div>
+							
+					
+					
+					
+						</div>
+						<div class="row">
+					
+							<div class="col-md-12">
+								<div class="row">
+								
+									<div id="graph_area" class="col-md-6 graph_area_class">
+									</div>
+									
+									<div class="row">
+										<div id="map_length" class="col-md-6 map_length_class">
+										</div>
+										<div id="graph_highways" class="col-md-6 graph_length_class">
+										</div>
+									</div>
+									
+								</div>
+							</div>
+							<div class="col-md-12">
+								<div class="row">
+									
+									
+								</div>
+							</div>
+						</div>
+							
+					</div>
+					
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+					
+				
+				
+     
+
+      
+      
+
+		</div>
+	
+	</div>
+<div id="loading"></div>
+<div id="foo">
+	<div class="progress" class="col-md-3">
+		<div id="loading_bar" class="progress-bar progress-bar-danger progress-bar-striped active" role="progressbar" style="width:0%">Loading</div>
+	</div>
+</div>
+	
+<script>
+
+ $(function () {
+                $('#datetimepicker1').datetimepicker();
+            });
+
+$("#dashboard").hide();
+$("#loading").hide();
+$("#foo").hide();
+$("#top").show();
+////////////////////////////////////////////////////////////////////////////////////////   ON TURF LA DONNEE !!   /////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+function choosetask(){
+var task_id = document.getElementById('task_number').value;
+var startdate_value = document.getElementById('startdate').value;
+start_date = new Date(startdate_value);
+
+
+	d3.json("http://tasks.hotosm.org/project/"+task_id+".json", function(task) {			
+				
+					if (task.geometry) {
+					
+					createDashboard(task, start_date);
+					}
+					else {
+					alert("This task ID doesn't exist.");
+					} 
+				});
+
+}
+
+
+
+
+var loading_value = 0;
+function loading() {
+			loading_value = loading_value+1;
+			console.log(loading_value);
+			document.getElementById('loading_bar').style.width= loading_value*25  +'%';
+
+			if (loading_value==4){
+			console.log("loaded");
+			$("#loading").hide();
+			$("#foo").hide();
+			
+			}
+			else {}
+}
+
+
+		
+
+
+function createDashboard(task,start_date) {
+		
+		console.log("Creating the dasboard for task "+task.id+" and start date: "+start_date);
+		$("#dashboard").show();
+		$("#loading").show();
+		$("#foo").show();
+		$("#top").hide();
+
+		task_title.innerHTML = "<h1>Task #"+task.id+" | "+task.properties.name+"</h1>";
+		task_date.innerHTML = "<h2><b>Since :</b> "+start_date+"</h2>";
+//carte principale
+		var map = L.map('map').setView([0,0 ], 4);
+
+		var OpenMapSurfer_Grayscale = L.tileLayer('http://korona.geog.uni-heidelberg.de/tiles/roadsg/x={x}&y={y}&z={z}', {
+	maxZoom: 19,
+	}).addTo(map);
+
+
+//carte length
+var map_length = L.map('map_length', { zoomControl:false, attributionControl: false }).setView([0,0 ], 4);
+map_length.locate({setView: true, maxZoom: 16});
+		var bm_length  = L.tileLayer('http://stamen-tiles-{s}.a.ssl.fastly.net/toner-lite/{z}/{x}/{y}.{ext}', {
+	attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyrigh">OpenStreetMap</a>',
+	subdomains: 'abcd',
+	minZoom: 0,
+	maxZoom: 20,
+	ext: 'png'
+}).addTo(map_length);
+
+
+
+
+		var style_aoi = {
+			"color": "#f9ec12",
+			"weight": 5,
+			"fillOpacity": 0,
+			"opacity": 1
+		};
+
+
+		var task_polygon = L.geoJson(task,{style: style_aoi}).addTo(map);
+		
+		map.fitBounds(task_polygon.getBounds());
+		var polygon_bounds = task_polygon.getBounds();
+
+		var bbox = ""+polygon_bounds._southWest.lng+","+polygon_bounds._southWest.lat+","+polygon_bounds._northEast.lng+","+polygon_bounds._northEast.lat+"";
+		var date_text = start_date.toISOString();
+		
+		loading();
+		
+		
+		
+		//count buildings
+		var buildings_count = [];
+		$.get("http://api.openstreetmap.fr/xapi?way[building=*][bbox="+bbox+"][@newer="+date_text+"][@meta]", function(buildings) {
+		//$.get("http://www.overpass-api.de/api/xapi?way[building=*][bbox="+bbox+"][@newer="+date_text+"][@meta]", function(buildings) {
+		
+				var building_geojson = osmtogeojson(buildings);
+				for (var i in building_geojson.features)
+				{
+				var item = building_geojson.features[i];
+				
+				
+				
+					if (item.geometry.type =="Polygon") {
+						buildings_count.push(item)
+						}
+						else{}
+				}
+				
+		
+		var style_building = {
+						"color": "#58c4f2",
+						"weight": 4,
+						"fillOpacity": 1,
+						"opacity": 1,
+					};
+		
+				var buildings_layer = L.geoJson(buildings_count,{style: style_building})
+				.addTo(map);
+				
+				buildings_layer.bringToFront();
+				
+				
+		nb_buildings.innerHTML = "<h1>"+buildings_count.length+"</h1>";
+		loading();
+		
+		});		
+				
+		
+		
+		
+		
+
+		var highways_count = [];
+		//count highway
+		$.get("http://api.openstreetmap.fr/xapi?way[highway=*][bbox="+bbox+"][@newer="+date_text+"][@meta]", function(highways) {
+		//$.get("http://www.overpass-api.de/api/xapi?way[highway=*][bbox="+bbox+"][@newer="+date_text+"][@meta]", function(highways) {
+				
+				
+				var hw_geojson = osmtogeojson(highways);
+				var length = 0;
+				
+				for (var i in hw_geojson.features)
+				{
+				var item = hw_geojson.features[i];
+				
+				
+					if (item.geometry.type =="LineString") {
+						highways_count.push(item)
+						}
+						else{}
+				
+				}
+				
+				var style_highways = {
+						"color": "#f0782c",
+						"weight": 2,
+						"fillOpacity": 1,
+						"opacity": 1,
+					};
+					
+				
+		
+				var highways_layer = L.geoJson(highways_count,{style: style_highways})
+				.addTo(map);
+				
+				
+				for (var i in highways_count)
+				{
+				var item = highways_count[i];
+				
+				item.date = new Date(item.properties.meta.timestamp)
+				
+				
+				var length_obj = turf.lineDistance(highways_count[i], 'kilometers');
+				length = length+length_obj
+						
+				highways_count[i].properties.length = length_obj;
+				}
+				
+				
+				length = Math.round(length * 10) / 10;
+		
+				
+
+				
+		km_highways.innerHTML = "<h1>"+length+"</h1>";
+		
+		// draw line corresponding of length
+		var pt1 = turf.point([5.9215,45.58789]);
+		var pt1_layer = L.geoJson(pt1).addTo(map_length);
+		
+		var distance = length;
+		var distance2 = length/3;
+		var bearing = 90;
+		var units = 'kilometers';
+
+		var pt2 = turf.destination(pt1, distance, bearing, units);
+		var pt2_layer = L.geoJson(pt2).addTo(map_length);
+		
+		var line = turf.linestring([
+						pt1.geometry.coordinates,
+						pt2.geometry.coordinates
+					]);
+		
+		var line_layer = L.geoJson(line).addTo(map_length);
+		map_length.fitBounds(line_layer.getBounds());
+		
+		var pt_label_options = {
+			radius: 0,
+			opacity: 0,
+			fillOpacity: 0
+		};
+		
+		var pt_label = turf.destination(pt1, distance2, bearing, units);
+		
+		
+		var pt_label_layer = L.geoJson(pt_label, {
+					pointToLayer: function (feature, latlng) {
+					return L.circleMarker(latlng, pt_label_options).bindLabel(distance+" km", { noHide: true, offset:[0,-15] });
+					}
+				}).addTo(map_length);
+		
+		
+		//////////////// pie chart highways per type
+		
+		var ndx;
+		var chart = dc.pieChart("#graph_highways");
+		ndx = crossfilter(highways_count);
+		var hw_graph_dim = ndx.dimension(function(d){return d.properties.tags.highway});
+		var hw_graph_group = hw_graph_dim.group().reduceSum(function(d) {return d.properties.length});
+		
+	chart
+    .width(200)
+    .height(200)
+    .slicesCap(4)
+    .innerRadius(40)
+	.ordinalColors(['#e6251f', '#9fc659','#f9ec11','#58c4f2', '#f0772b' ])
+    .dimension(hw_graph_dim)
+    .group(hw_graph_group) // by default, pie charts will use group.key as the label
+    .renderLabel(true)
+	.render();
+	
+	loading();
+	
+	
+	////////////////////////// landuse
+	
+		var landuse_count = [];
+		//count highway
+		$.get("http://api.openstreetmap.fr/xapi?way[landuse=*][bbox="+bbox+"][@newer="+date_text+"][@meta]", function(landuse) {
+		//$.get("http://www.overpass-api.de/api/xapi?way[landuse=*][bbox="+bbox+"][@newer="+date_text+"][@meta]", function(landuse) {
+				
+				
+				var landuse_geojson = osmtogeojson(landuse);
+				
+				var area = 0;
+				
+				for (var i in landuse_geojson.features)
+				{
+				var item = landuse_geojson.features[i];
+				
+				
+					if (item.geometry.type =="Polygon") {
+						landuse_count.push(item)
+						}
+						else{}
+				
+				}
+		loading();
+		
+		var style_landuse = {
+						"color": "#9ec658",
+						"weight": 2,
+						"fillOpacity": 1,
+						"opacity": 1,
+					};
+					
+				
+		
+				var landuse_layer = L.geoJson(landuse_count,{style: style_landuse})
+				.addTo(map);
+		
+				landuse_layer.bringToBack();
+		
+		for (var i in landuse_count)
+		{
+		var area_obj = turf.area(landuse_count[i]);
+				area = area+area_obj;
+		landuse_count[i].properties.size = area_obj/1000000;
+		
+		
+				
+		}
+		
+		
+		area = area/1000000;
+		area = Math.round(area * 100) / 100;
+		
+		area_landuse.innerHTML = "<h1>"+area+"</h1>";
+		
+		
+		// graph landuse
+		
+		var ndx2;
+		var chart2 = dc.pieChart("#graph_area");
+		ndx2 = crossfilter(landuse_count);
+		var lu_graph_dim = ndx2.dimension(function(h){return h.properties.tags.landuse});
+		var lu_graph_group = lu_graph_dim.group().reduceSum(function(h) {return h.properties.size});
+		
+	chart2
+    .width(200)
+    .height(200)
+    .slicesCap(4)
+    .innerRadius(40)
+	.ordinalColors(['#e6251f', '#9fc659','#f9ec11','#58c4f2', '#f0772b' ])
+    .dimension(lu_graph_dim)
+    .group(lu_graph_group) // by default, pie charts will use group.key as the label
+    .renderLabel(true)
+	.render();
+	
+		
+		
+		});
+		
+		
+		
+	
+		
+		
+	});
+
+
+/////progress bar
+
+
+document.getElementById('validated_bar').style.width= task.properties.validated  +'%';
+document.getElementById('done_bar').style.width= task.properties.done +'%';
+
+
+
+
+
+
+
+
+
+
+}		
+
+
+
+
+
+
+  
+	
+
+
+
+			
+
+			
+			
+	
+			
+</script>
+
+	
+	
+	
+	
+	
+	
+	
+
+</body>
+
+
+</html>
