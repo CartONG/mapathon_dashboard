@@ -1,0 +1,77 @@
+{
+  "DEFAULT_TASK": {
+    "task":{
+      "geometry":{
+        "type":"MultiPolygon",
+        "coordinates":[]
+      },
+      "type":"Feature",
+      "id":0,
+      "properties":{
+        "name":"",
+        "done":0,
+        "validated":0
+      }
+    },
+    "startDate":{
+      "origDate":"01/01/1970 00:00",
+      "formatDate":"Thu, January 01, 1970 00:00 AM"
+    },
+    "OSM":{
+      "building":{
+        "geosjon":{
+        "type":"FeatureCollection",
+        "features":[]},
+        "nb":0
+      },
+      "landuse":{
+        "geosjon":{
+          "type":"FeatureCollection",
+          "features":[]
+        },
+        "total":0,
+        "res":0
+      },
+      "highway":{
+        "geosjon":{
+          "type":"FeatureCollection",
+          "features":[]
+        },
+        "nb":0,
+        "dist":0
+      }
+    }
+  },
+  "STYLES": {
+    "task": {
+      "color": "#f9ec12",
+      "weight": 5,
+      "fillOpacity": 0,
+      "opacity": 1
+    },
+    "building": {
+      "color": "#ff6600",
+      "weight": 4,
+      "fillOpacity": 1,
+      "opacity": 1
+    },
+    "highway": {
+      "color": "#f0782c",
+      "weight": 2,
+      "fillOpacity": 1,
+      "opacity": 1
+    },
+    "landuse": {
+      "color": "#9ec658",
+      "weight": 2,
+      "fillOpacity": 1,
+      "opacity": 1
+    },
+    "waterway": {
+      "color": "#58c4f2",
+      "weight": 4,
+      "fillOpacity": 1,
+      "opacity": 1
+    }
+  }
+}

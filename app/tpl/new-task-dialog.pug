@@ -1,0 +1,50 @@
+dialog#new-task-dialog.mdl-dialog
+  h3.mdl-dialog__title New Task
+  .mdl-dialog__content
+    form#new-task-form(action='#')
+      h4 Task ID
+      .mdl-textfield.mdl-js-textfield
+        input#task-id.mdl-textfield__input(type='text', pattern='^[0-9]{1,6}$')
+        label.mdl-textfield__label(for='task-id') ID
+      h4 Start Date
+      .mdl-textfield.mdl-js-textfield.two-digit-input
+        input#start-day.mdl-textfield__input.st-date-input(type='text', pattern='^(0[1-9]|1[0-9]|2[0-9]|3[0-1])$')
+      .date-separation /
+      .mdl-textfield.mdl-js-textfield.two-digit-input
+        input#start-month.mdl-textfield__input.st-date-input(type='text', pattern='^0[1-9]|1[0-2]$')
+      .date-separation /
+      .mdl-textfield.mdl-js-textfield.four-digit-input
+        input#start-year.mdl-textfield__input.st-date-input(type='text', pattern='^[0-9]{4}$')
+      .mdl-textfield.mdl-js-textfield.two-digit-input
+        input#start-hour.mdl-textfield__input.st-date-input(type='text', pattern='^0[0-9]|1[0-9]|2[0-3]$')
+      .date-separation :
+      .mdl-textfield.mdl-js-textfield.two-digit-input
+        input#start-min.mdl-textfield__input.st-date-input(type='text', pattern='^[0-5][0-9]$')
+      h4 End Date
+      .mdl-textfield.mdl-js-textfield.two-digit-input
+        input#end-day.mdl-textfield__input.st-date-input(type='text', pattern='^(0[1-9]|1[0-9]|2[0-9]|3[0-1])$')
+      .date-separation /
+      .mdl-textfield.mdl-js-textfield.two-digit-input
+        input#end-month.mdl-textfield__input.st-date-input(type='text', pattern='^0[1-9]|1[0-2]$')
+      .date-separation /
+      .mdl-textfield.mdl-js-textfield.four-digit-input
+        input#end-year.mdl-textfield__input.st-date-input(type='text', pattern='^[0-9]{4}$')
+      .mdl-textfield.mdl-js-textfield.two-digit-input
+        input#end-hour.mdl-textfield__input.st-date-input(type='text', pattern='^0[0-9]|1[0-9]|2[0-3]$')
+      .date-separation :
+      .mdl-textfield.mdl-js-textfield.two-digit-input
+        input#end-min.mdl-textfield__input.st-date-input(type='text', pattern='^[0-5][0-9]$')          
+      h4 Overpass Server
+      .mdl-textfield.mdl-js-textfield.mdl-textfield.getmdl-select.getmdl-select__fullwidth
+        input#server-select.mdl-textfield__input(type='text', value='overpass-api.de', readonly='', tabindex='-1')
+        label.mdl-textfield__label(for='server-select') Server
+        ul.mdl-menu.mdl-menu--bottom-left.mdl-js-menu(for='server-select')
+          li.mdl-menu__item overpass-api.de
+          li.mdl-menu__item overpass.osm.rambler.ru
+          li.mdl-menu__item api.openstreetmap.fr
+      .message-container
+        p#new-task-message
+  .mdl-dialog__actions
+    button#dialog-close-button.mdl-button.mdl-js-button.mdl-button--raised.mdl-button--accent(type='button') Cancel
+    .mdl-layout-spacer
+    button#dialog-submit-button.mdl-button.mdl-js-button.mdl-button--raised(type='button') Submit

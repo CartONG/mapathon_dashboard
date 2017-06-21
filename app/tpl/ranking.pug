@@ -1,0 +1,29 @@
+if data.users.length > 0      
+  .task-section
+    .mdl-grid.header-grid
+      .mdl-cell.mdl-cell--12-col 
+        h3 Ranking
+    .mdl-grid
+      .mdl-cell.mdl-cell--12-col
+        table#ranking-table.mdl-data-table.mdl-js-data-table.mdl-shadow--2dp
+          thead
+            tr
+              th Rank
+              th User
+              th Total edits
+              th Buildings
+              th Landuse
+              th Highway
+              th Waterway
+          tbody
+            - var index = 0;
+            while index < 10 && index < data.users.length
+              tr
+                td #{index + 1}
+                td #{data.users[index].id}
+                td #{data.users[index].edits}
+                td #{data.users[index].buildings}
+                td #{data.users[index].landuse} km<sup>2</sup> 
+                td #{data.users[index].highway} km
+                td #{data.users[index].waterway} km
+                - index++;
