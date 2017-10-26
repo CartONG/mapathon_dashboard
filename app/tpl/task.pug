@@ -1,22 +1,22 @@
 .task-section
   .mdl-grid.header-grid
     .mdl-cell.mdl-cell--12-col
-      h2 <span class="task-id-head">##{data.task.id}</span> #{data.task.properties.name}
+      h2 <span class="task-id-head">##{data.task.id}</span> #{data.task.name}
   .mdl-grid
     .mdl-cell.mdl-cell--3-col.task-info
       p.task-info-key Done 
       #task-progress-done.mdl-progress.mdl-js-progress
-      p.percent #{data.task.properties.done} %
+      p.percent #{data.task.done} %
     .mdl-cell.mdl-cell--3-col.task-info
       p.task-info-key Validated
       #task-progress-valid.mdl-progress.mdl-js-progress
-      p.percent #{data.task.properties.validated} %
+      p.percent #{data.task.validated} %
     .mdl-cell.mdl-cell--3-col
     .mdl-cell.mdl-cell--3-col  
     //.mdl-cell.mdl-cell--3-col.task-info
-      p <span class="task-info-key">Creation:</span> #{data.task.properties.formatCreated}
+      p <span class="task-info-key">Creation:</span> #{data.task.formatCreated}
     //.mdl-cell.mdl-cell--3-col.task-info
-      p <span class="task-info-key">Last update:</span> #{data.task.properties.formatLastUpdate}
+      p <span class="task-info-key">Last update:</span> #{data.task.formatLastUpdate}
 .task-section
   .mdl-grid.header-grid
     .mdl-cell.mdl-cell--12-col

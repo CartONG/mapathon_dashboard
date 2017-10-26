@@ -20,7 +20,7 @@ import taskTpl from '../tpl/task.pug';
 
 import conf from '../data/conf.json';
 
-const HOTOSM_URL = 'http://tasks.hotosm.org/project/';
+const HOTOSM_URL = 'http://tasks.hotosm.org/api/v1/project/';
 
 const SERVERS = {
   'overpass-api.de': 'https://overpass-api.de/api/interpreter',
@@ -121,12 +121,13 @@ function mapBbox(geosjon) {
 
 function displayOverviewMap(state) {
   const map = L.map('overview-map', OV_MAP_OPTS);
-  const taskLayer = L.geoJson(state.data.task, {style: conf.STYLES.task}).addTo(map);
+  // const taskLayer = L.geoJson(state.data.task, {style: conf.STYLES.task}).addTo(map);
   L.geoJson(state.data.landuse.geosjon, {style: conf.STYLES.landuse}).addTo(map);
   L.geoJson(state.data.highway.geosjon, {style: conf.STYLES.highway}).addTo(map);
   L.geoJson(state.data.buildings.geosjon, {style: conf.STYLES.building}).addTo(map);
   L.geoJson(state.data.waterway.geosjon, {style: conf.STYLES.waterway}).addTo(map);
-  map.fitBounds(taskLayer.getBounds());
+  // map.fitBounds(taskLayer.getBounds());
+  map.setView([state.data.task.centroid.coordinates[1], state.data.task.centroid.coordinates[0]], 10);
   return map;
 }
 
@@ -146,8 +147,8 @@ function displayHighwayhMap(state) {
 function displayTaskProgression(task) {
   const doneProgressBar = document.getElementById('task-progress-done');
   const validProgressBar = document.getElementById('task-progress-valid');
-  doneProgressBar.MaterialProgress.setProgress(task.properties.done);
-  validProgressBar.MaterialProgress.setProgress(task.properties.validated);
+  doneProgressBar.MaterialProgress.setProgress(task.done);
+  validProgressBar.MaterialProgress.setProgress(task.validated);
 }
 
 function calcArea(geosjonFeatures) {
@@ -400,15 +401,14 @@ function reducers(actions) {
   const getTaskDataRed$ = actions.getTaskData$
     .map(x => {
       return function(state) {
-        if (x.properties === undefined) {
-          state.data.task = 'error';
-        } else {
-          state.data.task = x;
-          state.data.task.properties.formatCreated = moment(x.properties.created).format('DD/MM/YYYY');
-          state.data.task.properties.formatLastUpdate = moment(x.properties.last_update).format('DD/MM/YYYY HH:mm');
-          state.data.task.properties.validated = Math.round(x.properties.validated * 10) / 10;
-          state.data.task.properties.done = Math.round((x.properties.validated + x.properties.done) * 10) / 10;
-        }
+        state.data.task = {};
+        state.data.task.id = x.projectId;
+        state.data.task.name = x.name;
+        state.data.task.centroid = x.aoiCentroid;
+        state.data.task.formatCreated = moment(x.created).format('DD/MM/YYYY');
+        state.data.task.formatLastUpdate = moment(x.lastUpdated).format('DD/MM/YYYY HH:mm:ss.SSS');
+        state.data.task.validated = Math.round(x.percentValidated * 10) / 10;
+        state.data.task.done = Math.round(x.percentMapped * 10) / 10;
         return state;
       };
     });
@@ -582,13 +582,17 @@ function intent(dom, locateMap) {
     .share();
 
   actions.getTaskData$ = actions.getURLParams$
-    .flatMap(params => Rx.Observable.fromPromise(jquery.getJSON(HOTOSM_URL + params.taskId + '.json')))
+    // .flatMap(params => Rx.Observable.fromPromise(jquery.getJSON(HOTOSM_URL + params.taskId + '.json')))
+    .flatMap(params => Rx.Observable.fromPromise(jquery.getJSON(HOTOSM_URL + params.taskId + '/summary')))
     .doOnError(displayErrorMessage.bind(this, dom.loadingProgress, dom.loadingMessage, dom.loadingCloseButton))
     .retry()
     .share();
 
   const calcBbox$ = actions.getTaskData$
-    .filter(geojson => geojson.properties !== undefined)
+    // .filter(geojson => geojson.properties !== undefined)
+    .flatMap(project => Rx.Observable.fromPromise(jquery.getJSON(HOTOSM_URL + project.projectId)))
+    .filter(task => task.areaOfInterest !== undefined)
+    .map(task => task.areaOfInterest)
     .map(mapBbox)
     .doOnError(displayErrorMessage.bind(this, dom.loadingProgress, dom.loadingMessage, dom.loadingCloseButton))
     .retry()
