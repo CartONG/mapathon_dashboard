@@ -1,0 +1,27 @@
+
+form#params-form {
+  margin: 1rem;  
+  display: inline-block;
+}
+
+form#params-form input, form#params-form select {
+  width: 16rem;
+  margin: 0 1.5rem 0 1rem;
+}
+
+form#params-form input#project-id-input {
+  width: 10rem;
+}
+
+form#params-form select {
+  width: 16rem;
+}
+
+form#params-form label {
+  display: inline-block;
+}
+
+form#params-form input[type="submit"] {
+  padding: 0 16px;
+  width: 8rem;
+}

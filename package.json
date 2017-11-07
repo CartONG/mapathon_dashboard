@@ -20,6 +20,8 @@
     "build": "webpack --config webpack.prod.js"
   },
   "dependencies": {
+    "leaflet": "^1.2.0",
+    "moment": "^2.19.1",
     "snabbdom": "^0.7.0"
   }
 }
