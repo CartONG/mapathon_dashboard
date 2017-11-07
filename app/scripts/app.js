@@ -20,7 +20,7 @@ import taskTpl from '../tpl/task.pug';
 
 import conf from '../data/conf.json';
 
-const HOTOSM_URL = 'http://tasks.hotosm.org/api/v1/project/';
+const HOTOSM_URL = 'https://tasks.hotosm.org/api/v1/project/';
 
 const SERVERS = {
   'overpass-api.de': 'https://overpass-api.de/api/interpreter',
