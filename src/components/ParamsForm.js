@@ -4,24 +4,31 @@ import '../styles/ParamsForm.css';
 import h from 'snabbdom/h';
 import moment from 'moment';
 import { OVP_DE, OVP_RU, OVP_FR, TIME_OFFSET, DATETIME_FORMAT } from '../Variables';
-import { setSearchParams } from '../Actions';
+import { getOSMData } from '../Actions';
 
+/*
 function submitForm(handler, ev) {
   ev.preventDefault();
   ev.stopPropagation();
   const params = {
     projectId: ev.target[0].value,
-    startDateTime: moment(ev.target[1].value, DATETIME_FORMAT).format('YYYY-MM-DDTHH:mmZ'),
-    endDateTime: moment(ev.target[2].value, DATETIME_FORMAT).format('YYYY-MM-DDTHH:mmZ'),
+    startDateTime: moment(ev.target[1].value, DATETIME_FORMAT),    
+    endDateTime: moment(ev.target[2].value, DATETIME_FORMAT),
+    // startDateTime: moment(ev.target[1].value, DATETIME_FORMAT).format('YYYY-MM-DDTHH:mmZ'),
+    // endDateTime: moment(ev.target[2].value, DATETIME_FORMAT).format('YYYY-MM-DDTHH:mmZ'),
     server: ev.target[3].value
   };
-  handler.publish('ACTIONS', setSearchParams(params));
+  handler.publish('ACTIONS', getOSMData(params));
   return false;
 }
+*/
 
-function view(model, handler) {
+export default function(model, handler) {
   const start = moment().add(TIME_OFFSET, 'm').set('minute', 0);
   const end = moment().add(1, 'h').set('minute', 0);
+
+  console.log(start);
+  console.log(end);
 
   return h('form#params-form', { on: { submit: submitForm.bind(this, handler) } },[
     h('label', { attrs: { for: 'project-id-input' } }, 'Project ID'),
@@ -39,5 +46,3 @@ function view(model, handler) {
     h('input.button-primary', { attrs: { value: 'Submit', type: 'submit' } })
   ]);
 }
-
-export default { view }

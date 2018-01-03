@@ -1,15 +1,14 @@
 'use strict';
 
+import moment from 'moment';
 import { init } from 'snabbdom';
 import h from 'snabbdom/h';
-import { GeoJSON } from 'leaflet';
 import PubSub from './PubSub';
 import App from './components/App';
-import { manageRequests } from './Ajax';
+import { servers } from './Variables';
 
 const patch = init([
   require('snabbdom/modules/class').default,
-  require('snabbdom/modules/props').default,
   require('snabbdom/modules/eventlisteners').default,
   require('snabbdom/modules/attributes').default,
   require('snabbdom/modules/dataset').default,
@@ -17,16 +16,12 @@ const patch = init([
 ]);
 
 const initialState = {
-  loading: {
-    project: false,
-    bbox: false,
-    changesets: false,
-    message: null
-  },
-  search: {
-    params: {},
-    results: {}  
-  }
+  startDateTime: moment().add(-60, 'm').set('minute', 0),
+  endDateTime: moment().add(1, 'h').set('minute', 0),
+  project: null,
+  bbox: null,
+  changesets: null,
+  OSMData: null
 };
 
 function reduce(state, action) {
@@ -38,27 +33,27 @@ function reduce(state, action) {
   state = reset(state);
 
   switch (action.type) {
+    case 'GET_OSM_DATA':
+      state.project = {};
+      state.project.id = action.payload.projectId;
+      state.startDateTime = action.payload.startDateTime;
+      state.endDateTime = action.payload.endDateTime;
+      state.server = servers[action.payload.server];
+      state.bbox = null;
+      state.changesets = null;
+      state.OSMData = null;
+      return state;
     case 'SET_PROJECT_DATA':
-      state.search.results.project = action.payload;
-      state.loading.project = false;
-      state.loading.bbox = true;
-      state.loading.message = 'Load BBox data ...';
+      Object.assign(state.project, action.payload);
       return state;
     case 'SET_BBOX':
-      const b = new GeoJSON(action.payload.areaOfInterest).getBounds();
-      state.search.results.bbox = { w: b.getWest(), s: b.getSouth(), e: b.getEast(), n: b.getNorth() };  
-      state.loading.bbox = false;
-      state.loading.changesets = true;
-      state.loading.message = 'Load changesets ...'
+      state.bbox = action.payload;
       return state;
-    case 'SET_SEARCH_PARAMS':
-      state.search.params.projectId = action.payload.projectId;
-      state.search.params.startDateTime = action.payload.startDateTime;
-      state.search.params.endDateTime = action.payload.endDateTime;
-      state.search.params.server = action.payload.server;
-      state.loading.project = true;
-      state.loading.message = 'Load project data ...';
+    case 'SET_CHANGESETS':
+      state.changesets = action.payload;
       return state;
+    case 'SET_OSM_DATA':
+      state.OSMData = action.payload;  
   }
 
   return state;
@@ -68,10 +63,10 @@ function main(initState, initVnode, App) {
 
   const update = function(msg, action) {
     state = reduce(state, action);
-    manageRequests(state, PubSub);
-    newVnode = App.view(state, PubSub);
+    newVnode = App(state);
     patch(oldVnode, newVnode);
     oldVnode = newVnode;
+    console.log(state);
   }
 
   let newVnode = null, oldVnode = initVnode, state = initState;

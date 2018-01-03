@@ -1,8 +1,8 @@
 'use strict';
 
-export function setSearchParams(params) {
+export function getOSMData(params) {
   return {
-    type: 'SET_SEARCH_PARAMS',
+    type: 'GET_OSM_DATA',
     payload: params
   }
 };
@@ -14,9 +14,23 @@ export function setProjectData(projectData) {
   }
 };
 
-export function setBbox(bbox) {
+export function setBBox(bbox) {
   return {
     type: 'SET_BBOX',
     payload: bbox
   }
 };
+
+export function setChnagesets(changesets) {
+  return {
+    type: 'SET_CHANGESETS',
+    payload: changesets
+  }
+}
+
+export function setOsmData(data) {
+  return {
+    type: 'SET_OSM_DATA',
+    payload: data
+  }
+}
