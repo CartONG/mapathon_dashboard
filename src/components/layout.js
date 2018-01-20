@@ -3,7 +3,7 @@
 import '../styles/layout.css';
 import h from 'snabbdom/h';
 import { OVP_DE, OVP_RU, OVP_FR, DATETIME_FORMAT } from '../Variables';
-import { input, form, select, option } from './basic';
+import { input, form, select, option, div, paragraph, progressBar } from './basic';
 import { headerImageLink } from './custom';
 import { submitSearchForm } from '../UserEvents';
 
@@ -76,4 +76,61 @@ export function searchBar(model) {
       })
     ]
   })
+}
+
+export function taskHeader(model)
+{
+  return div({
+    classes: ['task-section'],
+    children: [
+      div({
+        // id ?
+        children: [
+          h('h2', {}, [
+            h('span', {attrs: {class: 'task-id-head'}}, '#'+model.project.id),
+            h('text', {}, ' '+model.project.name)
+          ])
+        ]
+      }),
+      div({
+        classes: ['task-grid'],
+        children: [
+          div({
+            classes: ['two-column-task-info', 'task-info'],
+            children: [
+              paragraph({
+                classes: ['task-info-key'],
+                text: 'Done'
+              }),
+              progressBar({
+                id: 'task-progress-done',
+                value: model.project.percentMapped,
+                text: model.project.percentMapped+'%'
+              }),
+              paragraph({
+                text: model.project.percentMapped+'%'
+              })
+            ]
+          }),
+          div({
+            classes: ['two-column-task-info','task-info'],
+            children: [
+              paragraph({
+                classes: ['task-info-key'],
+                text: 'Validated'
+              }),
+              progressBar({
+                id: 'task-progress-validated',
+                value: model.project.percentValidated,
+                text: model.project.percentValidated+'%'
+              }),
+              paragraph({
+                text: model.project.percentValidated+'%'
+              })
+            ]
+          })
+        ]
+      })
+    ]
+  });
 }

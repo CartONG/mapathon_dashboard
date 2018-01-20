@@ -1,10 +1,20 @@
 'use strict';
 
 import h from 'snabbdom/h';
-import { header, searchBar } from './layout';
+import { header, searchBar, taskHeader } from './layout';
 import { getProjectData, getBBox, getChangesets, getOSMBuildings } from '../Ajax';
 
 export default function App(model) {
+  if(model.OSMData)
+  {
+    const projectLayout = h('div#app',[
+      header(),
+      taskHeader(model)
+    ]);
+
+    return projectLayout;
+  }
+  
   const layout = h('div#app', [
     header(),
     searchBar(model)
@@ -30,5 +40,5 @@ export default function App(model) {
     return layout;
   }
 
-  return layout; 
+  return layout;
 }

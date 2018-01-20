@@ -4,7 +4,7 @@ import moment from 'moment';
 import osmtogeojson from 'osmtogeojson';
 import { GeoJSON } from 'leaflet';
 import PubSub from './PubSub';
-import { setProjectData, setBBox, setChnagesets, setOsmData } from './Actions';
+import { setProjectData, setBBox, setChangesets, setOsmData } from './Actions';
 import { HOTOSM_URL, OSM_API_URL, OVP_DE } from './Variables';
 
 function sendXHR(url) {
@@ -12,8 +12,17 @@ function sendXHR(url) {
     const xhr = new XMLHttpRequest();
     xhr.open('GET', url);
     xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.onload = () => resolve(xhr.responseText);
-    xhr.onerror = () => reject(xhr.statusText);
+    xhr.onload = () => {
+      if(xhr.status === 200)
+      {
+        resolve(xhr.responseText);
+      }
+      else
+      {
+        reject(Error(xhr.responseText));
+      }
+    };
+    xhr.onerror = () => reject(Error(xhr.responseText));
     xhr.send();   
   });
 }
@@ -23,6 +32,9 @@ export function getProjectData(projectId) {
   sendXHR(url).then(data => {
     const projectData = JSON.parse(data);
     PubSub.publish('ACTIONS', setProjectData(projectData));
+  }, error =>
+  {
+    console.log(error);
   });
 }
 
@@ -60,7 +72,7 @@ export function getChangesets(bbox, start, end, projectId) {
       const newUrl = buildURL(bbox, tmpStart.utc().format(), newEnd);
       sendXHR(newUrl).then(callBack);
     } else {
-      PubSub.publish('ACTIONS', setChnagesets(changesetsIds));      
+      PubSub.publish('ACTIONS', setChangesets(changesetsIds));
     }
   }
 

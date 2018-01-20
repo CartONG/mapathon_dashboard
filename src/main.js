@@ -5,7 +5,6 @@ import { init } from 'snabbdom';
 import h from 'snabbdom/h';
 import PubSub from './PubSub';
 import App from './components/App';
-import { servers } from './Variables';
 
 const patch = init([
   require('snabbdom/modules/class').default,
@@ -38,7 +37,7 @@ function reduce(state, action) {
       state.project.id = action.payload.projectId;
       state.startDateTime = action.payload.startDateTime;
       state.endDateTime = action.payload.endDateTime;
-      state.server = servers[action.payload.server];
+      state.server = action.payload.server;
       state.bbox = null;
       state.changesets = null;
       state.OSMData = null;

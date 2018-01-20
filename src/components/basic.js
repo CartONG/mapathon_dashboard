@@ -90,7 +90,7 @@ export function option(model) {
     attr: 'value',
     value: model.value
   });
-  return h(sel, attrs, model.text);   
+  return h(sel, {attrs: attrs}, model.text);
 }
 
 export function select(model) {
@@ -114,4 +114,28 @@ export function form(model) {
   }
 
   return h(sel, { on: evs }, model.children);
+}
+
+export function div(model) {
+  const sel = selector('div', model.id, model.classes);
+  return h(sel, {}, model.children);
+}
+
+export function paragraph(model)
+{
+  const sel = selector('p', model.id, model.classes);
+  return h(sel, {}, model.text);
+}
+
+export function progressBar(model)
+{
+  const sel = selector('progress', model.id, model.classes);
+  const attrs = attributes({
+    attr: 'value',
+    value: model.value
+  },{
+    attr: 'max',
+    value: 100
+  });
+  return h(sel, {attrs: attrs}, model.text);
 }

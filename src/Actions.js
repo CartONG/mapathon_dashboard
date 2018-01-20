@@ -21,7 +21,7 @@ export function setBBox(bbox) {
   }
 };
 
-export function setChnagesets(changesets) {
+export function setChangesets(changesets) {
   return {
     type: 'SET_CHANGESETS',
     payload: changesets
