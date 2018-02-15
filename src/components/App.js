@@ -1,24 +1,12 @@
 'use strict';
 
 import h from 'snabbdom/h';
-import { header, searchBar, taskHeader } from './layout';
+import { header, searchBar, taskHeader, taskData } from './layout';
 import { getProjectData, getBBox, getChangesets, getOSMBuildings } from '../Ajax';
+import 'leaflet/dist/leaflet.css';
 
 export default function App(model) {
-  if(model.OSMData)
-  {
-    const projectLayout = h('div#app',[
-      header(),
-      taskHeader(model)
-    ]);
-
-    return projectLayout;
-  }
-  
-  const layout = h('div#app', [
-    header(),
-    searchBar(model)
-  ]);
+  const layout = createLayout(model);
 
   if(model.project && !model.project.name) {
     getProjectData(model.project.id);
@@ -40,5 +28,31 @@ export default function App(model) {
     return layout;
   }
 
+  return layout;
+}
+
+function createLayout(model)
+{
+  var layout = null;
+  if(model.OSMData)
+  {
+    layout = h('div#app', [
+      header(),
+      searchBar(model),
+      h('div#task',[
+        taskHeader(model),
+        taskData(model)
+      ])
+    ]);
+  }
+  else
+  {
+    layout = h('div#app', [
+      header(),
+      searchBar(model),
+      h('div#task', {}
+      )
+    ]);
+  }
   return layout;
 }

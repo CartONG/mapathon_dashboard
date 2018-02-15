@@ -134,3 +134,40 @@ export function taskHeader(model)
     ]
   });
 }
+
+
+export function taskData(model)
+{
+  return div({
+    classes: ['task-section'],
+    children: [
+      div({
+        classes: ['task-sub-section','three-column-task-sub-section'],
+        children:[
+          h('h4', {}, 'Map'),
+          h('div#overlay-map',
+          {
+            hook:
+            {
+              insert: (vnode) =>
+              {
+                const map = L.map('overlay-map',
+                  {
+                    layers:
+                    [
+                      L.tileLayer('http://korona.geog.uni-heidelberg.de/tiles/roadsg/x={x}&y={y}&z={z}', {
+                          attribution: 'Map tiles by <a>korona.geog.uni-heidelberg.de</a><br>Map data © <a href="http://www.openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://opendatacommons.org/licenses/odbl/1.0/">ODbL</a>',
+                          maxZoom: 19
+                      })
+                    ]
+                  }
+                );
+                map.setView([model.project.aoiCentroid.coordinates[1],model.project.aoiCentroid.coordinates[0]],10);
+              }
+            }
+          })
+        ]
+      })
+    ]
+  });
+}
