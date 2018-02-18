@@ -7,6 +7,8 @@ import { input, form, select, option, div, paragraph, progressBar } from './basi
 import { headerImageLink } from './custom';
 import { submitSearchForm } from '../UserEvents';
 
+import { getTotalDistance } from '../Distance';
+
 export function header() {
   return h('header', [
     headerImageLink({
@@ -27,7 +29,7 @@ export function header() {
       imgId: 'hot-logo',
       imgSrc: '/images/hot_logo.png',
       imgAlt: 'HOT logo'
-    })    
+    })
   ]);
 }
 
@@ -141,6 +143,7 @@ export function taskData(model)
   return div({
     classes: ['task-section'],
     children: [
+      //h('h2', {}, 'Data from XXX to XXX'),
       div({
         classes: ['task-sub-section','three-column-task-sub-section'],
         children:[
@@ -166,6 +169,37 @@ export function taskData(model)
               }
             }
           })
+        ]
+      }),
+      div({
+        classes: ['task-sub-section','three-column-task-sub-section'],
+        children: [
+          h('h4', {}, 'Roads'),
+          h('p', {}, model.OSMData['highway']['features'].length
+            + ' road(s) created ('
+            + getTotalDistance(model.OSMData['highway']['features']) + ' km)')
+        ]
+      }),
+      div({
+        classes: ['task-sub-section', 'three-column-task-sub-section'],
+        children: [
+          h('h4', {}, 'Buildings'),
+          h('p', {}, model.OSMData['building']['features'].length + ' building(s) created'),
+        ]
+      }),
+      div({
+        classes: ['task-sub-section', 'three-column-task-sub-section'],
+        children: [
+          h('h4', {}, 'Landuse')
+        ]
+      }),
+      div({
+        classes: ['task-sub-section', 'three-column-task-sub-section'],
+        children: [
+          h('h4', {}, 'Waterways'),
+          h('p', {}, model.OSMData['waterway']['features'].length
+              + ' waterway(s) created ('
+              + getTotalDistance(model.OSMData['waterway']['features']) + ' km)')
         ]
       })
     ]

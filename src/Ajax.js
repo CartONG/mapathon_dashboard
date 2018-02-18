@@ -6,6 +6,7 @@ import { GeoJSON } from 'leaflet';
 import PubSub from './PubSub';
 import { setProjectData, setBBox, setChangesets, setOsmData } from './Actions';
 import { HOTOSM_URL, OSM_API_URL, OVP_DE } from './Variables';
+import { getTotalDistance } from './Distance';
 
 function sendXHR(url) {
   return new Promise((resolve, reject) => {
@@ -23,7 +24,7 @@ function sendXHR(url) {
       }
     };
     xhr.onerror = () => reject(Error(xhr.responseText));
-    xhr.send();   
+    xhr.send();
   });
 }
 
@@ -46,7 +47,7 @@ export function getBBox(projectId) {
     const bbox = { w: b.getWest(), s: b.getSouth(), e: b.getEast(), n: b.getNorth() };
     const crash = 1 / 0;
     PubSub.publish('ACTIONS', setBBox(bbox));
-  });  
+  });
 }
 
 export function getChangesets(bbox, start, end, projectId) {
@@ -59,13 +60,13 @@ export function getChangesets(bbox, start, end, projectId) {
   function callBack(data) {
     const selector = 'tag[v*="#hotosm-project-' + projectId + '"]';
     const xmlDoc = new DOMParser().parseFromString(data, 'text/xml');
-    
+
     const changesets = xmlDoc.querySelectorAll('changeset');
     const tagElmts = xmlDoc.querySelectorAll(selector);
-    
+
     const obj = {};
     Array.from(tagElmts).map(t => obj[t.parentNode.id] = 0);
-    Object.keys(obj).map(changesetId => changesetsIds.push(changesetId));  
+    Object.keys(obj).map(changesetId => changesetsIds.push(changesetId));
 
     if(changesets.length === 100) {
       const newEnd = changesets[99].getAttribute('closed_at');
@@ -104,28 +105,28 @@ export function getOSMBuildings(bbox, startDateTime, endDateTime, server, change
       : buildOAPIReqWithoutEndDate(server, bbox, type, tmpStart)
   });
 
-  sendXHR(requests[0]).then(data => {
+  sendXHR(requests[0]).then(data => {//building
     OSMData[types[0]] = getFeatures(data);
     return sendXHR(requests[1]);
   })
-  .then(data => {
+  .then(data => {//landuse
     OSMData[types[1]] = getFeatures(data);
     return sendXHR(requests[2]);
   })
-  .then(data => {
+  .then(data => {//highway
     OSMData[types[2]] = getFeatures(data);
     return sendXHR(requests[3]);
   })
-  .then(data => {
+  .then(data => {//waterway
     OSMData[types[3]] = getFeatures(data);
-    PubSub.publish('ACTIONS', setOsmData(OSMData)); 
+    PubSub.publish('ACTIONS', setOsmData(OSMData));
   });
 
   function getFeatures(data) {
     const xmlDoc = new DOMParser().parseFromString(data, 'text/xml');
-    const featureCollection = osmtogeojson(xmlDoc);  
+    const featureCollection = osmtogeojson(xmlDoc);
     const newFeatures = featureCollection.features
-      .filter(feature => changesets.indexOf(feature.properties.changeset) > -1);    
+      .filter(feature => changesets.indexOf(feature.properties.changeset) > -1);
     featureCollection.features = newFeatures;
     return featureCollection;
   }

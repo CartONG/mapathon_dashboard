@@ -24,6 +24,7 @@
     "leaflet": "^1.2.0",
     "moment": "^2.19.1",
     "osmtogeojson": "^3.0.0-beta.3",
-    "snabbdom": "^0.7.0"
+    "snabbdom": "^0.7.0",
+    "@turf/line-distance": "^4.7.3"
   }
 }
