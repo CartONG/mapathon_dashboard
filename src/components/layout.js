@@ -8,6 +8,7 @@ import { headerImageLink } from './custom';
 import { submitSearchForm } from '../UserEvents';
 
 import { getTotalDistance } from '../Distance';
+import { displayHighwayMap } from './highwayMap';
 
 export function header() {
   return h('header', [
@@ -177,7 +178,17 @@ export function taskData(model)
           h('h4', {}, 'Roads'),
           h('p', {}, model.OSMData['highway']['features'].length
             + ' road(s) created ('
-            + getTotalDistance(model.OSMData['highway']['features']) + ' km)')
+            + getTotalDistance(model.OSMData['highway']['features']) + ' km)'),
+          h('div#highway-map',
+          {
+            hook:
+            {
+              insert: (vnode) =>
+              {
+                const map = displayHighwayMap(getTotalDistance(model.OSMData['highway']['features']));
+              }
+            }
+          })
         ]
       }),
       div({
@@ -190,7 +201,8 @@ export function taskData(model)
       div({
         classes: ['task-sub-section', 'three-column-task-sub-section'],
         children: [
-          h('h4', {}, 'Landuse')
+          h('h4', {}, 'Landuse'),
+          h('p', {},' XXX landuse'),
         ]
       }),
       div({

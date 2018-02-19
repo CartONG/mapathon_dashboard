@@ -21,10 +21,11 @@
     "build": "webpack --config webpack.prod.js"
   },
   "dependencies": {
+    "@turf/destination": "^5.1.5",
+    "@turf/line-distance": "^4.7.3",
     "leaflet": "^1.2.0",
     "moment": "^2.19.1",
     "osmtogeojson": "^3.0.0-beta.3",
-    "snabbdom": "^0.7.0",
-    "@turf/line-distance": "^4.7.3"
+    "snabbdom": "^0.7.0"
   }
 }
