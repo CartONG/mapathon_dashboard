@@ -42,15 +42,13 @@ const HW_MAP_OPTS = {
 
 export function displayHighwayMap(dist) {
   const start =  point([5.9215, 45.58789]); // could be the current location here
-  const end = destination(start, 100, 90);
+  const end = destination(start, dist, 90);
   const startLayer = L.circleMarker([start.geometry.coordinates[1], start.geometry.coordinates[0]], HW_MAP_DEPT_OPTS);
   const endLayer = L.circleMarker([end.geometry.coordinates[1], end.geometry.coordinates[0]], HW_MAP_END_OPTS);
   const line = lineString([start.geometry.coordinates, end.geometry.coordinates]);
   const lineLayer = L.geoJson(line, HW_LINE_OPTS);
   const layers = dist > 1 ? [lineLayer, startLayer, endLayer] : [];
-  console.log('ueue');
-  const highwayMap = L.map('highway-map', HW_MAP_OPTS);
-  layers.reduce((map, layer) =>map.addLayer(layer), highwayMap);
+  const highwayMap = layers.reduce((map, layer) =>map.addLayer(layer), L.map('highway-map', HW_MAP_OPTS));
   highwayMap.fitBounds(lineLayer.getBounds(), {padding: [16, 16], maxZoom: 18});
   return highwayMap;
 }

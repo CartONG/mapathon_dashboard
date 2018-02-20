@@ -7,8 +7,9 @@ import { input, form, select, option, div, paragraph, progressBar } from './basi
 import { headerImageLink } from './custom';
 import { submitSearchForm } from '../UserEvents';
 
-import { getTotalDistance } from '../Distance';
+import { getTotalDistance, calcArea } from '../Distance';
 import { displayHighwayMap } from './highwayMap';
+import { displayOverviewMap } from './overviewMap';
 
 export function header() {
   return h('header', [
@@ -149,24 +150,13 @@ export function taskData(model)
         classes: ['task-sub-section','three-column-task-sub-section'],
         children:[
           h('h4', {}, 'Map'),
-          h('div#overlay-map',
+          h('div#overview-map',
           {
             hook:
             {
               insert: (vnode) =>
               {
-                const map = L.map('overlay-map',
-                  {
-                    layers:
-                    [
-                      L.tileLayer('http://korona.geog.uni-heidelberg.de/tiles/roadsg/x={x}&y={y}&z={z}', {
-                          attribution: 'Map tiles by <a>korona.geog.uni-heidelberg.de</a><br>Map data © <a href="http://www.openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://opendatacommons.org/licenses/odbl/1.0/">ODbL</a>',
-                          maxZoom: 19
-                      })
-                    ]
-                  }
-                );
-                map.setView([model.project.aoiCentroid.coordinates[1],model.project.aoiCentroid.coordinates[0]],10);
+                const map = displayOverviewMap(model);
               }
             }
           })
@@ -202,7 +192,9 @@ export function taskData(model)
         classes: ['task-sub-section', 'three-column-task-sub-section'],
         children: [
           h('h4', {}, 'Landuse'),
-          h('p', {},' XXX landuse'),
+          h('p', {},'<b>Residential landuse: </b>'
+            + calcArea(model.OSMData['landuse']['features'])),//.filter(layer => layer.proporties.landuse === 'residential'))),
+          h('p', {},'<b>Total landuse:</b> ' + calcArea(model.OSMData['landuse']['features']))
         ]
       }),
       div({
