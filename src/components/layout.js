@@ -157,6 +157,12 @@ export function taskData(model)
               insert: (vnode) =>
               {
                 const map = displayOverviewMap(model);
+                vnode.map = map;
+              },
+              destroy: (vnode) =>
+              {
+                vnode.map.remove();
+                vnode.map = null;
               }
             }
           })
@@ -176,6 +182,12 @@ export function taskData(model)
               insert: (vnode) =>
               {
                 const map = displayHighwayMap(getTotalDistance(model.OSMData['highway']['features']));
+                vnode.map = map;
+              },
+              destroy: (vnode) =>
+              {
+                vnode.map.remove();
+                vnode.map = null;
               }
             }
           })
