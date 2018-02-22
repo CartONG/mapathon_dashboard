@@ -1,7 +1,7 @@
 'use strict';
 
 import h from 'snabbdom/h';
-import { header, searchBar, taskHeader, taskData } from './layout';
+import { header, searchBar, taskHeader, taskData, taskLeaderboard } from './layout';
 import { getProjectData, getBBox, getChangesets, getOSMBuildings } from '../Ajax';
 import { computeLeaderboard } from '../Leaderboard';
 
@@ -48,7 +48,8 @@ function createLayout(model)
       searchBar(model),
       h('div#task',[
         taskHeader(model),
-        taskData(model)
+        taskData(model),
+        taskLeaderboard(model)
       ])
     ]);
   }

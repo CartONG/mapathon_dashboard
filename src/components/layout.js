@@ -85,10 +85,9 @@ export function searchBar(model) {
 export function taskHeader(model)
 {
   return div({
-    classes: ['task-header'],
+    classes: ['task-box'],
     children: [
       div({
-        // id ?
         children: [
           h('h2', {}, [
             h('span', {attrs: {class: 'task-id-head'}}, '#'+model.project.id),
@@ -143,9 +142,9 @@ export function taskHeader(model)
 export function taskData(model)
 {
   return div({
-    classes: ['task-section'],
+    classes: ['task-box'],
     children: [
-      //h('h2', {}, 'Last update),
+      h('h2', {}, 'Last update'),
       div({
         classes: ['task-sub-section','three-column-task-sub-section'],
         children:[
@@ -228,7 +227,33 @@ export function taskData(model)
               + ' waterway(s) created ('
               + getTotalDistance(model.OSMData['waterway']['features']) + ' km)')
         ]
-      })
+      }),
+      h('p.white', {},'.')
     ]
   });
+}
+
+export function taskLeaderboard(model){
+  return div({
+    classes: ['task-box'],
+    children: [
+      h('h2', {}, 'Leaderboard'),
+      div({
+        classes: ['task-grid'],
+        children:[
+          div({
+            classes: ['task-sub-section', 'two-column-task-sub-section'],
+            children: [
+              h('h4', {}, 'Buildings')
+              ]
+          }),
+          div({
+            classes: ['task-sub-section', 'two-column-task-sub-section'],
+            children: [
+              h('h4', {}, 'Roads')
+              ]
+            })
+        ]
+      })
+    ]});
 }
