@@ -12,14 +12,16 @@ export function getTotalDistance(lines){
   return Math.round(dst*10)/10;
 }
 
-export function calcArea(areas) {
+export function calcArea(areas, residential) {
   console.log(areas);
 
   let surface = 0.;
   var i;
   for( i = 0; i < areas.length; i++){
     surface += area(areas[i]);
-    console.log(areas[i].properties.landuse);
+    if(residential && areas[i].properties.landuse != 'residential'){
+      surface -= area(areas[i]);
+    }
   }
   surface /= 1000000;
   return Math.round(surface * 100) / 100;

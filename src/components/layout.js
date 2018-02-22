@@ -208,14 +208,14 @@ export function taskData(model)
             classes:[],
             children:[
               h('b', {}, 'Residential landuse: '),
-              h('span', {}, calcArea(model.OSMData['landuse']['features']))//.filter(layer => layer.proporties.landuse === 'residential'
+              h('span', {}, calcArea(model.OSMData['landuse']['features'], true) + ' km²')
             ]
           }),
           div({
             classes:[],
             children:[
               h('b', {}, 'Total landuse: '),
-              h('span', {}, calcArea(model.OSMData['landuse']['features']))
+              h('span', {}, calcArea(model.OSMData['landuse']['features'], false) + ' km²')
             ]
           })
         ]
