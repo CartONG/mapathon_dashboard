@@ -85,7 +85,7 @@ export function searchBar(model) {
 export function taskHeader(model)
 {
   return div({
-    classes: ['task-section'],
+    classes: ['task-header'],
     children: [
       div({
         // id ?
@@ -145,7 +145,7 @@ export function taskData(model)
   return div({
     classes: ['task-section'],
     children: [
-      //h('h2', {}, 'Data from XXX to XXX'),
+      //h('h2', {}, 'Last update),
       div({
         classes: ['task-sub-section','three-column-task-sub-section'],
         children:[
@@ -204,9 +204,20 @@ export function taskData(model)
         classes: ['task-sub-section', 'three-column-task-sub-section'],
         children: [
           h('h4', {}, 'Landuse'),
-          h('p', {},'<b>Residential landuse: </b>'
-            + calcArea(model.OSMData['landuse']['features'])),//.filter(layer => layer.proporties.landuse === 'residential'))),
-          h('p', {},'<b>Total landuse:</b> ' + calcArea(model.OSMData['landuse']['features']))
+          div({
+            classes:[],
+            children:[
+              h('b', {}, 'Residential landuse: '),
+              h('span', {}, calcArea(model.OSMData['landuse']['features']))//.filter(layer => layer.proporties.landuse === 'residential'
+            ]
+          }),
+          div({
+            classes:[],
+            children:[
+              h('b', {}, 'Total landuse: '),
+              h('span', {}, calcArea(model.OSMData['landuse']['features']))
+            ]
+          })
         ]
       }),
       div({
