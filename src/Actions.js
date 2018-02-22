@@ -34,3 +34,10 @@ export function setOsmData(data) {
     payload: data
   }
 }
+
+export function setLeaderboard(data) {
+  return {
+    type: 'SET_LEADERBOARD',
+    payload: data
+  }
+}

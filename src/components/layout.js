@@ -29,7 +29,7 @@ export function header() {
     headerImageLink({
       linkHref: 'https://www.hotosm.org',
       imgId: 'hot-logo',
-      imgSrc: '/images/hot_logo.png',
+      imgSrc: './images/hot_logo.png',
       imgAlt: 'HOT logo'
     })
   ]);

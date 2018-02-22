@@ -20,7 +20,8 @@ const initialState = {
   project: null,
   bbox: null,
   changesets: null,
-  OSMData: null
+  OSMData: null,
+  leaderboard: null,
 };
 
 function reduce(state, action) {
@@ -41,6 +42,7 @@ function reduce(state, action) {
       state.bbox = null;
       state.changesets = null;
       state.OSMData = null;
+      state.leaderboard = null;
       return state;
     case 'SET_PROJECT_DATA':
       Object.assign(state.project, action.payload);
@@ -52,7 +54,10 @@ function reduce(state, action) {
       state.changesets = action.payload;
       return state;
     case 'SET_OSM_DATA':
-      state.OSMData = action.payload;  
+      state.OSMData = action.payload;
+      return state;
+    case 'SET_LEADERBOARD':
+      state.leaderboard = action.payload;
   }
 
   return state;
