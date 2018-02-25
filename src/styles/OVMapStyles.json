@@ -7,7 +7,7 @@
       "opacity": 1
     },
     "building": {
-      "color": "#ff6600",
+      "color": "rgb(0,188,212)",
       "weight": 4,
       "fillOpacity": 1,
       "opacity": 1

@@ -9,7 +9,7 @@ import 'leaflet/dist/leaflet.css';
 
 export default function App(model) {
   const layout = createLayout(model);
-
+  console.log("a");
   if(model.project && !model.project.name) {
     getProjectData(model.project.id);
     return layout;
@@ -41,20 +41,17 @@ export default function App(model) {
 function createLayout(model)
 {
   var layout = null;
-  if(model.OSMData)
-  {
+  if(model.OSMData){
     layout = h('div#app', [
       header(),
       searchBar(model),
       h('div#task',[
         taskHeader(model),
-        taskData(model),
-        taskLeaderboard(model)
+        taskData(model)//,
+        //taskLeaderboard(model) //bug à résoudre
       ])
     ]);
-  }
-  else
-  {
+  }else{
     layout = h('div#app', [
       header(),
       searchBar(model),

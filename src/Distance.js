@@ -13,8 +13,6 @@ export function getTotalDistance(lines){
 }
 
 export function calcArea(areas, residential) {
-  console.log(areas);
-
   let surface = 0.;
   var i;
   for( i = 0; i < areas.length; i++){

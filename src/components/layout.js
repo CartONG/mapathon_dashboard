@@ -11,6 +11,7 @@ import { getTotalDistance, calcArea } from '../Distance';
 import { displayHighwayMap } from './highwayMap';
 import { displayOverviewMap } from './overviewMap';
 
+
 export function header() {
   return h('header', [
     headerImageLink({
@@ -233,6 +234,21 @@ export function taskData(model)
   });
 }
 
+export function listLeader(rank){
+  const max_length = 25;
+  var list = [];
+  var i;
+  console.log(i);
+  for(i = 0; i < Math.min(max_length, rank.length); i++){
+    console.log(rank[i][0]);
+    list.push(
+      h('li', {}, rank[i][0] + " : " + rank[i][1])
+    );
+  }
+  console.log(list);
+  return list;
+}
+
 export function taskLeaderboard(model){
   return div({
     classes: ['task-box'],
@@ -244,8 +260,9 @@ export function taskLeaderboard(model){
           div({
             classes: ['task-sub-section', 'two-column-task-sub-section'],
             children: [
-              h('h4', {}, 'Buildings')
-              ]
+              h('h4', {}, 'Buildings'),
+              h('ol', {}, listLeader(model.leaderboard.building))
+            ]
           }),
           div({
             classes: ['task-sub-section', 'two-column-task-sub-section'],
@@ -254,6 +271,5 @@ export function taskLeaderboard(model){
               ]
             })
         ]
-      })
-    ]});
+      })]});
 }

@@ -120,6 +120,7 @@ export function getOSMBuildings(bbox, startDateTime, endDateTime, server, change
   .then(data => {//waterway
     OSMData[types[3]] = getFeatures(data);
     PubSub.publish('ACTIONS', setOsmData(OSMData));
+    console.log('end model_osm_data');
   });
 
   function getFeatures(data) {
