@@ -47,5 +47,5 @@ export function computeLeaderboard(OSMData){
     }),
   };
 
-  PubSub.publish('ACTIONS', setLeaderboard(leaderboard));
+  return leaderboard;
 }

@@ -26,18 +26,18 @@ export function setChangesets(changesets) {
     type: 'SET_CHANGESETS',
     payload: changesets
   }
-}
+};
 
 export function setOsmData(data) {
   return {
     type: 'SET_OSM_DATA',
     payload: data
   }
-}
+};
 
 export function setLeaderboard(data) {
   return {
     type: 'SET_LEADERBOARD',
     payload: data
   }
-}
+};

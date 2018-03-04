@@ -156,8 +156,8 @@ export function taskData(model)
             {
               insert: (vnode) =>
               {
-                const map = displayOverviewMap(model);
-                vnode.map = map;
+                // const map = displayOverviewMap(model);
+                vnode.map = displayOverviewMap(model);
               },
               destroy: (vnode) =>
               {
@@ -181,8 +181,8 @@ export function taskData(model)
             {
               insert: (vnode) =>
               {
-                const map = displayHighwayMap(getTotalDistance(model.OSMData['highway']['features']));
-                vnode.map = map;
+                // const map = displayHighwayMap(getTotalDistance(model.OSMData['highway']['features']));
+                vnode.map = displayHighwayMap(getTotalDistance(model.OSMData['highway']['features']));
               },
               destroy: (vnode) =>
               {
@@ -235,41 +235,44 @@ export function taskData(model)
 }
 
 export function listLeader(rank){
-  const max_length = 25;
+  const max_length = Math.min(25, rank.length);
   var list = [];
   var i;
-  console.log(i);
-  for(i = 0; i < Math.min(max_length, rank.length); i++){
-    console.log(rank[i][0]);
+
+  for(i = 0; i < max_length; i++){
     list.push(
       h('li', {}, rank[i][0] + " : " + rank[i][1])
     );
   }
-  console.log(list);
   return list;
 }
 
 export function taskLeaderboard(model){
-  return div({
-    classes: ['task-box'],
-    children: [
-      h('h2', {}, 'Leaderboard'),
-      div({
-        classes: ['task-grid'],
-        children:[
-          div({
-            classes: ['task-sub-section', 'two-column-task-sub-section'],
-            children: [
-              h('h4', {}, 'Buildings'),
-              h('ol', {}, listLeader(model.leaderboard.building))
-            ]
-          }),
-          div({
-            classes: ['task-sub-section', 'two-column-task-sub-section'],
-            children: [
-              h('h4', {}, 'Roads')
+  const list = model.leaderboard.building.length>0?model.leaderboard.buildinglistLeader(model.leaderboard.building):null;
+
+  const divLeaderboard = list===null?null:div({
+      classes: ['task-box'],
+      children: [
+        h('h2', {}, 'Leaderboard'),
+        div({
+          classes: ['task-grid'],
+          children:[
+            div({
+              classes: ['task-sub-section', 'two-column-task-sub-section'],
+              children: [
+                h('h4', {}, 'Buildings'),
+                h('ol', {}, list)
               ]
-            })
-        ]
-      })]});
+            }),
+            div({
+              classes: ['task-sub-section', 'two-column-task-sub-section'],
+              children: [
+                h('h4', {}, 'Roads')
+                ]
+              })
+          ]
+        })
+      ]
+    });
+  return divLeaderboard;
 }

@@ -56,8 +56,6 @@ function reduce(state, action) {
     case 'SET_OSM_DATA':
       state.OSMData = action.payload;
       return state;
-    case 'SET_LEADERBOARD':
-      state.leaderboard = action.payload;
   }
 
   return state;

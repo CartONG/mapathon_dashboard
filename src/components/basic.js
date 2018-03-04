@@ -8,7 +8,7 @@ function selector(tag, id, classes) {
 
 function attributes() {
   return Array.from(arguments).reduce((acc, curr) => {
-    if(curr.value) {
+    if(curr.value !== undefined) {
       acc[curr.attr] = curr.value;
     }
     return acc;
