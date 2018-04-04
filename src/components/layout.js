@@ -234,7 +234,7 @@ export function taskData(model)
   });
 }
 
-export function listLeader(rank){
+export function buildingListLeader(rank){
   const max_length = Math.min(25, rank.length);
   var list = [];
   var i;
@@ -248,7 +248,7 @@ export function listLeader(rank){
 }
 
 export function taskLeaderboard(model){
-  const list = model.leaderboard.building.length>0?model.leaderboard.buildinglistLeader(model.leaderboard.building):null;
+  const list = model.leaderboard.building.length>0?buildingListLeader(model.leaderboard.building):null;
 
   const divLeaderboard = list===null?null:div({
       classes: ['task-box'],
