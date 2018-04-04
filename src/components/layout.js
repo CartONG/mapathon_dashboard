@@ -234,7 +234,7 @@ export function taskData(model)
   });
 }
 
-export function buildingListLeader(rank){
+export function listLeader(rank){
   const max_length = Math.min(25, rank.length);
   var list = [];
   var i;
@@ -248,28 +248,35 @@ export function buildingListLeader(rank){
 }
 
 export function taskLeaderboard(model){
-  const list = model.leaderboard.building.length>0?buildingListLeader(model.leaderboard.building):null;
+  const list_buildings = model.leaderboard.building.length > 0? listLeader(model.leaderboard.building):null;
+  const list_roads = model.leaderboard.highway.length > 0? listLeader(model.leaderboard.highway): null;
 
-  const divLeaderboard = list===null?null:div({
+  const buildings_leaderboard = list_buildings === null ? null : div({
+    classes: ['task-sub-section', 'two-column-task-sub-section'],
+    children: [
+      h('h4', {}, 'Buildings'),
+      h('ol', {}, list_buildings)
+    ]
+  });
+
+  const roads_leaderboard = list_roads === null ? null : div({
+    classes: ['task-sub-section', 'two-column-task-sub-section'],
+    children: [
+      h('h4', {}, 'Roads'),
+      h('ol', {}, list_roads)
+      ]
+    });
+
+
+  const divLeaderboard = list_roads === null && list_buildings === null ?null:div({
       classes: ['task-box'],
       children: [
         h('h2', {}, 'Leaderboard'),
         div({
           classes: ['task-grid'],
           children:[
-            div({
-              classes: ['task-sub-section', 'two-column-task-sub-section'],
-              children: [
-                h('h4', {}, 'Buildings'),
-                h('ol', {}, list)
-              ]
-            }),
-            div({
-              classes: ['task-sub-section', 'two-column-task-sub-section'],
-              children: [
-                h('h4', {}, 'Roads')
-                ]
-              })
+            buildings_leaderboard,
+            roads_leaderboard
           ]
         })
       ]

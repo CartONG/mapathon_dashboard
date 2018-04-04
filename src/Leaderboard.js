@@ -25,8 +25,7 @@ export function computeLeaderboard(OSMData){
   for(i = 0; i < OSMData.highway.features.length; i++){
     const highway = OSMData.highway.features[i];
     const user = highway.properties.user;
-    const length = lineDistance(highway, 'kilometers');
-
+    const length = Math.round(100*lineDistance(highway, 'kilometers'))/100;
     // the current user is unknown
     if(!hw_ld.get(user)){
       hw_ld.set(user, length);
