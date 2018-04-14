@@ -12,7 +12,7 @@ function submitForm(handler, ev) {
   ev.stopPropagation();
   const params = {
     projectId: ev.target[0].value,
-    startDateTime: moment(ev.target[1].value, DATETIME_FORMAT),    
+    startDateTime: moment(ev.target[1].value, DATETIME_FORMAT),
     endDateTime: moment(ev.target[2].value, DATETIME_FORMAT),
     // startDateTime: moment(ev.target[1].value, DATETIME_FORMAT).format('YYYY-MM-DDTHH:mmZ'),
     // endDateTime: moment(ev.target[2].value, DATETIME_FORMAT).format('YYYY-MM-DDTHH:mmZ'),
@@ -42,7 +42,7 @@ export default function(model, handler) {
       h('option', { attrs: { value: OVP_DE } }, 'overpass-api.de'),
       h('option', { attrs: { value: OVP_RU } }, 'overpass.osm.rambler.ru'),
       h('option', { attrs: { value: OVP_FR } }, 'api.openstreetmap.fr')
-    ]),    
+    ]),
     h('input.button-primary', { attrs: { value: 'Submit', type: 'submit' } })
   ]);
 }

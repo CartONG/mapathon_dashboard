@@ -31,7 +31,7 @@ img#mm-logo, img#hot-logo {
 }
 
 form#search-bar-form {
-  margin: 1rem;  
+  margin: 1rem;
   display: inline-block;
 }
 
@@ -59,4 +59,128 @@ form#search-bar-form label {
 form#search-bar-form input[type="submit"] {
   padding: 0 16px;
   width: 8rem;
+}
+
+.task-box {
+  box-shadow: 0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.2),0 1px 5px 0 rgba(0,0,0,.12);
+  margin: 16px;
+}
+
+h2
+{
+  font-size: 26px;
+  font-weight: 800;
+}
+
+.task-box h2 {
+  background-color: #f7f7f7;
+  padding: 16px 16px 8px;
+}
+
+
+.task-box h4 {
+  font-size: 22px;
+  padding: 0 0 8px 0;
+  margin-bottom: 16px;
+  border-bottom: 1px solid rgb(0,188,212);
+}
+
+
+.task-id-head {
+  font-size: 36px;
+}
+
+.task-info p {
+  margin: 0px;
+  font-size: 16px;
+  display:inline-block;
+}
+
+#task-progress-done, #task-progress-validated {
+  margin: 10px 5px 0px;
+}
+
+div.task-grid {
+  padding: 8px;
+  display: flex;
+}
+
+.task-info {
+  padding: 0px 16px;
+}
+
+.task-info-key {
+  font-weight: 700;
+}
+
+.two-column-task-info {
+  width: calc(50% - 32px);
+}
+
+.three-column-task-sub-section {
+  width: calc(33.33% - 64px);
+  float:left;
+  box-shadow: 0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.2),0 1px 5px 0 rgba(0,0,0,.12);
+  margin: 16px;
+}
+
+.two-column-task-sub-section {
+  width: calc(50% - 64px);
+  float:left;
+  box-shadow: 0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.2),0 1px 5px 0 rgba(0,0,0,.12);
+  margin: 16px;
+}
+
+.task-sub-section {
+  background-color: #f7f7f7;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.task-sub-section p{
+  margin: 0px;
+  font-size: 16px;
+  display:inline-block;
+}
+#overview-map {
+  width: 100%;
+  height: 300px;
+}
+
+#highway-map {
+  width: 100%;
+  height: 275px;
+}
+
+@media only screen and (max-width: 768px){
+  .three-column-task-sub-section{
+    width: calc(100% - 64px);
+  }
+
+  .two-column-task-info{
+    width: calc(100% - 200px);
+  }
+}
+
+
+.task-leaderboard h2 {
+  background-color: #f7f7f7;
+  padding: 16px 16px 8px;
+}
+
+
+.task-leaderboard h4 {
+  font-size: 22px;
+  padding: 0 0 8px 0;
+  margin-bottom: 16px;
+  border-bottom: 1px solid rgb(0,188,212);
+}
+
+.task-box {
+  box-shadow: 0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.2),0 1px 5px 0 rgba(0,0,0,.12);
+  margin: 16px;
+}
+
+.white {
+  color: white;
 }

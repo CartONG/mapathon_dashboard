@@ -21,16 +21,23 @@ export function setBBox(bbox) {
   }
 };
 
-export function setChnagesets(changesets) {
+export function setChangesets(changesets) {
   return {
     type: 'SET_CHANGESETS',
     payload: changesets
   }
-}
+};
 
 export function setOsmData(data) {
   return {
     type: 'SET_OSM_DATA',
     payload: data
   }
-}
+};
+
+export function setLeaderboard(data) {
+  return {
+    type: 'SET_LEADERBOARD',
+    payload: data
+  }
+};
