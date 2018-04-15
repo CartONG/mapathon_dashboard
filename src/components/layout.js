@@ -21,6 +21,13 @@ export function header() {
       imgAlt: 'CartONG logo'
     }),
     h('h1', 'Mapathon Dashboard'),
+    headerImageLink(
+    {
+      linkHref: 'https://github.com/CartONG/mapathon_dashboard/',
+      imgId: 'github-logo',
+      imgSrc: './images/GitHub_logo.png',
+      imgAlt: 'GitHub logo'
+    }),
     headerImageLink({
       linkHref: 'http://www.missingmaps.org',
       imgId: 'mm-logo',
