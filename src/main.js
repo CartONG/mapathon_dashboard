@@ -15,6 +15,7 @@ const patch = init([
 ]);
 
 const initialState = {
+  loadingMessage: null,
   startDateTime: moment().add(-60, 'm').set('minute', 0),
   endDateTime: moment().add(1, 'h').set('minute', 0),
   project: null,

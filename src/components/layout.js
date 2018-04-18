@@ -44,6 +44,35 @@ export function header() {
 }
 
 export function searchBar(model) {
+  var getUTCOffsetFromMoment = function (moment)
+  {
+    var valueToReturn = 'UTC';
+    if(!moment.isUtc())
+    {
+      var utcOffset = moment.toDate().getTimezoneOffset();
+
+      if(utcOffset<0)
+      {
+        valueToReturn += '+';
+        utcOffset *= -1;
+      }
+      else
+      {
+        valueToReturn += '-';
+      }
+
+      var minutes = utcOffset%60;
+
+      valueToReturn+=Math.round(utcOffset/60);
+      if(minutes!==0)
+      {
+        valueToReturn+=':'+minutes;
+      }
+    }
+
+    return valueToReturn;
+  };
+
   return form({
     id: 'search-bar-form',
     submit: true,
@@ -59,14 +88,14 @@ export function searchBar(model) {
         id: 'start-date-input',
         type: 'text',
         name: 'startDate',
-        label: 'Start',
+        label: 'Start ('+getUTCOffsetFromMoment(model.startDateTime)+')',
         value: model.startDateTime.format(DATETIME_FORMAT)
       }),
       input({
         id: 'end-date-input',
         type: 'text',
         name: 'endDate',
-        label: 'End',
+        label: 'End ('+getUTCOffsetFromMoment(model.endDateTime)+')',
         value: model.endDateTime.format(DATETIME_FORMAT)
       }),
       select({
@@ -289,4 +318,30 @@ export function taskLeaderboard(model){
       ]
     });
   return divLeaderboard;
+}
+
+export function taskProgress(model)
+{
+  return div({
+    classes: ['task-loading'],
+    children: [
+      paragraph({
+        text: model.loadingMessage
+      }),
+      div({
+        classes: ['loader-ring'],
+        children: [
+          div({}),
+          div({}),
+          div({}),
+          div({})
+        ]
+      })
+      /*progressBar(
+      {
+        value: model.loadingProgress,
+        text: model.loadingProgress+'%'
+      })*/
+    ]
+  });
 }
