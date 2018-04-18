@@ -192,7 +192,6 @@ export function taskData(model)
             {
               insert: (vnode) =>
               {
-                // const map = displayOverviewMap(model);
                 vnode.map = displayOverviewMap(model);
               },
               destroy: (vnode) =>
@@ -217,8 +216,21 @@ export function taskData(model)
             {
               insert: (vnode) =>
               {
-                // const map = displayHighwayMap(getTotalDistance(model.OSMData['highway']['features']));
-                vnode.map = displayHighwayMap(getTotalDistance(model.OSMData['highway']['features']));
+                const startLongitude = 5.9215,
+                  startLatitude = 45.58789;
+                // Check if we can access the geolocation API
+                if ("geolocation" in navigator) {
+                  navigator.geolocation.getCurrentPosition(function onSuccess(position) {
+                    vnode.map = displayHighwayMap(getTotalDistance(model.OSMData['highway']['features']), position.coords.latitude, position.coords.longitude);
+                  }, function onError(positionError)
+                  {
+                    vnode.map = displayHighwayMap(getTotalDistance(model.OSMData['highway']['features']), startLatitude, startLongitude);
+                  });
+                }
+                else
+                {
+                  vnode.map = displayHighwayMap(getTotalDistance(model.OSMData['highway']['features']), startLatitude, startLongitude);
+                }
               },
               destroy: (vnode) =>
               {

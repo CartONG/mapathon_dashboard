@@ -69,7 +69,6 @@ function main(initState, initVnode, App) {
     newVnode = App(state);
     patch(oldVnode, newVnode);
     oldVnode = newVnode;
-    console.log(state);
   }
 
   let newVnode = null, oldVnode = initVnode, state = initState;
