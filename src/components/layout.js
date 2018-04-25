@@ -282,22 +282,23 @@ export function taskData(model)
   });
 }
 
-export function listLeader(rank){
+export function listLeader(rank, unity){
   const max_length = Math.min(25, rank.length);
   var list = [];
   var i;
 
   for(i = 0; i < max_length; i++){
+
     list.push(
-      h('li', {}, rank[i][0] + " : " + rank[i][1])
+      h('li', {}, rank[i][0] + " : " + rank[i][1] + unity)
     );
   }
   return list;
 }
 
 export function taskLeaderboard(model){
-  const list_buildings = model.leaderboard.building.length > 0? listLeader(model.leaderboard.building):null;
-  const list_roads = model.leaderboard.highway.length > 0? listLeader(model.leaderboard.highway): null;
+  const list_buildings = model.leaderboard.building.length > 0? listLeader(model.leaderboard.building, ""):null;
+  const list_roads = model.leaderboard.highway.length > 0? listLeader(model.leaderboard.highway, " km"): null;
 
   const buildings_leaderboard = list_buildings === null ? null : div({
     classes: ['task-sub-section', 'two-column-task-sub-section'],

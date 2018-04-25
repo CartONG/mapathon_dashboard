@@ -25,7 +25,7 @@ export function computeLeaderboard(OSMData){
   for(i = 0; i < OSMData.highway.features.length; i++){
     const highway = OSMData.highway.features[i];
     const user = highway.properties.user;
-    const length = Math.round(100*lineDistance(highway, 'kilometers'))/100;
+    const length = lineDistance(highway, 'kilometers');
     // the current user is unknown
     if(!hw_ld.get(user)){
       hw_ld.set(user, length);
@@ -34,8 +34,12 @@ export function computeLeaderboard(OSMData){
     }
   }
 
+
   var bd_ld_array = Array.from(bd_ld);
   var hw_ld_array = Array.from(hw_ld);
+  for(i = 0; i < hw_ld_array.length; i++){
+    hw_ld_array[i][1] = (Math.round(100*hw_ld_array[i][1]))/100;
+  }
 
   const leaderboard = {
     building: bd_ld_array.sort(function(a, b){
