@@ -2,8 +2,8 @@
 
 import '../styles/layout.css';
 import h from 'snabbdom/h';
-import { OVP_DE, OVP_RU, OVP_FR, DATETIME_FORMAT } from '../Variables';
-import { input, form, select, option, div, paragraph, progressBar } from './basic';
+import { OVP_DE, OVP_RU, OVP_FR, DATETIME_FORMAT, HOTOSM_PROJECT_URL } from '../Variables';
+import { input, form, select, option, div, paragraph, progressBar, a } from './basic';
 import { headerImageLink } from './custom';
 import { submitSearchForm } from '../UserEvents';
 
@@ -82,7 +82,8 @@ export function searchBar(model) {
         id: 'project-id-input',
         type: 'number',
         name: 'projectID',
-        label: 'Project ID'
+        label: 'Project ID',
+        min: 0
       }),
       input({
         id: 'start-date-input',
@@ -127,7 +128,13 @@ export function taskHeader(model)
       div({
         children: [
           h('h2', {}, [
-            h('span', {attrs: {class: 'task-id-head'}}, '#'+model.project.id),
+            a({
+              href: HOTOSM_PROJECT_URL + model.project.id,
+              target: '_blank',
+              children: [
+                h('span', {attrs: {class: 'task-id-head'}}, '#'+model.project.id)
+              ]
+            }),
             h('text', {}, ' '+model.project.name)
           ])
         ]
@@ -357,4 +364,19 @@ export function taskProgress(model)
       })*/
     ]
   });
+}
+
+export function showError(model)
+{
+  if(model.errorMessage)
+  {
+    return paragraph({
+      id: 'error',
+      text: model.errorMessage
+    })
+  }
+  else
+  {
+    return null;
+  }
 }

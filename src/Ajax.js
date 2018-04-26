@@ -4,9 +4,10 @@ import moment from 'moment';
 import osmtogeojson from 'osmtogeojson';
 import { GeoJSON } from 'leaflet';
 import PubSub from './PubSub';
-import { setProjectData, setBBox, setChangesets, setOsmData } from './Actions';
-import { HOTOSM_URL, OSM_API_URL, OVP_DE } from './Variables';
+import { setProjectData, setBBox, setChangesets, setOsmData, setError } from './Actions';
+import { HOTOSM_API_URL, OSM_API_URL, OVP_DE } from './Variables';
 import { getTotalDistance } from './Distance';
+import { INVALID_PROJECT_ID, CONNECTION_TIMEOUT, UNKNOWN_ERROR } from './Errors';
 
 function sendXHR(url) {
   return new Promise((resolve, reject) => {
@@ -23,24 +24,25 @@ function sendXHR(url) {
         reject(Error(xhr.responseText));
       }
     };
-    xhr.onerror = () => reject(Error(xhr.responseText));
+    xhr.onerror = (error) => PubSub.publish('ACTIONS', setError({errorMessage: UNKNOWN_ERROR}));
+    xhr.ontimeout = (timeoutEvent) => PubSub.publish('ACTIONS', setError({errorMessage: CONNECTION_TIMEOUT.format(url)}));
     xhr.send();
   });
 }
 
 export function getProjectData(projectId) {
-  const url = HOTOSM_URL + projectId + '/summary';
+  const url = HOTOSM_API_URL + projectId + '/summary';
   sendXHR(url).then(data => {
     const projectData = JSON.parse(data);
     PubSub.publish('ACTIONS', setProjectData(projectData));
   }, error =>
   {
-    console.log(error);
+    PubSub.publish('ACTIONS', setError({errorMessage: INVALID_PROJECT_ID.format(projectId)}));
   });
 }
 
 export function getBBox(projectId) {
-  const url = HOTOSM_URL + projectId;
+  const url = HOTOSM_API_URL + projectId;
   sendXHR(url).then(data => {
     const projectData = JSON.parse(data);
     const b = new GeoJSON(projectData.areaOfInterest).getBounds();

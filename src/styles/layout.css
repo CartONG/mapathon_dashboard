@@ -225,3 +225,11 @@ div.task-grid {
     transform: rotate(360deg);
   }
 }
+
+#error
+{
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+  color: red;
+}

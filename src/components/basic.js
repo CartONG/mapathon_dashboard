@@ -72,6 +72,9 @@ export function input(model) {
   }, {
     attr: 'value',
     value: model.value    
+  }, {
+    attr: 'min',
+    value: model.min
   });
 
   if(model.label === '') {

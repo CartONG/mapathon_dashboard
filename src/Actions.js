@@ -41,3 +41,10 @@ export function setLeaderboard(data) {
     payload: data
   }
 };
+
+export function setError(data) {
+  return {
+    type: 'SET_ERROR',
+    payload: data
+  }
+};

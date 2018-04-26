@@ -34,7 +34,13 @@ function reduce(state, action) {
   state = reset(state);
 
   switch (action.type) {
+    case 'SET_ERROR':
+      state.errorMessage = action.payload.errorMessage;
+      state.loadingMessage = null;
+      state.project = null;
+      return state;
     case 'GET_OSM_DATA':
+      state.errorMessage = null;
       state.project = {};
       state.project.id = action.payload.projectId;
       state.startDateTime = action.payload.startDateTime;
