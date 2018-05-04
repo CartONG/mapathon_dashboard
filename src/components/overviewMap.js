@@ -12,18 +12,48 @@ const OV_MAP_OPTS = {
   })]
 };
 
-export function displayOverviewMap(model) {
-    let DefaultIcon = L.icon({
-        iconUrl: icon,
-        shadowUrl: iconShadow
-    });
+const layers = {
+  landuse: null,
+  highway: null,
+  building: null,
+  waterway: null
+};
 
-    L.Marker.prototype.options.icon = DefaultIcon;
-    const map = L.map('overview-map', OV_MAP_OPTS);
-    L.geoJson(model.OSMData.landuse, {style: OVMapStyles.STYLES.landuse}).addTo(map);
-    L.geoJson(model.OSMData.highway, {style: OVMapStyles.STYLES.highway}).addTo(map);
-    L.geoJson(model.OSMData.building, {style: OVMapStyles.STYLES.building}).addTo(map);
-    L.geoJson(model.OSMData.waterway, {style: OVMapStyles.STYLES.waterway}).addTo(map);
-    map.setView([model.project.aoiCentroid.coordinates[1], model.project.aoiCentroid.coordinates[0]], 10);
+function removeLayers()
+{
+  for(let layer in layers) {
+    layers[layer].clearLayers();
+  }
+};
+
+function createLayers(OSMData) {
+  for(let layer in layers) {
+    layers[layer] = L.geoJson(OSMData[layer], {style: OVMapStyles.STYLES[layer]});
+  }
+};
+
+function addLayers(map) {
+  for(let layer in layers) {
+    layers[layer].addTo(map);
+  }
+};
+
+export function displayOverviewMap(model) {
+  let DefaultIcon = L.icon({
+      iconUrl: icon,
+      shadowUrl: iconShadow
+  });
+
+  L.Marker.prototype.options.icon = DefaultIcon;
+  const map = L.map('overview-map', OV_MAP_OPTS);
+  createLayers(model.OSMData);
+  addLayers(map);
+  map.setView([model.project.aoiCentroid.coordinates[1], model.project.aoiCentroid.coordinates[0]], 10);
   return map;
-}
+};
+
+export function updateOverviewMap(map, OSMData) {
+  removeLayers();
+  createLayers(OSMData);
+  addLayers(map);
+};

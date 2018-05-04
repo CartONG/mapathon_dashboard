@@ -4,10 +4,11 @@ import moment from 'moment';
 import osmtogeojson from 'osmtogeojson';
 import { GeoJSON } from 'leaflet';
 import PubSub from './PubSub';
-import { setProjectData, setBBox, setChangesets, setOsmData, setError } from './Actions';
+import { setProjectData, setBBox, setChangesets, setOsmDataAndLeaderboard, updateChangesetsAndOsmData, setError } from './Actions';
 import { HOTOSM_API_URL, OSM_API_URL, OVP_DE } from './Variables';
-import { getTotalDistance } from './Distance';
-import { INVALID_PROJECT_ID, CONNECTION_TIMEOUT, UNKNOWN_ERROR } from './Errors';
+import { CONNECTION_TIMEOUT, INVALID_PROJECT_ID, TOO_MANY_REQUESTS, UNKNOWN_ERROR } from './Errors';
+import { computeLeaderboard } from './Leaderboard';
+import { sumLines, sumAreas } from './Calculations';
 
 function sendXHR(url) {
   return new Promise((resolve, reject) => {
@@ -15,13 +16,17 @@ function sendXHR(url) {
     xhr.open('GET', url);
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.onload = () => {
-      if(xhr.status === 200)
+      switch(xhr.status)
       {
-        resolve(xhr.responseText);
-      }
-      else
-      {
-        reject(Error(xhr.responseText));
+        case 200:
+          resolve(xhr.responseText);
+          break;
+        case 429:
+          PubSub.publish('ACTIONS', setError({errorMessage: TOO_MANY_REQUESTS.format(url)}));
+          break;
+        default:
+          reject(Error(xhr.responseText));
+          break;
       }
     };
     xhr.onerror = (error) => PubSub.publish('ACTIONS', setError({errorMessage: UNKNOWN_ERROR}));
@@ -39,7 +44,7 @@ export function getProjectData(projectId) {
   {
     PubSub.publish('ACTIONS', setError({errorMessage: INVALID_PROJECT_ID.format(projectId)}));
   });
-}
+};
 
 export function getBBox(projectId) {
   const url = HOTOSM_API_URL + projectId;
@@ -50,16 +55,23 @@ export function getBBox(projectId) {
     const crash = 1 / 0;
     PubSub.publish('ACTIONS', setBBox(bbox));
   });
+};
+
+function buildURL(bbox, startUtc, endUtc) {
+  const bboxString = 'bbox=' + bbox.w + ',' + bbox.s + ',' + bbox.e + ',' + bbox.n;
+  const timeString = 'time=' + startUtc + ',' + endUtc;
+  return OSM_API_URL + 'changesets?' + bboxString + '&' + timeString + '&' + 'closed=true';
 }
 
-export function getChangesets(bbox, start, end, projectId) {
+function getChangesetsWithCallback(bbox, start, end, projectId, callback)
+{
   const tmpStart = moment(start), tmpEnd = moment(end);
   const url = buildURL(bbox, tmpStart.utc().format(), tmpEnd.utc().format());
   const changesetsIds = [];
 
-  sendXHR(url).then(callBack);
+  sendXHR(url).then(getChangesetsFromXml);
 
-  function callBack(data) {
+  function getChangesetsFromXml(data) {
     const selector = 'tag[v*="#hotosm-project-' + projectId + '"]';
     const xmlDoc = new DOMParser().parseFromString(data, 'text/xml');
 
@@ -73,32 +85,34 @@ export function getChangesets(bbox, start, end, projectId) {
     if(changesets.length === 100) {
       const newEnd = changesets[99].getAttribute('closed_at');
       const newUrl = buildURL(bbox, tmpStart.utc().format(), newEnd);
-      sendXHR(newUrl).then(callBack);
+      sendXHR(newUrl).then(getChangesetsFromXml);
     } else {
-      PubSub.publish('ACTIONS', setChangesets(changesetsIds));
+      callback(changesetsIds);
     }
   }
-
-  function buildURL(bbox, startUtc, endUtc) {
-    const bboxString = 'bbox=' + bbox.w + ',' + bbox.s + ',' + bbox.e + ',' + bbox.n;
-    const timeString = 'time=' + startUtc + ',' + endUtc;
-    return OSM_API_URL + 'changesets?' + bboxString + '&' + timeString + '&' + 'closed=true';
-  }
 }
+
+export function getChangesets(bbox, start, end, projectId) {
+  function publishCallback(changesetsIds)
+  {
+    PubSub.publish('ACTIONS', setChangesets(changesetsIds));
+  };
+  getChangesetsWithCallback(bbox, start, end, projectId, publishCallback);
+};
 
 function buildOAPIReqWithoutEndDate(server, bbox, type, startDate) {
   return server + '?data=[bbox:' + bbox.s + ',' + bbox.w + ',' + bbox.n + ',' + bbox.e + '];'
     + 'way[' + type + '](newer:"' + startDate.utc().format() + '");'
     + '(._;>;);out+meta;';
-}
+};
 
 function buildOAPIReqWithEndDate(server, bbox, type, startDate, endDate) {
   return server + '?data=[bbox:' + bbox.s + ',' + bbox.w + ',' + bbox.n + ',' + bbox.e + '];'
     + 'way[' + type + '](changed:"' + startDate.utc().format() + '","' + endDate.utc().format() + '");'
     + '(._;>;);out+meta;';
-}
+};
 
-export function getOSMBuildings(bbox, startDateTime, endDateTime, server, changesets) {
+function getOSMBuildingsWithCallback(bbox, startDateTime, endDateTime, server, changesets, callback) {
   const OSMData = {};
   const tmpStart = moment(startDateTime), tmpEnd = moment(endDateTime);
   const types = ['building','landuse','highway','waterway'];
@@ -121,7 +135,7 @@ export function getOSMBuildings(bbox, startDateTime, endDateTime, server, change
   })
   .then(data => {//waterway
     OSMData[types[3]] = getFeatures(data);
-    PubSub.publish('ACTIONS', setOsmData(OSMData));
+    callback(OSMData);
   });
 
   function getFeatures(data) {
@@ -131,5 +145,45 @@ export function getOSMBuildings(bbox, startDateTime, endDateTime, server, change
       .filter(feature => changesets.indexOf(feature.properties.changeset) > -1);
     featureCollection.features = newFeatures;
     return featureCollection;
-  }
-}
+  };
+};
+
+function lengthAndAreaCalculations(OSMData)
+{
+  const calculations = {};
+  calculations.roadLength = sumLines(OSMData['highway']['features']);
+  calculations.waterwayLength = sumLines(OSMData['waterway']['features']);
+  calculations.residentialLanduse = sumAreas(OSMData['landuse']['features'], true);
+  calculations.totalLanduse = sumAreas(OSMData['landuse']['features'], false);
+  return calculations;
+};
+
+export function getOSMBuildings(bbox, startDateTime, endDateTime, server, changesets) {
+  function publishCallback(OSMData)
+  {
+    const data = {};
+    data.OSMData = OSMData;
+    data.leaderboard = computeLeaderboard(data.OSMData);
+    data.calculations = lengthAndAreaCalculations(data.OSMData);
+    PubSub.publish('ACTIONS', setOsmDataAndLeaderboard(data));
+  };
+  getOSMBuildingsWithCallback(bbox, startDateTime, endDateTime, server, changesets, publishCallback);
+};
+
+export function refreshData(bbox, startDateTime, endDateTime, projectId, server)
+{
+  function changesetsCallback(changesets)
+  {
+    function updateCallback(OSMData)
+    {
+      const data = {};
+      data.changesets = changesets;
+      data.OSMData = OSMData;
+      data.leaderboard = computeLeaderboard(data.OSMData);
+      data.calculations = lengthAndAreaCalculations(data.OSMData);
+      PubSub.publish('ACTIONS', updateChangesetsAndOsmData(data));
+    };
+    getOSMBuildingsWithCallback(bbox, startDateTime, endDateTime, server, changesets, updateCallback);
+  };
+  getChangesetsWithCallback(bbox, startDateTime, endDateTime, projectId, changesetsCallback);
+};

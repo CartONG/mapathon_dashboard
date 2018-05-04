@@ -7,9 +7,8 @@ import { input, form, select, option, div, paragraph, progressBar, a } from './b
 import { headerImageLink } from './custom';
 import { submitSearchForm } from '../UserEvents';
 
-import { getTotalDistance, calcArea } from '../Distance';
-import { displayHighwayMap } from './highwayMap';
-import { displayOverviewMap } from './overviewMap';
+import { displayHighwayMap, updateHighwayMap } from './highwayMap';
+import { displayOverviewMap, updateOverviewMap } from './overviewMap';
 
 
 export function header() {
@@ -41,7 +40,7 @@ export function header() {
       imgAlt: 'HOT logo'
     })
   ]);
-}
+};
 
 export function searchBar(model) {
   var getUTCOffsetFromMoment = function (moment)
@@ -118,7 +117,7 @@ export function searchBar(model) {
       })
     ]
   })
-}
+};
 
 export function taskHeader(model)
 {
@@ -180,15 +179,24 @@ export function taskHeader(model)
       })
     ]
   });
-}
-
+};
 
 export function taskData(model)
 {
   return div({
     classes: ['task-box'],
     children: [
-      h('h2', {}, 'Last update'),
+      h('h2',
+      {
+        hook:
+            {
+              update: (oldVnode, vnode) =>
+              {
+                vnode.text = 'Last update (' + model.lastUpdateTime.format("HH:mm:ss") + ')';
+              }
+            }
+      },
+      'Last update (' + model.lastUpdateTime.format("HH:mm:ss") + ')'),
       div({
         classes: ['task-sub-section','three-column-task-sub-section'],
         children:[
@@ -200,6 +208,11 @@ export function taskData(model)
               insert: (vnode) =>
               {
                 vnode.map = displayOverviewMap(model);
+              },
+              update: (oldVnode, vnode) =>
+              {
+                vnode.map = oldVnode.map;
+                updateOverviewMap(vnode.map, model.OSMData);
               },
               destroy: (vnode) =>
               {
@@ -216,7 +229,7 @@ export function taskData(model)
           h('h4', {}, 'Roads'),
           h('p', {}, model.OSMData['highway']['features'].length
             + ' road(s) created ('
-            + getTotalDistance(model.OSMData['highway']['features']) + ' km)'),
+            + model.calculations.roadLength + ' km)'),
           h('div#highway-map',
           {
             hook:
@@ -228,16 +241,21 @@ export function taskData(model)
                 // Check if we can access the geolocation API
                 if ("geolocation" in navigator) {
                   navigator.geolocation.getCurrentPosition(function onSuccess(position) {
-                    vnode.map = displayHighwayMap(getTotalDistance(model.OSMData['highway']['features']), position.coords.latitude, position.coords.longitude);
+                    vnode.map = displayHighwayMap(model.calculations.roadLength, position.coords.latitude, position.coords.longitude);
                   }, function onError(positionError)
                   {
-                    vnode.map = displayHighwayMap(getTotalDistance(model.OSMData['highway']['features']), startLatitude, startLongitude);
+                    vnode.map = displayHighwayMap(model.calculations.roadLength, startLatitude, startLongitude);
                   });
                 }
                 else
                 {
-                  vnode.map = displayHighwayMap(getTotalDistance(model.OSMData['highway']['features']), startLatitude, startLongitude);
+                  vnode.map = displayHighwayMap(model.calculations.roadLength, startLatitude, startLongitude);
                 }
+              },
+              update: (oldVnode, vnode) =>
+              {
+                vnode.map = oldVnode.map;
+                updateHighwayMap(vnode.map, model.calculations.roadLength);
               },
               destroy: (vnode) =>
               {
@@ -263,14 +281,14 @@ export function taskData(model)
             classes:[],
             children:[
               h('b', {}, 'Residential landuse: '),
-              h('span', {}, calcArea(model.OSMData['landuse']['features'], true) + ' km²')
+              h('span', {}, model.calculations.residentialLanduse + ' km²')
             ]
           }),
           div({
             classes:[],
             children:[
               h('b', {}, 'Total landuse: '),
-              h('span', {}, calcArea(model.OSMData['landuse']['features'], false) + ' km²')
+              h('span', {}, model.calculations.totalLanduse + ' km²')
             ]
           })
         ]
@@ -281,15 +299,15 @@ export function taskData(model)
           h('h4', {}, 'Waterways'),
           h('p', {}, model.OSMData['waterway']['features'].length
               + ' waterway(s) created ('
-              + getTotalDistance(model.OSMData['waterway']['features']) + ' km)')
+              + model.calculations.waterwayLength + ' km)')
         ]
       }),
       h('p.white', {},'.')
     ]
   });
-}
+};
 
-export function listLeader(rank, unity){
+function listLeader(rank, unity){
   const max_length = Math.min(25, rank.length);
   var list = [];
   var i;
@@ -301,7 +319,7 @@ export function listLeader(rank, unity){
     );
   }
   return list;
-}
+};
 
 export function taskLeaderboard(model){
   const list_buildings = model.leaderboard.building.length > 0? listLeader(model.leaderboard.building, ""):null;
@@ -338,7 +356,7 @@ export function taskLeaderboard(model){
       ]
     });
   return divLeaderboard;
-}
+};
 
 export function taskProgress(model)
 {
@@ -357,14 +375,9 @@ export function taskProgress(model)
           div({})
         ]
       })
-      /*progressBar(
-      {
-        value: model.loadingProgress,
-        text: model.loadingProgress+'%'
-      })*/
     ]
   });
-}
+};
 
 export function showError(model)
 {
@@ -379,4 +392,4 @@ export function showError(model)
   {
     return null;
   }
-}
+};

@@ -2,8 +2,7 @@
 
 import h from 'snabbdom/h';
 import { header, searchBar, taskHeader, taskData, taskLeaderboard, taskProgress, showError } from './layout';
-import { getProjectData, getBBox, getChangesets, getOSMBuildings } from '../Ajax';
-import { computeLeaderboard } from '../Leaderboard';
+import { getProjectData, getBBox, getChangesets, getOSMBuildings, refreshData  } from '../Ajax';
 
 import 'leaflet/dist/leaflet.css';
 
@@ -30,9 +29,8 @@ export default function App(model) {
       getOSMBuildings(model.bbox, model.startDateTime, model.endDateTime, model.server, model.changesets);
     }
 
-    if(model.OSMData && !model.leaderboard){
-      model.loadingMessage = "Computing data...";
-      model.leaderboard = computeLeaderboard(model.OSMData);
+    if(model.OSMData && !model.timeoutId) {
+      refreshData(model.bbox, model.startDateTime, model.endDateTime, model.project.id, model.server);
     }
   }
   const layout = createLayout(model);
@@ -43,7 +41,7 @@ export default function App(model) {
 function createLayout(model)
 {
   var layout = null;
-  if(model.leaderboard){
+  if(model.OSMData){
     layout = h('div#app', [
       header(),
       searchBar(model),

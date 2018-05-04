@@ -28,16 +28,16 @@ export function setChangesets(changesets) {
   }
 };
 
-export function setOsmData(data) {
+export function setOsmDataAndLeaderboard(data) {
   return {
-    type: 'SET_OSM_DATA',
+    type: 'SET_OSM_DATA_AND_LEADERBOARD',
     payload: data
   }
 };
 
-export function setLeaderboard(data) {
+export function updateChangesetsAndOsmData(data) {
   return {
-    type: 'SET_LEADERBOARD',
+    type: 'UPDATE_CHANGESETS_AND_OSM_DATA',
     payload: data
   }
 };

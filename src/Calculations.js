@@ -3,7 +3,7 @@
 import lineDistance from '@turf/line-distance';
 import area from '@turf/area';
 
-export function getTotalDistance(lines){
+export function sumLines(lines){
   let dst = 0.;
   var i;
   for (i = 0; i < lines.length; i++) {
@@ -12,12 +12,12 @@ export function getTotalDistance(lines){
   return Math.round(dst*10)/10;
 }
 
-export function calcArea(areas, residential) {
+export function sumAreas(areas, isResidential) {
   let surface = 0.;
   var i;
   for( i = 0; i < areas.length; i++){
     surface += area(areas[i]);
-    if(residential && areas[i].properties.landuse != 'residential'){
+    if(isResidential && areas[i].properties.landuse != 'residential'){
       surface -= area(areas[i]);
     }
   }
