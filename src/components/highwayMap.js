@@ -47,14 +47,15 @@ const HW_MAP_OPTS = {
 
 const highwayValues =
 {
-  startPoint: null,
-  previousDist: null,
   layers:
   {
-    startMarker: null,
     endMarker:null,
-    lineLayer: null
-  }
+    lineLayer: null,
+    startMarker: null
+  },
+  map: null,
+  previousDist: null,
+  startPoint: null
 };
 
 function createLayers(dist) {
@@ -66,11 +67,11 @@ function createLayers(dist) {
   highwayValues.layers.lineLayer = L.geoJson(line, HW_LINE_OPTS);
 };
 
-function addLayers(highwayMap) {
+function addLayers() {
   for(let layer in highwayValues.layers) {
-    highwayValues.layers[layer].addTo(highwayMap);
+    highwayValues.layers[layer].addTo(highwayValues.map);
   }
-  highwayMap.fitBounds(highwayValues.layers.lineLayer.getBounds(), {padding: [16, 16], maxZoom: 18});
+  highwayValues.map.fitBounds(highwayValues.layers.lineLayer.getBounds(), {padding: [16, 16], maxZoom: 18});
 };
 
 function removeLayers() {
@@ -82,13 +83,12 @@ function removeLayers() {
 export function displayHighwayMap(dist, startLatitude, startLongitude) {
   highwayValues.startPoint = point([startLongitude, startLatitude]);
   HW_MAP_OPTS.center = [startLatitude, startLongitude];
-  const highwayMap = L.map('highway-map', HW_MAP_OPTS);
+  highwayValues.map = L.map('highway-map', HW_MAP_OPTS);
   createLayers(dist);
-  addLayers(highwayMap);
-  return highwayMap;
+  addLayers();
 };
 
-export function updateHighwayMap(highwayMap, dist)
+export function updateHighwayMap(dist)
 {
   if(highwayValues.previousDist>1)
   {
@@ -97,6 +97,11 @@ export function updateHighwayMap(highwayMap, dist)
   createLayers(dist);
   if(dist>1)
   {
-    addLayers(highwayMap);
+    addLayers();
   }
+};
+
+export function destroyHighwayMap()
+{
+  highwayValues.map.remove();
 };

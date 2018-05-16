@@ -4,7 +4,7 @@ import h from 'snabbdom/h';
 
 function selector(tag, id, classes) {
   return tag + (id ? '#' + id : '') + (classes ? '.' + classes.join('.') : '');
-}
+};
 
 function attributes() {
   return Array.from(arguments).reduce((acc, curr) => {
@@ -13,7 +13,7 @@ function attributes() {
     }
     return acc;
   }, {});
-}
+};
 
 function events() {
   return Array.from(arguments).reduce((acc, curr) => {
@@ -22,7 +22,7 @@ function events() {
     }
     return acc;
   }, {});
-}
+};
 
 export function a(model) {
   const href = model.href || '#';
@@ -36,7 +36,7 @@ export function a(model) {
   });
   
   return h(sel, { attrs: attrs }, model.children);
-}
+};
 
 export function img(model) {
   const sel = selector('img', model.id, model.classes);
@@ -49,7 +49,7 @@ export function img(model) {
   });
   
   return h(sel, { attrs: attrs }, model.children);
-}
+};
 
 function label(model) {
   const sel = selector('label');
@@ -59,33 +59,90 @@ function label(model) {
   });
 
   return h(sel, { attrs: attrs }, model.text);
-}
+};
 
-export function input(model) {
-  const sel = selector('input', model.id, model.classes);
+export function inputCheckbox(model) {
   const attrs = attributes({
     attr: 'type',
-    value: model.type
+    value: 'checkbox'
   },{
     attr: 'name',
     value: model.name
   }, {
     attr: 'value',
-    value: model.value    
+    value: model.value
+  }, {
+    attr: 'checked',
+    value: true
+  });
+
+  return generalInput(model, attrs);
+};
+
+export function inputNumber(model) {
+  const attrs = attributes({
+    attr: 'type',
+    value: 'number'
+  }, {
+    attr: 'name',
+    value: model.name
+  }, {
+    attr: 'value',
+    value: model.value
   }, {
     attr: 'min',
     value: model.min
+  }, {
+    attr: 'required',
+    value: null
   });
 
-  if(model.label === '') {
-    return h(sel, { attrs: attrs });    
+  return generalInput(model, attrs);
+};
+
+function inputSubmit(model) {
+  const attrs = attributes({
+    attr: 'type',
+    value: 'submit'
+  }, {
+    attr: 'value',
+    value: model.value
+  });
+
+  return generalInput(model, attrs);
+};
+
+export function inputText(model) {
+  const attrs = attributes({
+    attr: 'type',
+    value: 'text'
+  },{
+    attr: 'name',
+    value: model.name
+  }, {
+    attr: 'value',
+    value: model.value
+  }, {
+    attr: 'required',
+    value: null
+  });
+
+  return generalInput(model, attrs);
+};
+
+function generalInput(model, attrs)
+{
+  const sel = selector('input', model.id, model.classes);
+
+  if(!model.label) {
+    return h(sel, { attrs: attrs, on: model.on });
   }
 
   return h('div', [
     label({ for: model.id, text: model.label }),
-    h(sel, { attrs: attrs })
+    h(sel, { attrs: attrs, on: model.on })
   ]);
-}
+};
 
 export function option(model) {
   const sel = selector('option', model.id, model.classes);
@@ -94,12 +151,12 @@ export function option(model) {
     value: model.value
   });
   return h(sel, {attrs: attrs}, model.text);
-}
+};
 
 export function select(model) {
   const sel = selector('select', model.id, model.classes);
   return h(sel, model.children);  
-}
+};
 
 export function form(model) {
   const sel = selector('form', model.id, model.classes);
@@ -109,29 +166,26 @@ export function form(model) {
   })
 
   if(model.submit) {
-    const submit = input({
-      type: 'submit',
+    const submit = inputSubmit({
       value: model.submitText || 'Submit'
     });
     model.children.push(submit);
   }
 
   return h(sel, { on: evs }, model.children);
-}
+};
 
 export function div(model) {
   const sel = selector('div', model.id, model.classes);
   return h(sel, {}, model.children);
-}
+};
 
-export function paragraph(model)
-{
+export function paragraph(model) {
   const sel = selector('p', model.id, model.classes);
   return h(sel, {}, model.text);
-}
+};
 
-export function progressBar(model)
-{
+export function progressBar(model) {
   const sel = selector('progress', model.id, model.classes);
   const attrs = attributes({
     attr: 'value',
@@ -141,4 +195,4 @@ export function progressBar(model)
     value: 100
   });
   return h(sel, {attrs: attrs}, model.text);
-}
+};

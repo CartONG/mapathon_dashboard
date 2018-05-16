@@ -6,20 +6,31 @@ import { GeoJSON } from 'leaflet';
 import PubSub from './PubSub';
 import { setProjectData, setBBox, setChangesets, setOsmDataAndLeaderboard, updateChangesetsAndOsmData, setError } from './Actions';
 import { HOTOSM_API_URL, OSM_API_URL, OVP_DE } from './Variables';
-import { CONNECTION_TIMEOUT, INVALID_PROJECT_ID, TOO_MANY_REQUESTS, UNKNOWN_ERROR } from './Errors';
+import { BAD_REQUEST, CONNECTION_TIMEOUT, INVALID_PROJECT_ID, TOO_MANY_REQUESTS, UNKNOWN_ERROR } from './Errors';
 import { computeLeaderboard } from './Leaderboard';
 import { sumLines, sumAreas } from './Calculations';
 
+const requests = [];
+
 function sendXHR(url) {
   return new Promise((resolve, reject) => {
+    if(requests.length>0)
+    {
+      const lastRequest = requests.pop();
+      lastRequest.abort();
+    }
     const xhr = new XMLHttpRequest();
     xhr.open('GET', url);
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.onload = () => {
+      requests.pop();
       switch(xhr.status)
       {
         case 200:
           resolve(xhr.responseText);
+          break;
+        case 400:
+          PubSub.publish('ACTIONS', setError({errorMessage: BAD_REQUEST.format(url)}));
           break;
         case 429:
           PubSub.publish('ACTIONS', setError({errorMessage: TOO_MANY_REQUESTS.format(url)}));
@@ -29,9 +40,16 @@ function sendXHR(url) {
           break;
       }
     };
-    xhr.onerror = (error) => PubSub.publish('ACTIONS', setError({errorMessage: UNKNOWN_ERROR}));
-    xhr.ontimeout = (timeoutEvent) => PubSub.publish('ACTIONS', setError({errorMessage: CONNECTION_TIMEOUT.format(url)}));
+    xhr.onerror = (error) => {
+      console.warn(error);
+      PubSub.publish('ACTIONS', setError({errorMessage: UNKNOWN_ERROR}));
+    };
+    xhr.ontimeout = (timeoutEvent) => {
+      console.warn(timeoutEvent);
+      PubSub.publish('ACTIONS', setError({errorMessage: CONNECTION_TIMEOUT.format(url)}));
+    };
     xhr.send();
+    requests.push(xhr);
   });
 }
 

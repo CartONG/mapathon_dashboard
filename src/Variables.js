@@ -1,7 +1,7 @@
 'use strict';
 
 export const HOTOSM_API_URL = 'https://tasks.hotosm.org/api/v1/project/';
-export const OSM_API_URL = 'http://www.openstreetmap.org/api/0.6/';
+export const OSM_API_URL = 'https://www.openstreetmap.org/api/0.6/';
 export const HOTOSM_PROJECT_URL = 'https://tasks.hotosm.org/project/';
 
 export const servers = {

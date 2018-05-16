@@ -3,12 +3,12 @@
 import '../styles/layout.css';
 import h from 'snabbdom/h';
 import { OVP_DE, OVP_RU, OVP_FR, DATETIME_FORMAT, HOTOSM_PROJECT_URL } from '../Variables';
-import { input, form, select, option, div, paragraph, progressBar, a } from './basic';
+import { inputCheckbox, inputNumber, inputText, form, select, option, div, paragraph, progressBar, a } from './basic';
 import { headerImageLink } from './custom';
 import { submitSearchForm } from '../UserEvents';
 
-import { displayHighwayMap, updateHighwayMap } from './highwayMap';
-import { displayOverviewMap, updateOverviewMap } from './overviewMap';
+import { destroyHighwayMap, displayHighwayMap, updateHighwayMap } from './highwayMap';
+import { destroyOverviewMap, displayOverviewMap, onCheckboxClicked, updateOverviewMap } from './overviewMap';
 
 
 export function header() {
@@ -77,21 +77,21 @@ export function searchBar(model) {
     submit: true,
     onsubmit: submitSearchForm,
     children: [
-      input({
+      inputNumber({
         id: 'project-id-input',
         type: 'number',
         name: 'projectID',
         label: 'Project ID',
         min: 0
       }),
-      input({
+      inputText({
         id: 'start-date-input',
         type: 'text',
         name: 'startDate',
         label: 'Start ('+getUTCOffsetFromMoment(model.startDateTime)+')',
         value: model.startDateTime.format(DATETIME_FORMAT)
       }),
-      input({
+      inputText({
         id: 'end-date-input',
         type: 'text',
         name: 'endDate',
@@ -183,18 +183,25 @@ export function taskHeader(model)
 
 export function taskData(model)
 {
+  //
+  model.checkboxNames = {};
+  model.checkboxNames.roads = 'highway';
+  model.checkboxNames.buildings = 'building';
+  model.checkboxNames.landuse = 'landuse';
+  model.checkboxNames.waterways = 'waterway';
+
   return div({
     classes: ['task-box'],
     children: [
       h('h2',
       {
         hook:
-            {
-              update: (oldVnode, vnode) =>
-              {
-                vnode.text = 'Last update (' + model.lastUpdateTime.format("HH:mm:ss") + ')';
-              }
-            }
+        {
+          update: (oldVnode, vnode) =>
+          {
+            vnode.text = 'Last update (' + model.lastUpdateTime.format("HH:mm:ss") + ')';
+          }
+        }
       },
       'Last update (' + model.lastUpdateTime.format("HH:mm:ss") + ')'),
       div({
@@ -207,17 +214,15 @@ export function taskData(model)
             {
               insert: (vnode) =>
               {
-                vnode.map = displayOverviewMap(model);
+                displayOverviewMap(model);
               },
               update: (oldVnode, vnode) =>
               {
-                vnode.map = oldVnode.map;
-                updateOverviewMap(vnode.map, model.OSMData);
+                updateOverviewMap(model.OSMData);
               },
               destroy: (vnode) =>
               {
-                vnode.map.remove();
-                vnode.map = null;
+                destroyOverviewMap();
               }
             }
           })
@@ -226,7 +231,22 @@ export function taskData(model)
       div({
         classes: ['task-sub-section','three-column-task-sub-section'],
         children: [
-          h('h4', {}, 'Roads'),
+          div({
+            id: 'roads',
+            children: [
+              h('h4', {}, 'Roads'),
+              inputCheckbox({
+                id: 'roads-checkbox',
+                name: model.checkboxNames.roads,
+                label: 'Display roads on the map',
+                value: 'roadsChecked',
+                on:
+                {
+                  click: onCheckboxClicked
+                }
+              })
+            ]
+          }),
           h('p', {}, model.OSMData['highway']['features'].length
             + ' road(s) created ('
             + model.calculations.roadLength + ' km)'),
@@ -244,23 +264,21 @@ export function taskData(model)
                     vnode.map = displayHighwayMap(model.calculations.roadLength, position.coords.latitude, position.coords.longitude);
                   }, function onError(positionError)
                   {
-                    vnode.map = displayHighwayMap(model.calculations.roadLength, startLatitude, startLongitude);
+                    displayHighwayMap(model.calculations.roadLength, startLatitude, startLongitude);
                   });
                 }
                 else
                 {
-                  vnode.map = displayHighwayMap(model.calculations.roadLength, startLatitude, startLongitude);
+                  displayHighwayMap(model.calculations.roadLength, startLatitude, startLongitude);
                 }
               },
               update: (oldVnode, vnode) =>
               {
-                vnode.map = oldVnode.map;
-                updateHighwayMap(vnode.map, model.calculations.roadLength);
+                updateHighwayMap(model.calculations.roadLength);
               },
               destroy: (vnode) =>
               {
-                vnode.map.remove();
-                vnode.map = null;
+                destroyHighwayMap();
               }
             }
           })
@@ -269,23 +287,51 @@ export function taskData(model)
       div({
         classes: ['task-sub-section', 'three-column-task-sub-section'],
         children: [
-          h('h4', {}, 'Buildings'),
-          h('p', {}, model.OSMData['building']['features'].length + ' building(s) created'),
+          div({
+            id: 'buildings',
+            children: [
+              h('h4', {}, 'Buildings'),
+              inputCheckbox({
+                id: 'buildings-checkbox',
+                name: model.checkboxNames.buildings,
+                label: 'Display buildings on the map',
+                value: 'buildingsChecked',
+                on:
+                {
+                  click: onCheckboxClicked
+                }
+              })
+            ]
+          }),
+          h('p', {}, model.OSMData['building']['features'].length + ' building(s) created')
         ]
       }),
       div({
         classes: ['task-sub-section', 'three-column-task-sub-section'],
         children: [
-          h('h4', {}, 'Landuse'),
           div({
-            classes:[],
+            id: 'landuse',
+            children: [
+              h('h4', {}, 'Landuse'),
+              inputCheckbox({
+                id: 'landuse-checkbox',
+                name: model.checkboxNames.landuse,
+                label: 'Display landuse on the map',
+                value: 'landuseChecked',
+                on:
+                {
+                  click: onCheckboxClicked
+                }
+              })
+            ]
+          }),
+          div({
             children:[
               h('b', {}, 'Residential landuse: '),
               h('span', {}, model.calculations.residentialLanduse + ' km²')
             ]
           }),
           div({
-            classes:[],
             children:[
               h('b', {}, 'Total landuse: '),
               h('span', {}, model.calculations.totalLanduse + ' km²')
@@ -296,7 +342,22 @@ export function taskData(model)
       div({
         classes: ['task-sub-section', 'three-column-task-sub-section'],
         children: [
-          h('h4', {}, 'Waterways'),
+          div({
+            id: 'waterways',
+            children: [
+            h('h4', {}, 'Waterways'),
+              inputCheckbox({
+                id: 'waterways-checkbox',
+                name: model.checkboxNames.waterways,
+                label: 'Display waterways on the map',
+                value: 'waterwaysChecked',
+                on:
+                {
+                  click: onCheckboxClicked
+                }
+              })
+            ]
+          }),
           h('p', {}, model.OSMData['waterway']['features'].length
               + ' waterway(s) created ('
               + model.calculations.waterwayLength + ' km)')

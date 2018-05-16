@@ -35,13 +35,25 @@ form#search-bar-form {
   display: inline-block;
 }
 
-form#search-bar-form div {
+form#search-bar-form div,
+#roads div ,
+#buildings div,
+#landuse div,
+#waterways div {
   display: inline-block;
 }
 
-form#search-bar-form input, form#search-bar-form select {
+form#search-bar-form input,
+form#search-bar-form select {
   width: 16rem;
   margin: 0 1.5rem 0 1rem;
+}
+
+#roads input,
+#buildings input,
+#landuse input,
+#waterways input {
+  width: 5rem;
 }
 
 form#search-bar-form input#project-id-input {
@@ -52,7 +64,11 @@ form#search-bar-form select {
   width: 16rem;
 }
 
-form#search-bar-form label {
+form#search-bar-form label,
+#roads label,
+#buildings label,
+#landuse label,
+#waterways label {
   display: inline-block;
 }
 

@@ -12,29 +12,45 @@ const OV_MAP_OPTS = {
   })]
 };
 
-const layers = {
-  landuse: null,
-  highway: null,
-  building: null,
-  waterway: null
+const overviewValues = {
+  checkboxes: {},
+  layers: {},
+  map: null
 };
+
+function getStyle(layerOpacity)
+{
+  return {
+    opacity: layerOpacity,
+    fillOpacity: layerOpacity
+  };
+};
+
+function invisibleStyle(feature)
+{
+  return getStyle(0);
+}
 
 function removeLayers()
 {
-  for(let layer in layers) {
-    layers[layer].clearLayers();
+  for(let layerName in overviewValues.layers) {
+    overviewValues.layers[layerName].clearLayers();
   }
 };
 
 function createLayers(OSMData) {
-  for(let layer in layers) {
-    layers[layer] = L.geoJson(OSMData[layer], {style: OVMapStyles.STYLES[layer]});
+  for(let layerName in overviewValues.layers) {
+    overviewValues.layers[layerName] = L.geoJson(OSMData[layerName], {style: OVMapStyles.STYLES[layerName]});
+    if(overviewValues.checkboxes[layerName] === false)
+    {
+      overviewValues.layers[layerName].setStyle(invisibleStyle);
+    }
   }
 };
 
-function addLayers(map) {
-  for(let layer in layers) {
-    layers[layer].addTo(map);
+function addLayers() {
+  for(let layerName in overviewValues.layers) {
+    overviewValues.layers[layerName].addTo(overviewValues.map);
   }
 };
 
@@ -44,16 +60,41 @@ export function displayOverviewMap(model) {
       shadowUrl: iconShadow
   });
 
+  for(let currentCheckboxName in model.checkboxNames) {
+    overviewValues.checkboxes[model.checkboxNames[currentCheckboxName]] = true;
+    overviewValues.layers[model.checkboxNames[currentCheckboxName]] = null;
+  }
+
   L.Marker.prototype.options.icon = DefaultIcon;
-  const map = L.map('overview-map', OV_MAP_OPTS);
+  overviewValues.map = L.map('overview-map', OV_MAP_OPTS);
   createLayers(model.OSMData);
-  addLayers(map);
-  map.setView([model.project.aoiCentroid.coordinates[1], model.project.aoiCentroid.coordinates[0]], 10);
-  return map;
+  addLayers(overviewValues.map);
+  overviewValues.map.setView([model.project.aoiCentroid.coordinates[1], model.project.aoiCentroid.coordinates[0]], 10);
 };
 
-export function updateOverviewMap(map, OSMData) {
+export function updateOverviewMap(OSMData) {
   removeLayers();
   createLayers(OSMData);
-  addLayers(map);
+  addLayers();
+};
+
+export function onCheckboxClicked(event)
+{
+  if(event.currentTarget.checked)
+  {
+    overviewValues.layers[event.currentTarget.name].setStyle(function (feature)
+    {
+      return getStyle(1);
+    });
+  }
+  else
+  {
+    overviewValues.layers[event.currentTarget.name].setStyle(invisibleStyle);
+  }
+  overviewValues.checkboxes[event.currentTarget.name] = event.currentTarget.checked;
+};
+
+export function destroyOverviewMap()
+{
+  overviewValues.map.remove();
 };
