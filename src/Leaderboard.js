@@ -43,10 +43,10 @@ export function computeLeaderboard(OSMData){
 
   const leaderboard = {
     building: bd_ld_array.sort(function(a, b){
-      return a[1] < b[1];
+      return a[1] < b[1] ? 1 : -1;
     }),
     highway: hw_ld_array.sort(function(a, b){
-      return a[1] < b[1];
+      return a[1] < b[1] ? 1 : -1;
     }),
   };
 
