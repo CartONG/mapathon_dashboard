@@ -35,11 +35,11 @@ form#search-bar-form {
   display: inline-block;
 }
 
-form#search-bar-form div,
+form#search-bar-form div/*,
 #roads div ,
 #buildings div,
 #landuse div,
-#waterways div {
+#waterways div */{
   display: inline-block;
 }
 
@@ -101,6 +101,9 @@ h2
   border-bottom: 1px solid rgb(0,188,212);
 }
 
+#task-data-box {
+  display: flex;
+}
 
 .task-id-head {
   font-size: 36px;
@@ -129,18 +132,22 @@ div.task-grid {
   font-weight: 700;
 }
 
-.two-column-task-info {
+.two-columns-task-info {
   width: calc(50% - 32px);
 }
 
-.three-column-task-sub-section {
-  width: calc(33.33% - 64px);
-  float:left;
+.box-shadow-data {
   box-shadow: 0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.2),0 1px 5px 0 rgba(0,0,0,.12);
+}
+
+.three-columns-task-sub-section {
+  height: 100%;
+  width: calc(33.33% - 64px);
   margin: 16px;
 }
 
-.two-column-task-sub-section {
+.two-columns-task-sub-section {
+  height: 100%;
   width: calc(50% - 64px);
   float:left;
   box-shadow: 0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.2),0 1px 5px 0 rgba(0,0,0,.12);
@@ -168,22 +175,28 @@ div.task-grid {
   height: 275px;
 }
 
+.color-display {
+  height: 15px;
+  width: 15px;
+  border-width: 2px;
+  border-style: solid;
+  display:inline-block;
+}
+
 @media only screen and (max-width: 768px){
   .three-column-task-sub-section{
     width: calc(100% - 64px);
   }
 
-  .two-column-task-info{
+  .two-columns-task-info{
     width: calc(100% - 200px);
   }
 }
-
 
 .task-leaderboard h2 {
   background-color: #f7f7f7;
   padding: 16px 16px 8px;
 }
-
 
 .task-leaderboard h4 {
   font-size: 22px;
@@ -197,8 +210,8 @@ div.task-grid {
   margin: 16px;
 }
 
-.white {
-  color: white;
+.three-rows-one-column-data {
+  width: 100%;
 }
 
 .task-loading {
@@ -248,4 +261,31 @@ div.task-grid {
   font-size: 20px;
   font-weight: bold;
   color: red;
+}
+
+form#params-form {
+  margin: 1rem;  
+  display: inline-block;
+}
+
+form#params-form input, form#params-form select {
+  width: 16rem;
+  margin: 0 1.5rem 0 1rem;
+}
+
+form#params-form input#project-id-input {
+  width: 10rem;
+}
+
+form#params-form select {
+  width: 16rem;
+}
+
+form#params-form label {
+  display: inline-block;
+}
+
+form#params-form input[type="submit"] {
+  padding: 0 16px;
+  width: 8rem;
 }
