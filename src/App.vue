@@ -1,5 +1,5 @@
 <template>
-  <div id="app" >
+  <div id="app">
     <Header />
     <Main />
   </div>
@@ -22,5 +22,5 @@ export default class extends Vue{}
 </script>
 
 <style>
-  @import './styles/layout.css';
+  @import './styles/mapathon_dashboard.css';
 </style>

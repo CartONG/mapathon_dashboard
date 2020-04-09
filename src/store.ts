@@ -69,16 +69,16 @@ export const store = {
   {
     this.state.errorMessage = error;
   },
+  setLoadingMessage(loadingMessage: string)
+  {
+    this.state.loadingMessage = loadingMessage;
+  },
   setOSMData(dataType: keyof IFeatureName, features: FeatureCollection<GeometryObject>)
   {
     // Update the features for the given feature type
     store.state.osmData.set(dataType,features);
     // Update the leaderboard for the given feature type
     store.state.leaderboard.set(dataType, features);
-  },
-  setLoadingMessage(loadingMessage: string)
-  {
-    this.state.loadingMessage = loadingMessage;
   },
   setProjectNameCentroidAndPercentages(projectName: string, percentMapped: number, percentValidated: number, aoiCentroid: Point)
   {

@@ -1,15 +1,10 @@
 <template>
-  <div id="task">
+  <div>
     <div class="task-loading" v-if="loadingMessage">
       <p>{{ loadingMessage }}</p>
-      <div class="loader-ring">
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-      </div>
+      <div class="loader-ring"></div>
     </div>
-    <p id="error" v-if="errorMessage">{{ errorMessage }}</p>
+    <p class="error-message" v-if="errorMessage">{{ errorMessage }}</p>
     <div v-if="projectLoaded">
       <ProjectHeader />
       <ProjectData />

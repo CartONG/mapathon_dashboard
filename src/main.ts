@@ -1,5 +1,6 @@
 import "core-js/stable"
 import "regenerator-runtime/runtime"
+
 import "./string.extension"
 
 import App from './App.vue'

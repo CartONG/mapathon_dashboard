@@ -1,6 +1,6 @@
 <template>
-  <div class="task-sub-section three-columns-task-sub-section box-shadow-data">
-    <h4>Map</h4>
+  <div class="project-overview-map">
+    <h4 class="project-overview-map__title">Map</h4>
     <div id="overview-map">
     </div>
   </div>

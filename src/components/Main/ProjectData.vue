@@ -1,23 +1,23 @@
 <template>
-  <div class="task-box">
-    <h2>Last update ({{ updateTime }})</h2>
-    <div id="task-data-box">
+  <div class="project-data-main-container">
+    <h2 class="project-data-main-container__title">Last update ({{ updateTime }})</h2>
+    <div class="project-data-sub-container">
       <OverviewMap />
       <HighwayMap />
-      <div class="three-columns-task-sub-section">
-        <div id="buildings" class="task-sub-section box-shadow-data three-rows-one-column-data">
-          <h4>
+      <div class="project-data-built">
+        <div class="project-building-data-container">
+          <h4 class="project-building-data-container__title">
             Buildings <ColorDisplay :backgroundColor="buildingLayerColor" />
           </h4>
-          <BaseInput id="buildings-checkbox" label="Display buildings on the map" 
+          <BaseInput class="project-building-data-container__label-input" label="Display buildings on the map" 
             name="building" type="checkbox" v-on:input='valueChanged("building")' checked="true"/>
-          <p>{{ buildingMessage }}</p>
+          <p class="project-building-data-container__paragraph">{{ buildingMessage }}</p>
         </div>
-        <div id="landuse" class="task-sub-section box-shadow-data three-rows-one-column-data">
-          <h4>
+        <div class="project-landuse-data-container">
+          <h4 class="project-landuse-data-container__title">
             Landuse <ColorDisplay :backgroundColor="landuseLayerColor" />
           </h4>
-          <BaseInput id="landuse-checkbox" label="Display landuse on the map" 
+          <BaseInput class="project-landuse-data-container__label-input" label="Display landuse on the map" 
             name="landuse" type="checkbox" v-on:input='valueChanged("landuse")' checked="true"/>
           <div>
             <b>Residential landuse: </b>
@@ -28,13 +28,13 @@
             <span>{{ landuseArea }} km²</span>
           </div>
         </div>
-        <div id="waterways" class="task-sub-section box-shadow-data three-rows-one-column-data">
-          <h4>
+        <div class="project-waterway-data-container">
+          <h4 class="project-waterway-data-container__title">
             Waterways <ColorDisplay :backgroundColor="waterwayLayerColor" />
           </h4>
-          <BaseInput id="waterways-checkbox" label="Display waterways on the map" 
+          <BaseInput class="project-waterway-data-container__label-input" label="Display waterways on the map" 
             name="waterway" type="checkbox" v-on:input='valueChanged("waterway")' checked="true"/>
-          <p>{{ waterwayMessage }}</p>
+          <p class="project-waterway-data-container__paragraph">{{ waterwayMessage }}</p>
         </div>
       </div>
     </div>

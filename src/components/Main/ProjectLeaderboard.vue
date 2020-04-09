@@ -1,34 +1,34 @@
 <template>
-  <div class="task-box">
-    <h2>Leaderboard</h2>
-    <div v-if="isLeaderboardAvailable" class="task-grid">
-      <div v-if="isLeaderboardForBuildingAvailable()" class="task-sub-section two-columns-task-sub-section">
-        <h4>Buildings</h4>
+  <div class="project-leaderboard-container">
+    <h2 class="project-leaderboard-container__title">Leaderboard</h2>
+    <div v-if="isLeaderboardAvailable" class="project-leaderboard-sub-container">
+      <div v-if="isLeaderboardForBuildingAvailable()" class="project-leaderboard-building-sub-container">
+        <h4 class="project-leaderboard-building-sub-container__title">Buildings</h4>
         <ol>
           <li v-for='(currentRow, index) in currentBuildingList' :key="index" >{{ currentRow }}</li>
         </ol>
       </div>
-      <div v-if="isLeaderboardForLanduseAvailable()" class="task-sub-section two-columns-task-sub-section">
-        <h4>Landuse</h4>
+      <div v-if="isLeaderboardForLanduseAvailable()" class="project-leaderboard-landuse-sub-container">
+        <h4 class="project-leaderboard-landuse-sub-container__title">Landuse</h4>
         <ol>
           <li v-for='(currentRow, index) in currentLanduseList' :key="index" >{{ currentRow }}</li>
         </ol>
       </div>
-      <div v-if="isLeaderboardForHighwayAvailable()" class="task-sub-section two-columns-task-sub-section">
-        <h4>Roads</h4>
+      <div v-if="isLeaderboardForHighwayAvailable()" class="project-leaderboard-highway-sub-container">
+        <h4 class="project-leaderboard-highway-sub-container__title">Roads</h4>
         <ol>
           <li v-for='(currentRow, index) in currentHighwayList' :key="index" >{{ currentRow }}</li>
         </ol>
       </div>
-      <div v-if="isLeaderboardForWaterwayAvailable()" class="task-sub-section two-columns-task-sub-section">
-        <h4>Waterways</h4>
+      <div v-if="isLeaderboardForWaterwayAvailable()" class="project-leaderboard-waterway-sub-container">
+        <h4 class="project-leaderboard-waterway-sub-container__title">Waterways</h4>
         <ol>
           <li v-for='(currentRow, index) in currentWaterwayList' :key="index" >{{ currentRow }}</li>
         </ol>
       </div>
     </div>
-    <div v-else class="task-grid">
-      <p>No data fetch for the given interval.</p>
+    <div v-else class="project-leaderboard-no-data-container">
+      <p class="project-leaderboard-no-data-container__paragraph">No data fetch for the given interval.</p>
     </div>
   </div>
 </template>

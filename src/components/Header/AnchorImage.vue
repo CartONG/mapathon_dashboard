@@ -1,6 +1,6 @@
 <template>
   <a :href="link" target="_blank">
-    <img :id="id" 
+    <img :class="activeClasses" :id="id" 
       :src="imageUrl" 
       :alt="alt">
   </a>
@@ -10,10 +10,15 @@
 import {Vue, Component, Prop } from 'vue-property-decorator'
 
 @Component
-export default class extends Vue{
+export default class extends Vue {
   @Prop() link!: string;
   @Prop() id!: string;
   @Prop() imageUrl!: string;
   @Prop() alt!: string;
+
+  get activeClasses()
+  {
+    return this.id=="cartong-logo"?"header__image header__image-cartong":"header__image";
+  }
 }
 </script>

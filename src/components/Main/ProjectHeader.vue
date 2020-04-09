@@ -1,26 +1,26 @@
 <template>
-  <div class="task-box">
+  <div class="project-header-container">
     <div>
-      <h2>
+      <h2 class="project-header-container__title">
         <a :href=projectUrl target="_blank">
-          <span class="task-id-head">#{{ projectId }}</span>
+          <span class="project-header-container__title-link">#{{ projectId }}</span>
         </a>
         {{ projectName }}
       </h2>
     </div>
-    <div class="task-grid">
-      <div class="two-columns-task-info task-info">
-        <p class="task-info-key">
+    <div class="project-header-percentages-container">
+      <div class="project-header-percentages-container__percentage">
+        <p class="project-header-percentages-container__percentage-text">
           Done
         </p>
-        <progress id="task-progress-done" :value=percentMapped max=100>{{ percentMapped }}</progress>
+        <progress class="project-header-percentages-container__percentage-progress" :value=percentMapped max=100>{{ percentMapped }}</progress>
         {{ percentMapped }}%
       </div>
-      <div class="two-columns-task-info task-info">
-        <p class="task-info-key">
+      <div class="project-header-percentages-container__percentage">
+        <p class="project-header-percentages-container__percentage-text">
           Validated
         </p>
-        <progress id="task-progress-done" :value=percentValidated max=100>{{ percentValidated }}</progress>
+        <progress class="project-header-percentages-container__percentage-progress" :value=percentValidated max=100>{{ percentValidated }}</progress>
         {{ percentValidated }}%
       </div>
     </div>

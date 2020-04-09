@@ -1,7 +1,7 @@
 <template>
   <div>
-    <label :for="id">{{label}}</label>
-    <input v-bind="$attrs" :id="id" :type="type" v-on="inputListeners">
+    <label class="label-input" :for="id">{{label}}</label>
+    <input v-bind="$attrs" :id="id" :type="type" v-on="inputListeners" :class="activeClasses" >
   </div>
 </template>
 
@@ -16,6 +16,10 @@ export default class extends Vue {
   @Prop() label!: string;
   @Prop() type!: string;
 
+  get activeClasses(): string
+  {
+    return this.type=="text"?"input-date":"input-project-id";
+  }
   get inputListeners(): Object {
       var vm = this
       // `Object.assign` merges objects together to form a new object

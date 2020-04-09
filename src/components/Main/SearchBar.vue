@@ -1,13 +1,13 @@
 <template>
-  <form id="search-bar-form" @submit="submit">
-    <BaseInput id="project-id-input" v-on:input="projectId=$event.target.value" :value="this.currentState.projectId" type="number" name="projectID" label="Project ID" min=0 required=true />
-    <BaseInput id="start-date-input" v-on:input="setStartDateTime($event.target.value)" type="text" :value="startDateTime" name="startDate" :label="startDateTimeZone" required=true />
-    <BaseInput id="end-date-input" v-on:input="setEndDateTime($event.target.value)" type="text" :value="endDateTime" name="endDate" :label="endDateTimeZone" required=true />
-    <select id="server-select">
+  <form class="search-bar" @submit="submit">
+    <BaseInput class="search-bar-field" v-on:input="projectId=$event.target.value" :value="this.currentState.projectId" type="number" name="projectID" label="Project ID" min=0 required=true />
+    <BaseInput class="search-bar-field" v-on:input="setStartDateTime($event.target.value)" type="text" :value="startDateTime" name="startDate" :label="startDateTimeZone" required=true />
+    <BaseInput class="search-bar-field" v-on:input="setEndDateTime($event.target.value)" type="text" :value="endDateTime" name="endDate" :label="endDateTimeZone" required=true />
+    <select class="server-selection">
       <option disabled value="">Please select one</option>
       <option v-for="(value, key) in servers" :key=key :value="value">{{key}}</option>
     </select>
-    <input type="submit" value="Submit">
+    <input class="input-submit" type="submit" value="Submit">
   </form>
 </template>
 

@@ -1,13 +1,13 @@
 <template>
-  <div class="task-sub-section three-columns-task-sub-section box-shadow-data">
-    <div id="roads">
-      <h4>
+  <div class="project-highway-map">
+    <div>
+      <h4 class="project-highway-map__title">
         Roads <ColorDisplay :backgroundColor="highwayLayerColor" />
       </h4>
-      <div>
-        <BaseInput id="roads-checkbox" label="Display roads on the map" 
+      <div class="project-highway-map-main-container">
+        <BaseInput class="project-highway-map-main-container__label-input" label="Display roads on the map" 
           name="highway" type="checkbox" v-on:input="valueChanged()" checked="true" />
-        <p> {{ highwayMessage }}</p>
+        <p class="project-highway-map-main-container__paragraph">{{ highwayMessage }}</p>
         <div id="highway-map">
         </div>
       </div>
