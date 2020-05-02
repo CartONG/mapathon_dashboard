@@ -6,7 +6,7 @@ import { Point } from 'geojson';
 
 import { MyLatLngBounds } from './my-lat-lng-bounds'
 
-import { OSMData } from './osm-data'
+import { FeaturesInformations } from './features-informations'
 
 import { OverviewMap} from './overview-map'
 
@@ -30,7 +30,7 @@ export class State {
   percentValidated!: number;
   projectName: string;
   updateTime!: moment.Moment;
-  osmData: OSMData;
+  featuresInformations: FeaturesInformations;
   leaderboard: Leaderboard;
   //CheckboxesValues
   checkboxes: Checkboxes;
@@ -44,6 +44,8 @@ export class State {
   //Refresh informations
   refreshDelay: number;
   timeoutId!: number;
+  //Theme information
+  isThemeDark: boolean;
 
   constructor()
   {
@@ -56,7 +58,7 @@ export class State {
     this.projectName = "";
     this.errorMessage = "";
     this.updateTime = moment();
-    this.osmData = new OSMData();
+    this.featuresInformations = new FeaturesInformations();
     this.leaderboard = new Leaderboard();
     this.projectLoaded = false;
     this.checkboxes = new Checkboxes();
@@ -65,6 +67,7 @@ export class State {
     this.overviewMap = new OverviewMap();
     this.refreshDelay = 5 * 60 * 1000;
     this.timeoutId = -1;
+    this.isThemeDark = this.getBooleanTheme();
   }
 
   private timezone(): string
@@ -91,5 +94,19 @@ export class State {
     }
 
     return valueToReturn;
+  }
+
+  private getBooleanTheme()
+  {
+    let cookies = document.cookie;
+    console.log(cookies);
+    if(cookies.indexOf("theme=black") != -1)
+    {
+      return true;
+    }
+    else
+    {
+      return false;
+    }
   }
 }

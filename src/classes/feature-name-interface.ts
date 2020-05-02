@@ -5,3 +5,11 @@ export interface IFeatureName {
   landuse: any;
   waterway: any;
 };
+
+export function * generator()
+{
+  yield 'building'
+  yield 'highway'
+  yield 'landuse'
+  yield 'waterway'
+}

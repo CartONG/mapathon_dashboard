@@ -25,3 +25,21 @@ import AnchorImage from './Header/AnchorImage.vue'
 })
 export default class extends Vue{}
 </script>
+
+<style>
+.header {
+  display: flex;
+  align-items: center;
+  height: 50px;
+  padding: 1rem;
+  border-bottom: 1px solid #f2f2f2;
+}
+
+.header__title {
+  bottom: 0.3rem;
+  font-size: 3rem;
+  margin: 0 0 0 1.5rem;
+  line-height: inherit;
+  width: 80%;
+}
+</style>

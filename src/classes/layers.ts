@@ -1,9 +1,9 @@
 import * as L from 'leaflet'
 
-import { IFeatureName } from './feature-name-interface'
+import { IFeatureName, generator } from './feature-name-interface'
 
 import { store } from '../store'
-import { OSMData } from './osm-data';
+import { FeaturesData } from './features-data';
 import { LayerStyles } from './layerStyles';
 
 //Class to manage layers of the overview map
@@ -15,14 +15,6 @@ export class Layers implements IFeatureName {
   styles: LayerStyles;
   map!: L.Map;
 
-  * generator()
-  {
-    yield 'building'
-    yield 'highway'
-    yield 'landuse'
-    yield 'waterway'
-  }
-
   constructor()
   {
     this.styles = new LayerStyles();
@@ -32,7 +24,7 @@ export class Layers implements IFeatureName {
   addTo(map: L.Map)
   {
     this.map = map;
-    for(let currentLayer of this.generator())
+    for(let currentLayer of generator())
     {
       //Add the current layer only if the checkbox is checked
       if(store.state.checkboxes[currentLayer] === true)
@@ -45,18 +37,18 @@ export class Layers implements IFeatureName {
   //Function to clear all the layers for each property layer
   clear()
   {
-    for(let currentLayer of this.generator())
+    for(let currentLayer of generator())
     {
       this[currentLayer].clearLayers();
     }
   }
 
   //Function to create the layers for each property
-  create(osmData: OSMData)
+  create(featuresData: FeaturesData)
   {
-    for(let currentLayer of this.generator())
+    for(let currentLayer of generator())
     {
-      this[currentLayer] = L.geoJSON(osmData[currentLayer], {style: this.styles[currentLayer]});
+      this[currentLayer] = L.geoJSON(featuresData[currentLayer], {style: this.styles[currentLayer]});
     }
   }
 
@@ -66,15 +58,15 @@ export class Layers implements IFeatureName {
     return this.styles[feature].color!;
   }
 
-  //Setter for the visibility of the layer name given
-  setVisibility(layerName: keyof IFeatureName, isVisible: boolean)
+  //Update the visibility of the layer name given
+  updateVisibility(layerName: keyof IFeatureName)
   {
-    switch(isVisible)
+    switch(this.map.hasLayer(this[layerName]))
     {
-      case false:
+      case true:
         this[layerName].remove();
         break;
-      case true:
+      case false:
         this[layerName].addTo(this.map);
         break;
     }

@@ -11,6 +11,8 @@ import {Vue, Component } from 'vue-property-decorator'
 import Header from './components/Header.vue'
 import Main from './components/Main.vue'
 
+import { store } from './store'
+
 @Component({
   components:
   {
@@ -18,9 +20,17 @@ import Main from './components/Main.vue'
     Main
   }
 })
-export default class extends Vue{}
+export default class extends Vue {
+  mounted ()
+  {
+    store.initializeTheme();
+  }
+}
 </script>
 
 <style>
-  @import './styles/mapathon_dashboard.css';
+.body-container--dark-theme {
+  background-color: #182b36;
+  color:white;
+}
 </style>

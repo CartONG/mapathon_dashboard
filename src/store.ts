@@ -15,6 +15,8 @@ import { ERRORS } from './errors'
 
 import { State } from './classes/state'
 
+import { FeaturesData } from './classes/features-data';
+
 //Constant to expose and manage the store
 //It could be seen as a static class
 export const store = {
@@ -33,21 +35,28 @@ export const store = {
   {
     this.state.highwayMap.destroy();
   },
+  destroyOverviewMap()
+  {
+    this.state.overviewMap.destroy();
+  },
   displayHighwayMap(currentPosition?: Position)
   {
     if(currentPosition)
     {
       this.state.highwayMap.setStartPosition(currentPosition);
     }
-    this.state.highwayMap.display(this.state.osmData.highwaysLength);
-  },
-  destroyOverviewMap()
-  {
-    this.state.overviewMap.destroy();
+    this.state.highwayMap.display(this.state.featuresInformations.highwaysLength);
   },
   displayOverviewMap()
   {
-    this.state.overviewMap.display(this.state.aoiCentroid, this.state.osmData);
+    this.state.overviewMap.display(this.state.aoiCentroid, this.state.featuresInformations.featuresData);
+  },
+  initializeTheme()
+  {
+    if(this.state.isThemeDark)
+    {
+      document.body.classList.add('body-container--dark-theme');
+    }
   },
   resetProjectLoaded()
   {
@@ -61,9 +70,9 @@ export const store = {
   },
   setCheckBoxValue(checkbox: keyof IFeatureName)
   {
-    this.state.checkboxes[checkbox] = !this.state.checkboxes[checkbox];
+    this.state.checkboxes.update(checkbox);
     // Update the overview map to display/hide the feature layer
-    this.state.overviewMap.onCheckboxClicked(checkbox, this.state.checkboxes[checkbox]);
+    this.state.overviewMap.onCheckboxClicked(checkbox);
   },
   setErrorMessage(error: string | String)
   {
@@ -73,12 +82,17 @@ export const store = {
   {
     this.state.loadingMessage = loadingMessage;
   },
-  setOSMData(dataType: keyof IFeatureName, features: FeatureCollection<GeometryObject>)
+  setFeatureCollection(feature: keyof IFeatureName, featureCollection: FeatureCollection<GeometryObject>)
+  {
+    this.state.featuresInformations.setFeatureCollection(feature, featureCollection);
+    this.state.leaderboard.setFeatureCollection(feature, featureCollection);
+  },
+  setFeaturesData(featuresData: FeaturesData)
   {
     // Update the features for the given feature type
-    store.state.osmData.set(dataType,features);
+    store.state.featuresInformations.setFeaturesData(featuresData);
     // Update the leaderboard for the given feature type
-    store.state.leaderboard.set(dataType, features);
+    store.state.leaderboard.setFeaturesData(featuresData);
   },
   setProjectNameCentroidAndPercentages(projectName: string, percentMapped: number, percentValidated: number, aoiCentroid: Point)
   {
@@ -105,6 +119,22 @@ export const store = {
     //Request for project data
     QueryProject.requestProjectData();
   },
+  updateTheme(isDark: boolean)
+  {
+    //Update the current theme
+    let theme;
+    if(isDark)
+    {
+      theme = "black";
+      document.body.classList.add('body-container--dark-theme');
+    }
+    else
+    {
+      theme = "light";
+      document.body.classList.remove('body-container--dark-theme');
+    }
+    document.cookie = `theme=${theme};max-age=60*60*24*365`;
+  },
   updateProjectLoaded()
   {
     const refreshData = () =>
@@ -122,8 +152,8 @@ export const store = {
         //Refresh the current project data
         QueryProject.refreshProjectData();
         //Update maps with the new features found
-        this.state.overviewMap.update(this.state.osmData);
-        this.state.highwayMap.update(this.state.osmData.highwaysLength);
+        this.state.overviewMap.update(this.state.featuresInformations.featuresData);
+        this.state.highwayMap.update(this.state.featuresInformations.highwaysLength);
       }
     }
     this.state.projectLoaded = true;

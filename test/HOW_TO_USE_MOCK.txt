@@ -1,5 +1,5 @@
 1 - You will have to make the following import in the "store.ts" file [The file name can be different, it depends on the file you want to use] :
-  import { STATE } from '../../test/state_project_8247_saved.ts'
+  import { STATE } from '../test/state_project_8247_saved'
 
 2 - You need to comment a line of code of "store.ts" file number 106 :
   QueryProject.requestProjectData();
@@ -9,10 +9,10 @@
   this.setProjectNameCentroidAndPercentages(STATE.projectName, STATE.percentMapped, STATE.percentValidated, STATE.aoiCentroid as Point);
   this.setProjectBoundingBox(STATE.areaOfInterest as MultiPolygon);
   this.setChangeSets(STATE.changeSetsIds);
-  this.setOSMData("building", STATE.osmData.building as FeatureCollection<GeometryObject>)
-  this.setOSMData("highway", STATE.osmData.highway as FeatureCollection<GeometryObject>);
-  this.setOSMData("landuse", STATE.osmData.landuse as FeatureCollection<GeometryObject>);
-  this.setOSMData("waterway", STATE.osmData.waterway as FeatureCollection<GeometryObject>);
+  this.setFeaturesData(STATE.osmData.building as FeatureCollection<GeometryObject>,
+    STATE.osmData.highway as FeatureCollection<GeometryObject>,
+    STATE.osmData.landuse as FeatureCollection<GeometryObject>,
+    STATE.osmData.waterway as FeatureCollection<GeometryObject>);
   this.state.projectLoaded = true;
   this.state.updateTime = moment();
 
@@ -22,6 +22,8 @@ START OF FILE
 import { State } from './classes/state'
 
 import { STATE } from '../../test/state_project_8247_saved.ts'
+
+import { FeatureCollection, GeometryObject } from 'geojson';
 
 //Constant to expose and manage the store
 [...]
@@ -42,10 +44,12 @@ setSearchBarValues(projectId: number, chosenServer: string)
     this.setProjectNameCentroidAndPercentages(STATE.projectName, STATE.percentMapped, STATE.percentValidated, STATE.aoiCentroid as Point);
     this.setProjectBoundingBox(STATE.areaOfInterest as MultiPolygon);
     this.setChangeSets(STATE.changeSetsIds);
-    this.setOSMData("building", STATE.osmData.building as FeatureCollection<GeometryObject>)
-    this.setOSMData("highway", STATE.osmData.highway as FeatureCollection<GeometryObject>);
-    this.setOSMData("landuse", STATE.osmData.landuse as FeatureCollection<GeometryObject>);
-    this.setOSMData("waterway", STATE.osmData.waterway as FeatureCollection<GeometryObject>);
+    let featuresData = new FeaturesData();
+    featuresData.setFeatures(STATE.osmData.building as FeatureCollection<GeometryObject>,
+      STATE.osmData.highway as FeatureCollection<GeometryObject>,
+      STATE.osmData.landuse as FeatureCollection<GeometryObject>,
+      STATE.osmData.waterway as FeatureCollection<GeometryObject>);
+    this.setFeaturesData(featuresData);
     this.state.projectLoaded = true;
     this.state.updateTime = moment();
   },

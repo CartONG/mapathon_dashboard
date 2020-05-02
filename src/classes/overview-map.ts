@@ -9,7 +9,7 @@ import { Point } from 'geojson';
 
 import { Layers } from './layers';
 import { IFeatureName } from './feature-name-interface';
-import { OSMData } from './osm-data';
+import { FeaturesData } from './features-data';
 
 // Options to create the map 
 const OVERVIEW_MAP_OPTIONS = {
@@ -30,7 +30,7 @@ export class OverviewMap {
   };
 
   //Function to display the map
-  display(aoiCentroid: Point, osmData: OSMData)
+  display(aoiCentroid: Point, featuresData: FeaturesData)
   {
     let DefaultIcon = L.icon({
       iconUrl: icon,
@@ -43,7 +43,7 @@ export class OverviewMap {
     //Center the map on the area of interest centroid
     this.map.setView([aoiCentroid.coordinates[1], aoiCentroid.coordinates[0]], 10);
     //Create the layers of the map then add them to the map
-    this.layers.create(osmData);
+    this.layers.create(featuresData);
     this.layers.addTo(this.map);
   }
 
@@ -54,16 +54,16 @@ export class OverviewMap {
   }
 
   //Function to update the map
-  update(osmData: OSMData) {
+  update(featuresData: FeaturesData) {
     this.layers.clear();
-    this.layers.create(osmData);
+    this.layers.create(featuresData);
     this.layers.addTo(this.map);
   };
   
   //Function to change the visibility of a layer when a checkbox is clicked
-  onCheckboxClicked(layerName: keyof IFeatureName, isVisible: boolean)
+  onCheckboxClicked(layerName: keyof IFeatureName)
   {
-    this.layers.setVisibility(layerName, isVisible);
+    this.layers.updateVisibility(layerName);
   };
   
   //Function to remove the map from the DOM

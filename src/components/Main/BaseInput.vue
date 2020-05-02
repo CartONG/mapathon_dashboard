@@ -15,26 +15,56 @@ export default class extends Vue {
   @Prop() id!: string;
   @Prop() label!: string;
   @Prop() type!: string;
+  @Prop() isThemeDark!: boolean;
 
   get activeClasses(): string
   {
-    return this.type=="text"?"input-date":"input-project-id";
+    let classes = this.isThemeDark?"input--dark-theme ":"";
+    classes += this.type=="text"?"input-date":"input-project-id";
+    return classes;
   }
   get inputListeners(): Object {
-      var vm = this
-      // `Object.assign` merges objects together to form a new object
-      return Object.assign({},
-        // We add all the listeners from the parent
-        this.$listeners,
-        // Then we can add custom listeners or override the
-        // behavior of some listeners.
-        {
-          // This ensures that the component works with v-model
-          input: function (event: Event) {
-            vm.$emit('input', event)
-          }
+    var vm = this
+    // `Object.assign` merges objects together to form a new object
+    return Object.assign({},
+      // We add all the listeners from the parent
+      this.$listeners,
+      // Then we can add custom listeners or override the
+      // behavior of some listeners.
+      {
+        // This ensures that the component works with v-model
+        input: function (event: Event) {
+          vm.$emit('input', event)
         }
-      )
-    }
+      }
+    )
+  }
 }
 </script>
+
+<style>
+.label-input {
+  margin-bottom: 0px;
+  margin-right: 10px;
+}
+
+.input-date {
+  max-width: 145px;
+}
+
+.input-project-id {
+  max-width: 100px;
+}
+
+.input-submit {
+  margin-left: 30px;
+}
+
+.input--dark-theme {
+  background-color: #182b36 !important;
+}
+
+.input-submit--dark-theme {
+  color:white !important;
+}
+</style>

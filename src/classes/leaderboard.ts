@@ -1,8 +1,8 @@
-import { IFeatureName } from './feature-name-interface'
+import { IFeatureName, generator } from './feature-name-interface'
 
-import { OSMData } from './osm-data';
+import { FeaturesData } from './features-data';
 
-import { FeatureCollection, GeometryObject } from 'geojson';
+import { Feature, FeatureCollection, GeometryObject } from 'geojson';
 
 import * as lineDistance from '@turf/line-distance';
 import area from '@turf/area';
@@ -15,30 +15,26 @@ export class Leaderboard implements IFeatureName {
   landuse: string[] = [];
   waterway: string[] = [];
 
-  //Function to make the properties iterable
-  * generator()
+  setFeatureCollection(featureName: keyof IFeatureName, featuresCollection: FeatureCollection<GeometryObject>)
   {
-    yield 'building'
-    yield 'highway'
-    yield 'landuse'
-    yield 'waterway'
+    this.set(featureName, featuresCollection.features);
   }
 
   //Function to set the data according to their feature
-  setOSMData(osmData: OSMData)
+  setFeaturesData(featuresData: FeaturesData)
   {
-    for(let currentFeature of this.generator())
+    for(let currentFeature of generator())
     {
-      this.set(currentFeature, osmData[currentFeature]);
+      console.log(featuresData[currentFeature]);
+      this.set(currentFeature, featuresData[currentFeature].features);
     } 
   }
 
   //Function to create and set the leaderboard
-  set(feature: keyof IFeatureName, collection: FeatureCollection<GeometryObject>)
+  set(feature: keyof IFeatureName, features: Feature<GeometryObject, any>[])
   {
     //Create a map<userName,totalCreated> to sort the user and their count
-    const mapFeature = new Map<string,number>(),
-      features = collection.features;
+    const mapFeature = new Map<string,number>();
     for(let i = 0; i<features.length; i++)
     {
       const currentFeatureGeometry = features[i];

@@ -1,6 +1,6 @@
 <template>
   <div class="project-data-main-container">
-    <h2 class="project-data-main-container__title">Last update ({{ updateTime }})</h2>
+    <h2 :class="projectDataTitleClasses" >Last update ({{ updateTime }})</h2>
     <div class="project-data-sub-container">
       <OverviewMap />
       <HighwayMap />
@@ -66,7 +66,12 @@ import { IFeatureName } from './../../classes/feature-name-interface'
 )
 export default class extends Vue {
   private currentState = store.state;
-  private currentOSMData = this.currentState.osmData;
+  private currentFeaturesInformations = this.currentState.featuresInformations;
+
+  get projectDataTitleClasses(): string
+  {
+    return "project-data-main-container__title" + (this.currentState.isThemeDark?" project-data-main-container__title--dark-theme":"")
+  }
 
   get updateTime()
   {
@@ -75,22 +80,22 @@ export default class extends Vue {
 
   get buildingMessage(): string
   {
-    return this.currentOSMData.buildingMessage;
+    return this.currentFeaturesInformations.buildingMessage;
   }
 
   get landuseArea(): number
   {
-    return this.currentOSMData.totalLanduseArea;
+    return this.currentFeaturesInformations.totalLanduseArea;
   }
 
   get residentialLanduseArea(): number
   {
-    return this.currentOSMData.residentialLanduseArea;
+    return this.currentFeaturesInformations.residentialLanduseArea;
   }
 
   get waterwayMessage(): string
   {
-    return this.currentOSMData.waterwayMessage;
+    return this.currentFeaturesInformations.waterwayMessage;
   }
 
   get buildingLayerColor(): string
@@ -114,3 +119,99 @@ export default class extends Vue {
   }
 }
 </script>
+
+<style>
+.project-data-main-container {
+  margin: 0px 16px 16px;
+  box-shadow: 0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.2),0 1px 5px 0 rgba(0,0,0,.12);
+}
+
+.project-data-main-container__title {
+  background-color: #f7f7f7;
+  padding: 16px 16px 8px;
+  font-size: 26px;
+  font-weight: 800;
+}
+
+.project-data-sub-container {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+  align-items: baseline;
+}
+
+.project-data-built {
+  flex: 1 0 calc(33.3% - 96px);
+  margin: 16px;
+}
+
+.project-building-data-container {
+  margin-bottom: 16px;
+  padding: 16px;
+  box-shadow: 0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.2),0 1px 5px 0 rgba(0,0,0,.12);
+}
+
+.project-building-data-container__title {
+  font-size: 22px;
+  padding: 0 0 8px 0;
+  margin-bottom: 16px;
+  border-bottom: 1px solid rgb(0,188,212);
+}
+
+.project-building-data-container__label-input {
+  display: flex;  
+  align-items: baseline;
+}
+
+.project-building-data-container__paragraph {
+  margin-bottom: 0px;
+}
+
+.project-landuse-data-container {
+  margin: 16px 0px;
+  padding: 16px;
+  box-shadow: 0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.2),0 1px 5px 0 rgba(0,0,0,.12);
+}
+
+.project-landuse-data-container__title {
+  font-size: 22px;
+  padding: 0 0 8px 0;
+  margin-bottom: 16px;
+  border-bottom: 1px solid rgb(0,188,212);
+}
+
+.project-landuse-data-container__label-input {
+  display: flex;  
+  align-items: baseline;
+}
+
+.project-landuse-data-container__paragraph {
+  margin-bottom: 0px;
+}
+
+.project-waterway-data-container {
+  margin: 16px 0px;
+  padding: 16px;
+  box-shadow: 0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.2),0 1px 5px 0 rgba(0,0,0,.12);
+}
+
+.project-waterway-data-container__title {
+  font-size: 22px;
+  padding: 0 0 8px 0;
+  margin-bottom: 16px;
+  border-bottom: 1px solid rgb(0,188,212);
+}
+
+.project-waterway-data-container__label-input {
+  display: flex;  
+  align-items: baseline;
+}
+
+.project-waterway-data-container__paragraph {
+  margin-bottom: 0px;
+}
+
+.project-data-main-container__title--dark-theme {
+  background-color:#2C3E47;
+}
+</style>

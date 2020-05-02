@@ -4,13 +4,10 @@ export const CONSTANTS = {
   OSM_API_URL: 'https://www.openstreetmap.org/api/0.6/',
   HOTOSM_PROJECT_URL: 'https://tasks.hotosm.org/project/',
   SERVERS: {
-    'overpass-api.de': 'https://overpass-api.de/api/interpreter',
-    'overpass.osm.rambler.ru': 'http://overpass.osm.rambler.ru/cgi/interpreter',
-    'api.openstreetmap.fr': 'http://api.openstreetmap.fr/oapi/interpreter'
+    'lz4.overpass-api.de': 'https://lz4.overpass-api.de/api/interpreter',
+    'z.overpass-api.de': 'https://z.overpass-api.de/api/interpreter',
+    'overpass.nchc.org': 'https://overpass.nchc.org.tw/api/interpreter'
   },
-  OVP_DE: 'https://overpass-api.de/api/interpreter',
-  OVP_RU: 'http://overpass.osm.rambler.ru/cgi/interpreter',
-  OVP_FR: 'http://api.openstreetmap.fr/oapi/interpreter',
   DATETIME_FORMAT: 'DD/MM/YYYY HH:mm',
   TIME_FORMAT: 'HH:mm:ss'
 };

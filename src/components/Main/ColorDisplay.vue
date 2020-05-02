@@ -10,3 +10,13 @@ export default class extends Vue {
   @Prop(String) readonly backgroundColor!: string;
 }
 </script>
+
+<style>
+.color-display {
+  height: 15px;
+  width: 15px;
+  border-width: 2px;
+  border-style: solid;
+  display:inline-block;
+}
+</style>

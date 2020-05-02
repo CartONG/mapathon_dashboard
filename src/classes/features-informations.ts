@@ -1,17 +1,17 @@
 import { IFeatureName } from './feature-name-interface'
 
-import { FeatureCollection, GeometryObject } from 'geojson';
+import { FeaturesData } from './features-data'
+
+import { FeatureCollection, GeometryObject} from 'geojson'
 
 import * as lineDistance from '@turf/line-distance';
 import area from '@turf/area';
 import { AllGeoJSON } from '@turf/helpers'
+import { generator } from './feature-name-interface';
 
 //Class to manage the features geometry and messages
-export class OSMData implements IFeatureName {
-  building!: FeatureCollection<GeometryObject>;
-  highway!: FeatureCollection<GeometryObject>;
-  landuse!: FeatureCollection<GeometryObject>;
-  waterway!: FeatureCollection<GeometryObject>;
+export class FeaturesInformations {
+  featuresData: FeaturesData;
   buildingMessage = '';
   highwayMessage = '';
   highwaysLength = 0;
@@ -20,10 +20,33 @@ export class OSMData implements IFeatureName {
   waterwayMessage = ''
   waterwaysLength = 0;
 
-  //Function to set the feature collection to the according feature and create the according message
-  set(feature: keyof IFeatureName, features: FeatureCollection<GeometryObject>)
+  constructor()
   {
-    this[feature] = features;
+    this.featuresData = new FeaturesData();
+  }
+
+  setFeatureCollection(featureName: keyof IFeatureName, featureCollection: FeatureCollection<GeometryObject>)
+  {
+    this.featuresData.setFeatureCollection(featureName, featureCollection);
+    this.createFeatureMessage(featureName);
+  }
+
+  //Function to set the features data and create messages for each feature
+  setFeaturesData(featuresData: FeaturesData)
+  {
+    for(let currentFeature of generator())
+    {
+      this.featuresData.setFeatureCollection(currentFeature, featuresData[currentFeature]);
+      console.log(featuresData[currentFeature]);
+      if(featuresData[currentFeature]!=undefined)
+      {
+        this.createFeatureMessage(currentFeature);
+      }
+    }
+  }
+
+  createFeatureMessage(feature: keyof IFeatureName)
+  {
     switch(feature)
     {
       case "highway":
@@ -46,8 +69,8 @@ export class OSMData implements IFeatureName {
   private sumLines(feature: keyof IFeatureName) {
     let dst = 0.;
     var i;
-    for (i = 0; i < this[feature].features.length; i++) {
-      dst += lineDistance(this[feature].features[i], 'kilometers');
+    for (i = 0; i < this.featuresData[feature].features.length; i++) {
+      dst += lineDistance(this.featuresData[feature].features[i], 'kilometers');
     }
     feature=="highway"?this.highwaysLength = Math.round(dst*10)/10:this.waterwaysLength = Math.round(dst*10)/10;
   }
@@ -57,10 +80,10 @@ export class OSMData implements IFeatureName {
   private sumAreas(isResidential: boolean) {
     let surface = 0.;
     var i;
-    for( i = 0; i < this.landuse.features.length; i++){
-      surface += area(this.landuse.features[i] as AllGeoJSON);
-      if(isResidential && this.landuse.features[i].properties.landuse != 'residential'){
-        surface -= area(this.landuse.features[i] as AllGeoJSON);
+    for( i = 0; i < this.featuresData.landuse.features.length; i++){
+      surface += area(this.featuresData.landuse.features[i] as AllGeoJSON);
+      if(isResidential && this.featuresData.landuse.features[i].properties.landuse != 'residential'){
+        surface -= area(this.featuresData.landuse.features[i] as AllGeoJSON);
       }
     }
     surface /= 1000000;
@@ -71,14 +94,14 @@ export class OSMData implements IFeatureName {
   private createMessage(feature: keyof IFeatureName, unity: string)
   {
     let messageCreated;
-    if(this[feature].features.length==0)
+    if(this.featuresData[feature].features.length==0)
     {
       // Message is "No [road(for highway)/featureName(building,landuse,waterway)] created yet"
       messageCreated = "No " + (feature=="highway"?"road":feature) + " created yet";
     }
     else
     {
-      if(this[feature].features.length==1)
+      if(this.featuresData[feature].features.length==1)
       {
         // Message is "One "[road(for highway)/featureName(building,landuse,waterway)] created"
         messageCreated = "One " + (feature=="highway"?"road":feature) + " created";
@@ -86,7 +109,7 @@ export class OSMData implements IFeatureName {
       else
       {
         // Message is "XXXX "[roads(for highway)/featureName(buildings,landuses,waterways)] created"
-        messageCreated = this[feature].features.length + (feature=="highway"?" roads":" " + feature + "s") + " created"
+        messageCreated = this.featuresData[feature].features.length + (feature=="highway"?" roads":" " + feature + "s") + " created"
       }
 
       //According to the feature, look for the distance concate with the unity

@@ -1,4 +1,4 @@
-import { IFeatureName } from "./feature-name-interface";
+import { IFeatureName, generator } from "./feature-name-interface";
 
 import * as L from 'leaflet'
 
@@ -43,18 +43,10 @@ export class LayerStyles implements IFeatureName {
   landuse!: L.PathOptions;
   waterway!: L.PathOptions;
 
-  * generator()
-  {
-    yield 'building'
-    yield 'highway'
-    yield 'landuse'
-    yield 'waterway'
-  }
-
   //Construct of the different styles
   constructor()
   {
-    for(let currentFeature of this.generator())
+    for(let currentFeature of generator())
     {
       this[currentFeature] = STYLES[currentFeature];
     }

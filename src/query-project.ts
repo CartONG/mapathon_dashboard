@@ -1,6 +1,8 @@
 import { store } from './store'
 
 import * as osmtogeojson  from 'osmtogeojson'
+import { FeatureCollection, GeometryObject } from 'geojson'
+import { IFeatureName } from './classes/feature-name-interface';
 
 //Interface to define a Node with an id property
 interface IChangeSetNode extends Node
@@ -16,6 +18,8 @@ export namespace QueryProject {
   //Function to request project data
   export function requestProjectData()
   {
+    //Abort requests in progress
+    abortRequestInProgress();
     //Clear the timeout to avoid cross requests
     clearTimeout();
     //Reset the project values to empty the previous project loaded
@@ -30,6 +34,8 @@ export namespace QueryProject {
   //Function to refresh the project data
   export function refreshProjectData()
   {
+    //Abort requests in progress
+    abortRequestInProgress();
     //Clear the timeout to avoid cross requests
     clearTimeout();
     //Empty the error message if any
@@ -38,30 +44,40 @@ export namespace QueryProject {
     getChangeSets();
   }
 
+  function abortRequestInProgress()
+  {
+    if(requests.length>0)
+    {
+      let currentRequest: XMLHttpRequest | undefined;
+      while( (currentRequest = requests.pop()) != undefined )
+      {
+        currentRequest.abort();
+      }
+    }
+  }
+
   //Function to manage requests and answers
-  function sendRequest(url: string): Promise<string>
+  function sendRequest(url: string, isJson?: boolean): Promise<string>
   {
     return new Promise((resolve, reject) => {
-      if(requests.length>0)
-      {
-        const lastRequest = requests.pop();
-        lastRequest!.abort();
-      }
       const xhr = new XMLHttpRequest();
       xhr.open('GET', url);
       xhr.setRequestHeader('Content-Type', 'application/json');
       xhr.onload = () => {
-        requests.pop();
-        store.emptyLoadingMessage();
+        let currentIndex = requests.indexOf(xhr);
+        if(currentIndex!=-1) requests.splice(currentIndex, 1);
+        else console.log("Can't find the request corresponding to the answer.");
         switch(xhr.status)
         {
           case 200:
             resolve(xhr.responseText);
             break;
           case 400:
+            store.emptyLoadingMessage();
             store.setErrorMessage(store.errors.BAD_REQUEST.format(url));
             break;
           case 429:
+            store.emptyLoadingMessage();
             store.setErrorMessage(store.errors.TOO_MANY_REQUESTS.format(url));
             break;
           default:
@@ -71,10 +87,12 @@ export namespace QueryProject {
       };
       xhr.onerror = (error) => {
         console.warn(error);
+        store.emptyLoadingMessage();
         store.setErrorMessage(store.errors.UNKNOWN_ERROR);
       };
       xhr.ontimeout = (timeoutEvent) => {
         console.warn(timeoutEvent);
+        store.emptyLoadingMessage();
         store.setErrorMessage(store.errors.CONNECTION_TIMEOUT.format(url));
       };
       xhr.send();
@@ -99,6 +117,7 @@ export namespace QueryProject {
     }, 
     () =>
     {
+      store.emptyLoadingMessage();
       //Display the error message of invalid project id
       store.setErrorMessage(store.errors.INVALID_PROJECT_ID.format(store.state.projectId.toString()));
     });
@@ -162,7 +181,7 @@ export namespace QueryProject {
       } else {
         //Store the changesets ids
         store.setChangeSets(changeSetsIds);
-        getOSMData();
+        getFeaturesData();
       }
     }
   };
@@ -175,52 +194,69 @@ export namespace QueryProject {
   };
   
   //Get OSM data (features geometry)
-  function getOSMData(): Promise<void>
+  function getFeaturesData(): Promise<void>
   {
     clearTimeout();
+    let types = ['building','highway','landuse','waterway'];
     //Display the loading message 
-    store.setLoadingMessage("Retrieving project features for buildings...");
-    const types = ['building','highway','landuse','waterway'];
-    const urls = types.map(type => 
-      store.state.chosenServer + '?data=[bbox:' + store.state.boundingBox.toBBoxStringForOverpassAPI() + '];'
-      + 'way[' + type + '](changed:"' + store.state.startDateTime.utc().format() + '","' + store.state.endDateTime.utc().format() + '");'
-      + '(._;>;);out+meta;'
-      // return OVP_DE ? buildOAPIReqWithEndDate(server, bbox, type, tmpStart, tmpEnd)
-      //   : buildOAPIReqWithoutEndDate(server, bbox, type, tmpStart) 
-    );
-  
+    store.setLoadingMessage('Retrieving project features for ' + types.join(', '));
+    const urls = createUrlRequest(types);
+    
     //Callback function to handle error, if there is too many requests
     const onError = (error: any) =>
     {
       console.log(error);
-      //Create a timeout to try to request again 
-      timeoutId = window.setTimeout(() => getOSMData(), 30 * 1000);
     }
+
     //Call sendRequest and handle to get all the features
-    return sendRequest(urls[0]).then(data => {//building
-      store.setOSMData("building", getFeatures(data))
-      //Display the loading message
-      store.setLoadingMessage("Retrieving project features for highway...");
-      return sendRequest(urls[1]);
-    }, error => onError(error))
-    .then(data => {//highway
-      store.setOSMData("highway", getFeatures(data as string));
-      //Display the loading message
-      store.setLoadingMessage("Retrieving project features for landuse...");
-      return sendRequest(urls[2]);
-    }, error => onError(error))
-    .then(data => {//landuse
-      store.setOSMData("landuse", getFeatures(data as string));
-      //Display the loading message
-      store.setLoadingMessage("Retrieving project features for waterway...");
-      return sendRequest(urls[3]);
-    }, error => onError(error))
-    .then(data => {//waterway
-      store.setOSMData("waterway", getFeatures(data as string));
-      store.updateProjectLoaded();
-    }, error => onError(error));
+    const promises = [];
+    for(let i=0; i<urls.length; ++i)
+    {
+      promises.push(sendRequest(urls[i]));
+    }
+
+    const whenAllSettled = (results: PromiseSettledResult<string>[]) =>
+    {
+      for(let i=types.length-1; i>-1; --i )
+      {
+        if(results[i].status=="fulfilled")
+        {
+          store.setFeatureCollection(types.splice(i,1)[0] as keyof IFeatureName, getFeatures((results[i] as PromiseFulfilledResult<string>).value));
+        }
+      }
+      if(types.length!=0)
+      {
+        const promises = [];
+        //At least one request didn't make it
+        for(let i=0; i<urls.length; ++i)
+        {
+          promises.push(sendRequest(urls[i]));
+        }
+        store.setLoadingMessage('Retrieving project features for ' + types.join(', '));
+        //TODO peut-être qu'il faudrait mettre en place un timer pour éviter de surcharger le serveur
+        Promise.allSettled(promises).then(whenAllSettled).catch(onError);
+        console.log(types);
+      }
+      else
+      {
+        store.emptyLoadingMessage();
+        store.updateProjectLoaded();
+      }
+    }
+
+    return Promise.allSettled(promises)
+      .then(whenAllSettled)
+      .catch(onError);
+      
+    function createUrlRequest(types: string[]): string[]
+    {
+      return types.map(type => 
+        store.state.chosenServer + '?data=[bbox:' + store.state.boundingBox.toBBoxStringForOverpassAPI() + '];'
+        + 'way[' + type + '](changed:"' + store.state.startDateTime.utc().format() + '","' + store.state.endDateTime.utc().format() + '");'
+        + '(._;>;);out+meta;')
+    }
   
-    function getFeatures(data: string) {
+    function getFeatures(data: string): FeatureCollection<GeometryObject> {
       //Parse the XML data
       const xmlDoc = new DOMParser().parseFromString(data, 'text/xml');
       //Get the feature collection from the XML document
@@ -242,15 +278,4 @@ export namespace QueryProject {
     }
     timeoutId = -1;
   }
-
-  // function buildOAPIReqWithoutEndDate(server, bbox, type, startDate) {
-  //   return server + '?data=[bbox:' + bbox.s + ',' + bbox.w + ',' + bbox.n + ',' + bbox.e + '];'
-  //     + 'way[' + type + '](newer:"' + startDate.utc().format() + '");'
-  //     + '(._;>;);out+meta;';
-  // };
-  
-  // function buildOAPIReqWithEndDate(server, bbox, type, startDate, endDate) {
-  //   return server + '?data=[bbox:' + bbox.s + ',' + bbox.w + ',' + bbox.n + ',' + bbox.e + '];'
-  //     + 'way[' + type + '](changed:"' + startDate.utc().format() + '","' + endDate.utc().format() + '");'
-  //     + '(._;>;);out+meta;';
 } 
