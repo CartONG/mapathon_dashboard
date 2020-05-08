@@ -20,7 +20,7 @@ import { FeaturesData } from './classes/features-data';
 //Constant to expose and manage the store
 //It could be seen as a static class
 export const store = {
-  constants: CONSTANTS,
+  constants: new CONSTANTS(),
   errors: ERRORS,
   state: new State(),
   emptyLoadingMessage()
@@ -105,10 +105,11 @@ export const store = {
   {
     this.state.boundingBox = new MyLatLngBounds(new GeoJSON(areaOfInterest).getBounds());
   },
-  setSearchBarValues(projectId: number, chosenServer: string)
+  setSearchBarValues(projectId: number, chosenServerURL: string, chosenTaskingManager: string)
   {
     this.state.projectId = projectId;
-    this.state.chosenServer = chosenServer;
+    this.state.chosenServerURL = chosenServerURL;
+    this.state.chosenTaskingManager = chosenTaskingManager;
     //Check if a timeout already exists
     if(this.state.timeoutId != -1)
     {

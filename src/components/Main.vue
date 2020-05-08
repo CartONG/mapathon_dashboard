@@ -32,7 +32,7 @@ export default class extends Vue
 .top-bar-container {
   display:flex;
   flex-flow: row nowrap;
-  justify-content: flex-start;
+  justify-content: space-between;
   align-items: baseline;
 }
 </style>

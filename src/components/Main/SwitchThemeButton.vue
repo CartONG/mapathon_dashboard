@@ -29,7 +29,7 @@ export default class extends Vue {
   display:flex;
   flex-flow: row nowrap;
   justify-content: flex-start;
-  margin-left: 250px;
+  margin-right: 10px;
 }
 .switch {
   position: relative;

@@ -57,7 +57,7 @@ export namespace QueryProject {
   }
 
   //Function to manage requests and answers
-  function sendRequest(url: string, isJson?: boolean): Promise<string>
+  function sendRequest(url: string): Promise<string>
   {
     return new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest();
@@ -105,14 +105,15 @@ export namespace QueryProject {
   {
     //Display the loading message
     store.setLoadingMessage("Retrieving project summary...");
+    const taskingManagerObject = store.constants.TASKING_MANAGER_URLS[store.state.chosenTaskingManager];
     //Build the url according to the store values
-    const url = store.constants.HOTOSM_API_URL + store.state.projectId + '/summary';
+    const url = taskingManagerObject.apiURL + store.state.projectId + '/' + taskingManagerObject.summaryAPI;
     //Call sendRequest function
     return sendRequest(url).then(data => {
       //Parse the JSON data given as an answer
       const projectData = JSON.parse(data);
       //Store the JSON values wanted in the store
-      store.setProjectNameCentroidAndPercentages(projectData.name, projectData.percentMapped, projectData.percentValidated, projectData.aoiCentroid);
+      store.setProjectNameCentroidAndPercentages(projectData.projectInfo?projectData.projectInfo.name:projectData.name, projectData.percentMapped, projectData.percentValidated, projectData.aoiCentroid);
       getProjectAreaOfInterest();
     }, 
     () =>
@@ -127,9 +128,10 @@ export namespace QueryProject {
   function getProjectAreaOfInterest()
   {
     //Display the loading message
-    store.setLoadingMessage("Retrieving project area of interest...")
+    store.setLoadingMessage("Retrieving project area of interest...");
+    const taskingManagerObject = store.constants.TASKING_MANAGER_URLS[store.state.chosenTaskingManager];
     //Build the url according to the store values
-    const url = store.constants.HOTOSM_API_URL + store.state.projectId + '?abbreviated=true';
+    const url = taskingManagerObject.apiURL + store.state.projectId + taskingManagerObject.abbreviatedOptions;
     //Call sendRequest function
     return sendRequest(url).then(data => {
       //Parse the JSON data given as an answer
@@ -251,7 +253,7 @@ export namespace QueryProject {
     function createUrlRequest(types: string[]): string[]
     {
       return types.map(type => 
-        store.state.chosenServer + '?data=[bbox:' + store.state.boundingBox.toBBoxStringForOverpassAPI() + '];'
+        store.state.chosenServerURL + '?data=[bbox:' + store.state.boundingBox.toBBoxStringForOverpassAPI() + '];'
         + 'way[' + type + '](changed:"' + store.state.startDateTime.utc().format() + '","' + store.state.endDateTime.utc().format() + '");'
         + '(._;>;);out+meta;')
     }

@@ -20,7 +20,8 @@ export class State {
   currentTimeZone: string;
   endDateTime: moment.Moment;
   startDateTime: moment.Moment;
-  chosenServer: string;
+  chosenTaskingManager: string;
+  chosenServerURL: string;
   //ProjectDataValues
   projectLoaded: boolean;
   aoiCentroid!: Point;
@@ -53,7 +54,8 @@ export class State {
     this.currentTimeZone = this.timezone();
     this.startDateTime = moment().add(-60,'m').set('minute', 0);
     this.endDateTime = moment().add(1,'h').set('minute', 0);
-    this.chosenServer = "";
+    this.chosenServerURL = "";
+    this.chosenTaskingManager = "";
     this.loadingMessage = "";
     this.projectName = "";
     this.errorMessage = "";

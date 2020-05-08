@@ -1,4 +1,5 @@
 <template>
+<!-- TODO Rajouter l'image pour chaque tasking manager ? -->
   <header class="header">
     <AnchorImage link="http://www.cartong.org/" id="cartong-logo" 
       imageUrl="./images/CartONG_logo.png" alt="CartONG logo" />

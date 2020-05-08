@@ -45,11 +45,11 @@ export default class extends Vue {
 <style>
 .label-input {
   margin-bottom: 0px;
-  margin-right: 10px;
+  margin-right: 5px;
 }
 
 .input-date {
-  max-width: 145px;
+  max-width: 150px;
 }
 
 .input-project-id {

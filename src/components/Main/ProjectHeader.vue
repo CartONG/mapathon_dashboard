@@ -63,7 +63,7 @@ export default class extends Vue {
 
   get projectUrl(): string
   {
-    return store.constants.HOTOSM_PROJECT_URL + this.currentState.projectId;
+    return store.constants.TASKING_MANAGER_URLS[this.currentState.chosenTaskingManager].projectURL + this.currentState.projectId;
   }
 }
 </script>
