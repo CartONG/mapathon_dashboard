@@ -1,0 +1,58 @@
+1 - You will have to make the following import in the "store.ts" file [The file name can be different, it depends on the file you want to use] :
+  import { STATE } from '../test/state_project_8247_saved'
+
+2 - You need to comment a line of code of "store.ts" file number 106 :
+  QueryProject.requestProjectData();
+
+3 - You need to copy/paste the following lines of code in the "store.ts" file after the line commented previously :
+  this.state.projectId = parseInt(STATE.projectId);
+  this.setProjectNameCentroidAndPercentages(STATE.projectName, STATE.percentMapped, STATE.percentValidated, STATE.aoiCentroid as Point);
+  this.setProjectBoundingBox(STATE.areaOfInterest as MultiPolygon);
+  this.setChangeSets(STATE.changeSetsIds);
+  this.setFeaturesData(STATE.osmData.building as FeatureCollection<GeometryObject>,
+    STATE.osmData.highway as FeatureCollection<GeometryObject>,
+    STATE.osmData.landuse as FeatureCollection<GeometryObject>,
+    STATE.osmData.waterway as FeatureCollection<GeometryObject>);
+  this.state.projectLoaded = true;
+  this.state.updateTime = moment();
+
+4 - Now if you look at your "store.ts" file, it should be like so:
+START OF FILE
+[...]
+import { State } from './classes/state'
+
+import { STATE } from '../../test/state_project_8247_saved.ts'
+
+import { FeatureCollection, GeometryObject } from 'geojson';
+
+//Constant to expose and manage the store
+[...]
+setSearchBarValues(projectId: number, chosenServer: string)
+  {
+    this.state.projectId = projectId;
+    this.state.chosenServer = chosenServer;
+    //Check if a timeout already exists
+    if(this.state.timeoutId != -1)
+    {
+      //Clear the timeout
+      window.clearTimeout(this.state.timeoutId!);
+    }
+    this.state.timeoutId = -1;
+    //Request for project data
+    //QueryProject.requestProjectData();
+    this.state.projectId = parseInt(STATE.projectId);
+    this.setProjectNameCentroidAndPercentages(STATE.projectName, STATE.percentMapped, STATE.percentValidated, STATE.aoiCentroid as Point);
+    this.setProjectBoundingBox(STATE.areaOfInterest as MultiPolygon);
+    this.setChangeSets(STATE.changeSetsIds);
+    let featuresData = new FeaturesData();
+    featuresData.setFeatures(STATE.osmData.building as FeatureCollection<GeometryObject>,
+      STATE.osmData.highway as FeatureCollection<GeometryObject>,
+      STATE.osmData.landuse as FeatureCollection<GeometryObject>,
+      STATE.osmData.waterway as FeatureCollection<GeometryObject>);
+    this.setFeaturesData(featuresData);
+    this.state.projectLoaded = true;
+    this.state.updateTime = moment();
+  },
+  updateProjectLoaded()
+  [...]
+  END OF FILE
