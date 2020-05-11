@@ -20,7 +20,7 @@ import taskTpl from '../tpl/task.pug';
 
 import conf from '../data/conf.json';
 
-const HOTOSM_URL = 'https://tasks.hotosm.org/api/v1/project/';
+const HOTOSM_URL = 'https://tasking-manager-tm4-production-api.hotosm.org/api/v2/projects/';
 
 const SERVERS = {
   'overpass-api.de': 'https://overpass-api.de/api/interpreter',
@@ -583,7 +583,7 @@ function intent(dom, locateMap) {
 
   actions.getTaskData$ = actions.getURLParams$
     // .flatMap(params => Rx.Observable.fromPromise(jquery.getJSON(HOTOSM_URL + params.taskId + '.json')))
-    .flatMap(params => Rx.Observable.fromPromise(jquery.getJSON(HOTOSM_URL + params.taskId + '/summary')))
+    .flatMap(params => Rx.Observable.fromPromise(jquery.getJSON(HOTOSM_URL + params.taskId + '/queries/summary')))
     .doOnError(displayErrorMessage.bind(this, dom.loadingProgress, dom.loadingMessage, dom.loadingCloseButton))
     .retry()
     .share();
