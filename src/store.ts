@@ -134,7 +134,7 @@ export const store = {
       theme = "light";
       document.body.classList.remove('body-container--dark-theme');
     }
-    document.cookie = `theme=${theme};max-age=60*60*24*365`;
+    localStorage.setItem('theme', theme);
   },
   updateProjectLoaded()
   {

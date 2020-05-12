@@ -100,9 +100,8 @@ export class State {
 
   private getBooleanTheme()
   {
-    let cookies = document.cookie;
-    console.log(cookies);
-    if(cookies.indexOf("theme=black") != -1)
+    let theme = localStorage.getItem("theme");
+    if(theme=='black')
     {
       return true;
     }
