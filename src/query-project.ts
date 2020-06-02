@@ -9,6 +9,9 @@ interface ChangeSetNode extends Node {
   id: string;
 }
 
+//TODO Faire l'affichage au fur et à mesure
+//TODO Garder en mémoire les projets déjà requêtés
+
 //Static class to query data for a project
 export class QueryProject {
   static requests: XMLHttpRequest[] = [];
@@ -81,8 +84,9 @@ export class QueryProject {
             store.setErrorMessage(store.errors.BAD_REQUEST.format(url));
             break;
           case 429:
-            store.emptyLoadingMessage();
-            store.setErrorMessage(store.errors.TOO_MANY_REQUESTS.format(url));
+            reject(xhr.responseText);
+            // store.emptyLoadingMessage();
+            // store.setErrorMessage(store.errors.TOO_MANY_REQUESTS.format(url));
             break;
           default:
             reject(Error(xhr.responseText));
