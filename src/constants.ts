@@ -88,8 +88,7 @@ export class CONSTANTS {
     // }
   }
   readonly SERVERS = {
-    'lz4.overpass-api.de': 'https://lz4.overpass-api.de/api/interpreter',
-    'z.overpass-api.de': 'https://z.overpass-api.de/api/interpreter',
+    'overpass-api.de': 'https://overpass-api.de/api/interpreter',
     'overpass.nchc.org': 'https://overpass.nchc.org.tw/api/interpreter'
   }
   readonly DATETIME_FORMAT = 'DD/MM/YYYY HH:mm'

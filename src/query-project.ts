@@ -10,6 +10,9 @@ interface IChangeSetNode extends Node
   id: string;
 }
 
+//TODO Faire l'affichage au fur et à mesure
+//TODO Garder en mémoire les projets déjà requêtés
+
 //Static class to query data for a project
 export namespace QueryProject {
   const requests: XMLHttpRequest[] = [];
@@ -57,16 +60,16 @@ export namespace QueryProject {
   }
 
   //Function to manage requests and answers
-  function sendRequest(url: string): Promise<string>
+  async function sendRequest(url: string, isJson: boolean = true): Promise<string>
   {
     return new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest();
       xhr.open('GET', url);
-      xhr.setRequestHeader('Content-Type', 'application/json');
+      if(isJson) xhr.setRequestHeader('Content-Type', 'application/json');
       xhr.onload = () => {
         let currentIndex = requests.indexOf(xhr);
         if(currentIndex!=-1) requests.splice(currentIndex, 1);
-        else console.log("Can't find the request corresponding to the answer.");
+        else console.warn("Can't find the request corresponding to the answer.");
         switch(xhr.status)
         {
           case 200:
@@ -77,8 +80,9 @@ export namespace QueryProject {
             store.setErrorMessage(store.errors.BAD_REQUEST.format(url));
             break;
           case 429:
-            store.emptyLoadingMessage();
-            store.setErrorMessage(store.errors.TOO_MANY_REQUESTS.format(url));
+            reject(xhr.responseText);
+            // store.emptyLoadingMessage();
+            // store.setErrorMessage(store.errors.TOO_MANY_REQUESTS.format(url));
             break;
           default:
             reject(Error(xhr.responseText));
@@ -201,13 +205,13 @@ export namespace QueryProject {
     clearTimeout();
     let types = ['building','highway','landuse','waterway'];
     //Display the loading message 
-    store.setLoadingMessage('Retrieving project features for ' + types.join(', '));
+    store.setLoadingMessage(`Retrieving project features for ${types.join(', ')}`);
     const urls = createUrlRequest(types);
     
     //Callback function to handle error, if there is too many requests
     const onError = (error: any) =>
     {
-      console.log(error);
+      console.error(`Unhandled error : ${error}`);
     }
 
     //Call sendRequest and handle to get all the features
@@ -217,27 +221,38 @@ export namespace QueryProject {
       promises.push(sendRequest(urls[i]));
     }
 
-    const whenAllSettled = (results: PromiseSettledResult<string>[]) =>
+    const whenAllSettled = async (results: PromiseSettledResult<string>[]) =>
     {
       for(let i=types.length-1; i>-1; --i )
       {
         if(results[i].status=="fulfilled")
         {
+          urls.splice(i,1);
           store.setFeatureCollection(types.splice(i,1)[0] as keyof IFeatureName, getFeatures((results[i] as PromiseFulfilledResult<string>).value));
         }
       }
-      if(types.length!=0)
+      if(urls.length!=0)
       {
-        const promises = [];
-        //At least one request didn't make it
-        for(let i=0; i<urls.length; ++i)
-        {
-          promises.push(sendRequest(urls[i]));
+        let timeBeforeRetry = await getTimeBeforeRetry();
+        const retryToGetFeaturesData = () => {
+          const promises = [];
+          //At least one request didn't make it
+          for(let i=0; i<urls.length; ++i)
+          {
+            promises.push(sendRequest(urls[i]));
+          }
+          store.setLoadingMessage(`Retrieving project features for ${types.join(', ')}`);
+
+          Promise.allSettled(promises).then(whenAllSettled).catch(onError);
         }
-        store.setLoadingMessage('Retrieving project features for ' + types.join(', '));
-        //TODO peut-être qu'il faudrait mettre en place un timer pour éviter de surcharger le serveur
-        Promise.allSettled(promises).then(whenAllSettled).catch(onError);
-        console.log(types);
+        if(timeBeforeRetry>0)
+        {
+          setTimeout(retryToGetFeaturesData, timeBeforeRetry * 1000);
+        }
+        else
+        {
+          retryToGetFeaturesData();
+        }
       }
       else
       {
@@ -268,6 +283,32 @@ export namespace QueryProject {
         .filter(feature => store.state.changeSetsIds.indexOf(feature.properties.changeset) > -1);
       featureCollection.features = newFeatures;
       return featureCollection;
+    };
+
+    async function getTimeBeforeRetry(): Promise<number>
+    {
+      let status = await sendRequest(store.state.chosenServerURL.replace('interpreter','status'), false), index;
+      let regexIn = / in /gi, indices: number[] = [];
+      while ( regexIn.exec(status) !== null ) {
+        indices.push(regexIn.lastIndex);
+      }
+
+      const remainingSeconds=[];
+      for(let i=0; i < indices.length; ++i)
+      {
+        remainingSeconds.push(
+          parseInt(
+            status.substr(
+              indices[i],
+              status.indexOf(
+                ' ',
+                indices[i]
+              )
+            )
+          )
+        );
+      }
+      return Math.max(...remainingSeconds)
     };
   };
 

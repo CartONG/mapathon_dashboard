@@ -34,7 +34,7 @@ export default class extends Vue
   private projectId = this.currentState.projectId;
   private startDateTime = store.state.startDateTime.format(store.constants.DATETIME_FORMAT);
   private endDateTime = store.state.endDateTime.format(store.constants.DATETIME_FORMAT);
-  private chosenServerURL = store.constants.SERVERS["lz4.overpass-api.de"];
+  private chosenServerURL = store.constants.SERVERS["overpass-api.de"];
   private chosenTaskingManager = "Humanitarian OSM Team";
   
   get taskingManagerSelectionClasses(): string 
