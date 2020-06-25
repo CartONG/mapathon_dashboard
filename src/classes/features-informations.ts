@@ -8,6 +8,9 @@ import lineDistance from "@turf/line-distance";
 import area from "@turf/area";
 import { generator } from "./feature-name-interface";
 
+// TODO Changer les messages lors du chargement des données
+// ainsi l'interface est affichée, mais les données apparaissent après
+
 //Class to manage the features geometry and messages
 export class FeaturesInformations {
   featuresData: FeaturesData;

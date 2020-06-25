@@ -9,10 +9,10 @@
   this.setProjectNameCentroidAndPercentages(STATE.projectName, STATE.percentMapped, STATE.percentValidated, STATE.aoiCentroid as Point);
   this.setProjectBoundingBox(STATE.areaOfInterest as MultiPolygon);
   this.setChangeSets(STATE.changeSetsIds);
-  this.setFeaturesData(STATE.osmData.building as FeatureCollection<GeometryObject>,
-    STATE.osmData.highway as FeatureCollection<GeometryObject>,
-    STATE.osmData.landuse as FeatureCollection<GeometryObject>,
-    STATE.osmData.waterway as FeatureCollection<GeometryObject>);
+  this.setFeaturesData(STATE.osmData.building as FeatureCollection<Geometry>,
+    STATE.osmData.highway as FeatureCollection<Geometry>,
+    STATE.osmData.landuse as FeatureCollection<Geometry>,
+    STATE.osmData.waterway as FeatureCollection<Geometry>);
   this.state.projectLoaded = true;
   this.state.updateTime = moment();
 
@@ -23,7 +23,7 @@ import { State } from './classes/state'
 
 import { STATE } from '../../test/state_project_8247_saved.ts'
 
-import { FeatureCollection, GeometryObject } from 'geojson';
+import { FeatureCollection, Geometry } from 'geojson';
 
 //Constant to expose and manage the store
 [...]
@@ -45,10 +45,10 @@ setSearchBarValues(projectId: number, chosenServer: string)
     this.setProjectBoundingBox(STATE.areaOfInterest as MultiPolygon);
     this.setChangeSets(STATE.changeSetsIds);
     let featuresData = new FeaturesData();
-    featuresData.setFeatures(STATE.osmData.building as FeatureCollection<GeometryObject>,
-      STATE.osmData.highway as FeatureCollection<GeometryObject>,
-      STATE.osmData.landuse as FeatureCollection<GeometryObject>,
-      STATE.osmData.waterway as FeatureCollection<GeometryObject>);
+    featuresData.setFeatures(STATE.osmData.building as FeatureCollection<Geometry>,
+      STATE.osmData.highway as FeatureCollection<Geometry>,
+      STATE.osmData.landuse as FeatureCollection<Geometry>,
+      STATE.osmData.waterway as FeatureCollection<Geometry>);
     this.setFeaturesData(featuresData);
     this.state.projectLoaded = true;
     this.state.updateTime = moment();

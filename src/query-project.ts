@@ -31,7 +31,7 @@ export class QueryProject {
     QueryProject.abortRequestInProgress();
     //Clear the timeout to avoid cross requests
     clearTimeout();
-    //Reset the project values to empty the previous project loaded
+    //Reset the project checkboxes
     store.resetProjectLoaded();
     //Empty the message displayed
     store.emptyLoadingMessage();
