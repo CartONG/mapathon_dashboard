@@ -48,7 +48,10 @@ module.exports = {
   },
   plugins: [
     new CleanWebpackPlugin(['dist']),
-    new CopyWebpackPlugin([{ from: 'public' }]),
+    new CopyWebpackPlugin(
+      {
+        patterns:[{ from: 'public' }]
+      }),
     new HtmlWebpackPlugin({
       template: 'public/index.html'
     }),

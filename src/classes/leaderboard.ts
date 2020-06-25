@@ -2,7 +2,7 @@ import { IFeatureName, generator } from './feature-name-interface'
 
 import { FeaturesData } from './features-data';
 
-import { Feature, FeatureCollection, GeometryObject } from 'geojson';
+import { Feature, FeatureCollection, GeoJsonProperties, Geometry } from 'geojson';
 
 import * as lineDistance from '@turf/line-distance';
 import area from '@turf/area';
@@ -15,7 +15,7 @@ export class Leaderboard implements IFeatureName {
   landuse: string[] = [];
   waterway: string[] = [];
 
-  setFeatureCollection(featureName: keyof IFeatureName, featuresCollection: FeatureCollection<GeometryObject>)
+  setFeatureCollection(featureName: keyof IFeatureName, featuresCollection: FeatureCollection<Geometry>)
   {
     this.set(featureName, featuresCollection.features);
   }
@@ -31,14 +31,14 @@ export class Leaderboard implements IFeatureName {
   }
 
   //Function to create and set the leaderboard
-  set(feature: keyof IFeatureName, features: Feature<GeometryObject, any>[])
+  set(feature: keyof IFeatureName, features: Feature<Geometry, GeoJsonProperties>[])
   {
     //Create a map<userName,totalCreated> to sort the user and their count
     const mapFeature = new Map<string,number>();
     for(let i = 0; i<features.length; i++)
     {
       const currentFeatureGeometry = features[i];
-      const user = currentFeatureGeometry.properties.user;
+      const user = currentFeatureGeometry.properties!.user;
       let currentValue = (mapFeature.has(user)?mapFeature.get(user)!:0);
       switch(feature)
       {

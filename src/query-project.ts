@@ -1,7 +1,7 @@
 import { store } from './store'
 
 import * as osmtogeojson  from 'osmtogeojson'
-import { FeatureCollection, GeometryObject } from 'geojson'
+import { FeatureCollection, GeoJsonProperties, Geometry } from 'geojson'
 import { IFeatureName } from './classes/feature-name-interface';
 
 //Interface to define a Node with an id property
@@ -25,7 +25,7 @@ export namespace QueryProject {
     abortRequestInProgress();
     //Clear the timeout to avoid cross requests
     clearTimeout();
-    //Reset the project values to empty the previous project loaded
+    //Reset the project checkboxes
     store.resetProjectLoaded();
     //Empty the message displayed
     store.emptyLoadingMessage();
@@ -273,15 +273,16 @@ export namespace QueryProject {
         + '(._;>;);out+meta;')
     }
   
-    function getFeatures(data: string): FeatureCollection<GeometryObject> {
+    function getFeatures(data: string): FeatureCollection<Geometry, GeoJsonProperties> {
       //Parse the XML data
       const xmlDoc = new DOMParser().parseFromString(data, 'text/xml');
       //Get the feature collection from the XML document
-      const featureCollection = osmtogeojson(xmlDoc);
+      const featureCollection = osmtogeojson(xmlDoc) as FeatureCollection<Geometry, GeoJsonProperties>;
       //Get the geometry according to the changesets we get before
       const newFeatures = featureCollection.features
-        .filter(feature => store.state.changeSetsIds.indexOf(feature.properties.changeset) > -1);
+        .filter(feature => store.state.changeSetsIds.indexOf(feature.properties!.changeset) > -1);
       featureCollection.features = newFeatures;
+
       return featureCollection;
     };
 

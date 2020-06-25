@@ -1,15 +1,15 @@
 import { IFeatureName } from './feature-name-interface'
 
-import { FeatureCollection, GeometryObject } from 'geojson';
+import { FeatureCollection, Geometry } from 'geojson';
 
 //Class to manage the features geometry
 export class FeaturesData implements IFeatureName {
-  building!: FeatureCollection<GeometryObject>;
-  highway!: FeatureCollection<GeometryObject>;
-  landuse!: FeatureCollection<GeometryObject>;
-  waterway!: FeatureCollection<GeometryObject>;
+  building!: FeatureCollection<Geometry>;
+  highway!: FeatureCollection<Geometry>;
+  landuse!: FeatureCollection<Geometry>;
+  waterway!: FeatureCollection<Geometry>;
 
-  setFeatures(building: FeatureCollection<GeometryObject>, highway: FeatureCollection<GeometryObject>, landuse: FeatureCollection<GeometryObject>, waterway: FeatureCollection<GeometryObject>)
+  setFeatures(building: FeatureCollection<Geometry>, highway: FeatureCollection<Geometry>, landuse: FeatureCollection<Geometry>, waterway: FeatureCollection<Geometry>)
   {
     this.building = building;
     this.highway = highway;
@@ -17,7 +17,7 @@ export class FeaturesData implements IFeatureName {
     this.waterway = waterway;
   }
 
-  setFeatureCollection(featureName: keyof IFeatureName, featureCollection: FeatureCollection<GeometryObject>)
+  setFeatureCollection(featureName: keyof IFeatureName, featureCollection: FeatureCollection<Geometry>)
   {
     this[featureName] = featureCollection;
   }

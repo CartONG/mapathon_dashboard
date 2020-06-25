@@ -1,6 +1,6 @@
 import * as moment from 'moment'
 
-import { FeatureCollection, GeometryObject, MultiPolygon, Point } from 'geojson';
+import { FeatureCollection, GeoJsonProperties, Geometry, MultiPolygon, Point } from 'geojson';
 import { GeoJSON } from 'leaflet';
 
 import { MyLatLngBounds } from './classes/my-lat-lng-bounds'
@@ -82,7 +82,7 @@ export const store = {
   {
     this.state.loadingMessage = loadingMessage;
   },
-  setFeatureCollection(feature: keyof IFeatureName, featureCollection: FeatureCollection<GeometryObject>)
+  setFeatureCollection(feature: keyof IFeatureName, featureCollection: FeatureCollection<Geometry, GeoJsonProperties>)
   {
     this.state.featuresInformations.setFeatureCollection(feature, featureCollection);
     this.state.leaderboard.setFeatureCollection(feature, featureCollection);

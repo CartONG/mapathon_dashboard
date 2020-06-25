@@ -2,12 +2,15 @@ import { IFeatureName } from './feature-name-interface'
 
 import { FeaturesData } from './features-data'
 
-import { FeatureCollection, GeometryObject} from 'geojson'
+import { FeatureCollection, Geometry} from 'geojson'
 
 import * as lineDistance from '@turf/line-distance';
 import area from '@turf/area';
 import { AllGeoJSON } from '@turf/helpers'
 import { generator } from './feature-name-interface';
+
+// TODO Changer les messages lors du chargement des données
+// ainsi l'interface est affichée, mais les données apparaissent après
 
 //Class to manage the features geometry and messages
 export class FeaturesInformations {
@@ -25,7 +28,7 @@ export class FeaturesInformations {
     this.featuresData = new FeaturesData();
   }
 
-  setFeatureCollection(featureName: keyof IFeatureName, featureCollection: FeatureCollection<GeometryObject>)
+  setFeatureCollection(featureName: keyof IFeatureName, featureCollection: FeatureCollection<Geometry>)
   {
     this.featuresData.setFeatureCollection(featureName, featureCollection);
     this.createFeatureMessage(featureName);
@@ -82,7 +85,7 @@ export class FeaturesInformations {
     var i;
     for( i = 0; i < this.featuresData.landuse.features.length; i++){
       surface += area(this.featuresData.landuse.features[i] as AllGeoJSON);
-      if(isResidential && this.featuresData.landuse.features[i].properties.landuse != 'residential'){
+      if(isResidential && this.featuresData.landuse.features[i].properties!.landuse != 'residential'){
         surface -= area(this.featuresData.landuse.features[i] as AllGeoJSON);
       }
     }
