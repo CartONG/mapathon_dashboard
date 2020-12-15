@@ -1,6 +1,6 @@
-import { IFeatureName, generator } from "./feature-name-interface";
+import { FeatureName, generator } from "./feature-name-interface";
 
-import * as L from 'leaflet'
+import * as L from "leaflet";
 
 //Styles defined for each layer
 const STYLES = {
@@ -11,43 +11,41 @@ const STYLES = {
   //   "opacity": 1
   // },
   building: {
-    "color": "#8758f3",
-    "weight": 4,
-    "fillOpacity": 1,
-    "opacity": 1
+    color: "#8758f3",
+    weight: 4,
+    fillOpacity: 1,
+    opacity: 1
   },
   highway: {
-    "color": "#f0782c",
-    "weight": 2,
-    "fillOpacity": 1,
-    "opacity": 1
+    color: "#f0782c",
+    weight: 2,
+    fillOpacity: 1,
+    opacity: 1
   },
   landuse: {
-    "color": "#9ec658",
-    "weight": 2,
-    "fillOpacity": 1,
-    "opacity": 1
+    color: "#9ec658",
+    weight: 2,
+    fillOpacity: 1,
+    opacity: 1
   },
   waterway: {
-    "color": "#58c4f2",
-    "weight": 4,
-    "fillOpacity": 1,
-    "opacity": 1
+    color: "#58c4f2",
+    weight: 4,
+    fillOpacity: 1,
+    opacity: 1
   }
-}
+};
 
 //Class to define the different styles according to the layer
-export class LayerStyles implements IFeatureName {
+export class LayerStyles implements FeatureName {
   building!: L.PathOptions;
   highway!: L.PathOptions;
   landuse!: L.PathOptions;
   waterway!: L.PathOptions;
 
   //Construct of the different styles
-  constructor()
-  {
-    for(let currentFeature of generator())
-    {
+  constructor() {
+    for (const currentFeature of generator()) {
       this[currentFeature] = STYLES[currentFeature];
     }
   }

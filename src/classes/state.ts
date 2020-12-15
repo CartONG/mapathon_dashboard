@@ -1,17 +1,17 @@
-import { Checkboxes } from './checkboxes'
+import { Checkboxes } from "./checkboxes";
 
-import * as moment from 'moment'
+import moment from "moment";
 
-import { Point } from 'geojson';
+import { Point } from "geojson";
 
-import { MyLatLngBounds } from './my-lat-lng-bounds'
+import { MyLatLngBounds } from "./my-lat-lng-bounds";
 
-import { FeaturesInformations } from './features-informations'
+import { FeaturesInformations } from "./features-informations";
 
-import { OverviewMap} from './overview-map'
+import { OverviewMap } from "./overview-map";
 
-import { HighwayMap } from './highway-map';
-import { Leaderboard } from './leaderboard';
+import { HighwayMap } from "./highway-map";
+import { Leaderboard } from "./leaderboard";
 
 //State class which keeps the current state of the application
 export class State {
@@ -36,7 +36,7 @@ export class State {
   //CheckboxesValues
   checkboxes: Checkboxes;
   //Information messages
-  errorMessage: string | String;
+  errorMessage: string | string;
   loadingMessage: string;
   //Maps informations
   askedLocation: boolean;
@@ -48,12 +48,15 @@ export class State {
   //Theme information
   isThemeDark: boolean;
 
-  constructor()
-  {
+  constructor() {
     this.projectId = 0;
     this.currentTimeZone = this.timezone();
-    this.startDateTime = moment().add(-60,'m').set('minute', 0);
-    this.endDateTime = moment().add(1,'h').set('minute', 0);
+    this.startDateTime = moment()
+      .add(-60, "m")
+      .set("minute", 0);
+    this.endDateTime = moment()
+      .add(1, "h")
+      .set("minute", 0);
     this.chosenServerURL = "";
     this.chosenTaskingManager = "";
     this.loadingMessage = "";
@@ -72,41 +75,35 @@ export class State {
     this.isThemeDark = this.getBooleanTheme();
   }
 
-  private timezone(): string
-  {
-    var valueToReturn = 'UTC';
-    var utcOffset = moment.utc().toDate().getTimezoneOffset();
+  private timezone(): string {
+    let valueToReturn = "UTC";
+    let utcOffset = moment
+      .utc()
+      .toDate()
+      .getTimezoneOffset();
 
-    if(utcOffset<0)
-    {
-      valueToReturn += '+';
+    if (utcOffset < 0) {
+      valueToReturn += "+";
       utcOffset *= -1;
-    }
-    else
-    {
-      valueToReturn += '-';
+    } else {
+      valueToReturn += "-";
     }
 
-    var minutes = utcOffset%60;
+    const minutes = utcOffset % 60;
 
-    valueToReturn+=Math.round(utcOffset/60);
-    if(minutes!==0)
-    {
-      valueToReturn+=':'+minutes;
+    valueToReturn += Math.round(utcOffset / 60);
+    if (minutes !== 0) {
+      valueToReturn += ":" + minutes;
     }
 
     return valueToReturn;
   }
 
-  private getBooleanTheme()
-  {
-    let theme = localStorage.getItem("theme");
-    if(theme=='black')
-    {
+  private getBooleanTheme() {
+    const theme = localStorage.getItem("theme");
+    if (theme == "black") {
       return true;
-    }
-    else
-    {
+    } else {
       return false;
     }
   }

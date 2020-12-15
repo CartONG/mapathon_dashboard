@@ -1,15 +1,24 @@
-//Interface to declare the features
-export interface IFeatureName {
-  building: any;
-  highway: any;
-  landuse: any;
-  waterway: any;
-};
+import { FeatureCollection, Geometry } from "geojson";
 
-export function * generator()
-{
-  yield 'building'
-  yield 'highway'
-  yield 'landuse'
-  yield 'waterway'
+type FeatureType =
+  | FeatureCollection<Geometry>
+  | boolean
+  | string[]
+  | L.PathOptions
+  | number
+  | L.GeoJSON;
+
+//Interface to declare the features
+export interface FeatureName {
+  building: FeatureType;
+  highway: FeatureType;
+  landuse: FeatureType;
+  waterway: FeatureType;
+}
+
+export function* generator() {
+  yield "building";
+  yield "highway";
+  yield "landuse";
+  yield "waterway";
 }

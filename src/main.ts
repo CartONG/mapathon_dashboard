@@ -1,20 +1,20 @@
-import "core-js/stable"
-import "regenerator-runtime/runtime"
+import "./string.extension";
 
-import "./string.extension"
+import Vue from "vue";
+import App from "./App.vue";
 
-import App from './App.vue'
-import Vue from 'vue'
+Vue.config.productionTip = false;
 
-import { library } from '@fortawesome/fontawesome-svg-core'
-import { faSun, faMoon } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { faSun, faMoon } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
-library.add(faSun,faMoon);
+library.add(faSun, faMoon);
 
-Vue.component('font-awesome-icon', FontAwesomeIcon)
+Vue.component("font-awesome-icon", FontAwesomeIcon);
 
 new Vue({
-  el: '#app',
   render: h => h(App)
-});
+}).$mount("#app");
+
+//TESTER EN INSTALLANT LE PACKAGE "npm i --production" pour voir si on peut produire et déplacer les packages nécessaire dans dependencies
