@@ -3,7 +3,7 @@
     <img
       :class="activeClasses"
       :id="id"
-      :src="require(`@/assets/images/${currentImageName}`)"
+      :src="require(`@/assets/${currentImageName}`)"
       :alt="alt"
     />
   </a>
