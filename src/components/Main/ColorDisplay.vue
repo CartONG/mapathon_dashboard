@@ -1,9 +1,12 @@
 <template>
-  <span class="color-display" v-bind:style="{'background-color': backgroundColor}"></span>
+  <span
+    class="color-display"
+    v-bind:style="{ 'background-color': backgroundColor }"
+  ></span>
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator'
+import { Component, Prop, Vue } from "vue-property-decorator";
 
 @Component
 export default class extends Vue {
@@ -11,12 +14,12 @@ export default class extends Vue {
 }
 </script>
 
-<style>
+<style lang="scss">
 .color-display {
   height: 15px;
   width: 15px;
   border-width: 2px;
   border-style: solid;
-  display:inline-block;
+  display: inline-block;
 }
 </style>

@@ -1,18 +1,38 @@
-// tsconfig.json
 {
   "compilerOptions": {
-    "experimentalDecorators": true,
-    "outDir": "./dist/",
-    // alignement avec le support navigateur de Vue
     "target": "esnext",
-    // activation de la déduction stricte pour les propriétés de données sur `this`
-    "strict": true,
-    // si vous utilisez webpack 2+ ou rollup, permettre le tree shaking :
     "module": "esnext",
+    "strict": true,
+    "jsx": "preserve",
+    "importHelpers": true,
     "moduleResolution": "node",
-    "jsx": "preserve"
+    "experimentalDecorators": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "sourceMap": true,
+    "baseUrl": ".",
+    "types": [
+      "webpack-env"
+    ],
+    "paths": {
+      "@/*": [
+        "src/*"
+      ]
+    },
+    "lib": [
+      "esnext",
+      "dom",
+      "dom.iterable",
+      "scripthost"
+    ]
   },
   "include": [
-    "./src/**/*"
+    "src/**/*.ts",
+    "src/**/*.vue",
+    "tests/**/*.ts",
+  ],
+  "exclude": [
+    "node_modules"
   ]
 }

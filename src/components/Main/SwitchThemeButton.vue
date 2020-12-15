@@ -2,7 +2,11 @@
   <div class="switch-theme-button-container">
     <font-awesome-icon class="icon" icon="sun" size="lg" fixed-width />
     <label class="switch">
-      <input v-model=state.isThemeDark type="checkbox" @change="onChange($event)">
+      <input
+        v-model="state.isThemeDark"
+        type="checkbox"
+        @change="onChange($event)"
+      />
       <span class="slider round"></span>
     </label>
     <font-awesome-icon class="icon" icon="moon" size="lg" fixed-width />
@@ -10,23 +14,23 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
+import { Component, Vue } from "vue-property-decorator";
 
-import { store } from '../../store'
+import { store } from "../../store";
 
 @Component
 export default class extends Vue {
   state = store.state;
 
-  onChange(event: Event) {
+  onChange() {
     store.updateTheme(this.state.isThemeDark);
   }
 }
 </script>
 
-<style>
+<style lang="scss">
 .switch-theme-button-container {
-  display:flex;
+  display: flex;
   flex-flow: row nowrap;
   justify-content: flex-start;
   margin-right: 10px;
@@ -38,7 +42,7 @@ export default class extends Vue {
   height: 25px;
 }
 
-.switch input { 
+.switch input {
   opacity: 0;
   width: 0;
   height: 0;
@@ -52,8 +56,8 @@ export default class extends Vue {
   right: 0;
   bottom: 0;
   background-color: #ccc;
-  -webkit-transition: .4s;
-  transition: .4s;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
 }
 
 .slider:before {
@@ -64,8 +68,8 @@ export default class extends Vue {
   left: 7px;
   bottom: 4px;
   background-color: white;
-  -webkit-transition: .4s;
-  transition: .4s;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
 }
 
 input:checked + .slider {

@@ -6,31 +6,29 @@
 </template>
 
 <script lang="ts">
-import {Vue, Component } from 'vue-property-decorator'
+import { Vue, Component } from "vue-property-decorator";
 
-import Header from './components/Header.vue'
-import Main from './components/Main.vue'
+import Header from "./components/Header.vue";
+import Main from "./components/Main.vue";
 
-import { store } from './store'
+import { store } from "./store";
 
 @Component({
-  components:
-  {
+  components: {
     Header,
     Main
   }
 })
 export default class extends Vue {
-  mounted ()
-  {
+  mounted() {
     store.initializeTheme();
   }
 }
 </script>
 
-<style>
+<style lang="scss">
 .body-container--dark-theme {
   background-color: #182b36;
-  color:white;
+  color: white;
 }
 </style>

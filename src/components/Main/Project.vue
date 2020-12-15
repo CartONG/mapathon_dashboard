@@ -14,17 +14,16 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator'
+import { Component, Vue } from "vue-property-decorator";
 
-import ProjectData from './ProjectData.vue'
-import ProjectHeader from './ProjectHeader.vue'
-import ProjectLeaderboard from './ProjectLeaderboard.vue'
+import ProjectData from "./ProjectData.vue";
+import ProjectHeader from "./ProjectHeader.vue";
+import ProjectLeaderboard from "./ProjectLeaderboard.vue";
 
-import { store } from './../../store'
+import { store } from "./../../store";
 
 @Component({
-  components:
-  {
+  components: {
     ProjectData,
     ProjectHeader,
     ProjectLeaderboard
@@ -33,24 +32,21 @@ import { store } from './../../store'
 export default class extends Vue {
   private currentState = store.state;
 
-  get errorMessage()
-  {
+  get errorMessage() {
     return this.currentState.errorMessage;
   }
 
-  get loadingMessage()
-  {
+  get loadingMessage() {
     return this.currentState.loadingMessage;
   }
 
-  get projectLoaded()
-  {
+  get projectLoaded() {
     return this.currentState.projectLoaded;
   }
 }
 </script>
 
-<style>
+<style lang="scss">
 .task-loading {
   text-align: center;
 }
@@ -70,7 +66,8 @@ export default class extends Vue {
   margin: 8px;
   border-radius: 50%;
   border: 6px solid #fff;
-  border-color: rgba(9, 122, 156, 0.829) transparent rgba(9, 122, 156, 0.829) transparent;
+  border-color: rgba(9, 122, 156, 0.829) transparent rgba(9, 122, 156, 0.829)
+    transparent;
   animation: loader-ring 1.5s linear infinite;
 }
 @keyframes loader-ring {
@@ -83,8 +80,7 @@ export default class extends Vue {
 }
 
 /* ERROR */
-.error-message
-{
+.error-message {
   text-align: center;
   font-size: 20px;
   font-weight: bold;
