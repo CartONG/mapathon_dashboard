@@ -16,5 +16,3 @@ Vue.component("font-awesome-icon", FontAwesomeIcon);
 new Vue({
   render: h => h(App)
 }).$mount("#app");
-
-//TESTER EN INSTALLANT LE PACKAGE "npm i --production" pour voir si on peut produire et déplacer les packages nécessaire dans dependencies
