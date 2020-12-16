@@ -44,14 +44,13 @@ export class FeaturesInformations {
         currentFeature,
         featuresData[currentFeature]
       );
-      console.log(featuresData[currentFeature]);
       if (featuresData[currentFeature] != undefined) {
         this.createFeatureMessage(currentFeature);
       }
     }
   }
 
-  createFeatureMessage(feature: keyof FeatureName) {
+  private createFeatureMessage(feature: keyof FeatureName) {
     switch (feature) {
       case "highway":
       case "waterway":

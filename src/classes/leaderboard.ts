@@ -29,7 +29,6 @@ export class Leaderboard implements FeatureName {
   //Function to set the data according to their feature
   setFeaturesData(featuresData: FeaturesData) {
     for (const currentFeature of generator()) {
-      console.log(featuresData[currentFeature]);
       this.set(currentFeature, featuresData[currentFeature].features);
     }
   }
