@@ -1,7 +1,7 @@
 <template>
   <div class="project-header-container">
     <div>
-      <h2 :class="projectHeaderTitleClasses">
+      <h2 v-if="isNameFound" :class="projectHeaderTitleClasses">
         <a :href="projectUrl" target="_blank">
           <span class="project-header-container__title-link"
             >#{{ projectId }}</span
@@ -9,32 +9,14 @@
         </a>
         {{ projectName }}
       </h2>
+      <Loader v-else :message="'Waiting for name'" />
     </div>
     <div class="project-header-percentages-container">
-      <div class="project-header-percentages-container__percentage">
-        <p class="project-header-percentages-container__percentage-text">
-          Done
-        </p>
-        <progress
-          class="project-header-percentages-container__percentage-progress"
-          :value="percentMapped"
-          max="100"
-          >{{ percentMapped }}</progress
-        >
-        {{ percentMapped }}%
-      </div>
-      <div class="project-header-percentages-container__percentage">
-        <p class="project-header-percentages-container__percentage-text">
-          Validated
-        </p>
-        <progress
-          class="project-header-percentages-container__percentage-progress"
-          :value="percentValidated"
-          max="100"
-          >{{ percentValidated }}</progress
-        >
-        {{ percentValidated }}%
-      </div>
+      <PercentageDisplay :message="'Done'" :percentage="percentMapped" />
+      <PercentageDisplay
+        :message="'Validated'"
+        :percentage="percentValidated"
+      />
     </div>
   </div>
 </template>
@@ -42,9 +24,17 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 
+import Loader from "./Loader.vue";
+import PercentageDisplay from "./PercentageDisplay.vue";
+
 import { store } from "../../store";
 
-@Component
+@Component({
+  components: {
+    Loader,
+    PercentageDisplay
+  }
+})
 export default class extends Vue {
   private currentState = store.state;
 
@@ -55,6 +45,11 @@ export default class extends Vue {
         ? " project-header-container__title--dark-theme"
         : "")
     );
+  }
+
+  get isNameFound() {
+    console.log(this.projectName);
+    return this.projectName.length != 0;
   }
 
   get projectId() {
@@ -107,21 +102,6 @@ export default class extends Vue {
   justify-content: space-around;
   align-items: baseline;
   padding: 0px 0px 5px 10px;
-}
-
-.project-header-percentages-container__percentage {
-  display: flex;
-  align-items: baseline;
-  width: calc(50% - 32px);
-}
-.project-header-percentages-container__percentage-text {
-  font-size: 16px;
-  font-weight: 700;
-  margin: initial;
-}
-
-.project-header-percentages-container__percentage-progress {
-  margin: 0px 5px;
 }
 
 .project-header-container__title--dark-theme {
