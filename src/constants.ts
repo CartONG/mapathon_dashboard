@@ -60,8 +60,8 @@ export class CONSTANTS {
     // },
     "OSM Italy": {
       abbreviatedOptions: "?abbreviated=true",
-      apiURL: "https://osmit-tm3.wmflabs.org/api/v1/project/",
-      projectURL: "https://osmit-tm3.wmflabs.org/project/",
+      apiURL: "https://osmit-tm4.wmcloud.org/api/v2/projects/",
+      projectURL: "https://osmit-tm4.wmcloud.org/projects/",
       summaryAPI: "summary"
     },
     "OSM Portugal": {
