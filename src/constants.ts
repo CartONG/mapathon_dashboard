@@ -62,7 +62,7 @@ export class CONSTANTS {
       abbreviatedOptions: "?abbreviated=true",
       apiURL: "https://osmit-tm4.wmcloud.org/api/v2/projects/",
       projectURL: "https://osmit-tm4.wmcloud.org/projects/",
-      summaryAPI: "summary"
+      summaryAPI: "queries/summary/"
     },
     "OSM Portugal": {
       abbreviatedOptions: "?abbreviated=true",
