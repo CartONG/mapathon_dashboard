@@ -24,9 +24,9 @@ export class CONSTANTS {
     },
     teachOSM: {
       abbreviatedOptions: "?abbreviated=true",
-      apiURL: "https://tasks.teachosm.org/api/v1/project/",
-      projectURL: "https://tasks.teachosm.org/project/",
-      summaryAPI: "summary"
+      apiURL: "https://tasking-manager-tm4-teachosm-api.hotosm.org/api/v2/projects/",
+      projectURL: "https://tasks.teachosm.org/projects/",
+      summaryAPI: "queries/summary"
     },
     "OSM Paraguay": {
       abbreviatedOptions: "?abbreviated=true",
@@ -48,9 +48,9 @@ export class CONSTANTS {
     },
     "OSM USA": {
       abbreviatedOptions: "?abbreviated=true",
-      apiURL: "https://tasks.openstreetmap.us/api/v1/project/",
-      projectURL: "https://tasks.openstreetmap.us/project/",
-      summaryAPI: "summary"
+      apiURL: "https://tasks-backend.openstreetmap.us/api/v2/projects/",
+      projectURL: "https://tasks.openstreetmap.us/projects/",
+      summaryAPI: "queries/summary"
     },
     // 'OSM Swiss': {
     //   'abbreviatedOptions': '?abbreviated=true',
@@ -62,7 +62,7 @@ export class CONSTANTS {
       abbreviatedOptions: "?abbreviated=true",
       apiURL: "https://osmit-tm4.wmcloud.org/api/v2/projects/",
       projectURL: "https://osmit-tm4.wmcloud.org/projects/",
-      summaryAPI: "summary"
+      summaryAPI: "queries/summary/"
     },
     "OSM Portugal": {
       abbreviatedOptions: "?abbreviated=true",
