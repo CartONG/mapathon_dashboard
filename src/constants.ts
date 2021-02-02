@@ -24,9 +24,9 @@ export class CONSTANTS {
     },
     teachOSM: {
       abbreviatedOptions: "?abbreviated=true",
-      apiURL: "https://tasks.teachosm.org/api/v1/project/",
-      projectURL: "https://tasks.teachosm.org/project/",
-      summaryAPI: "summary"
+      apiURL: "https://tasking-manager-tm4-teachosm-api.hotosm.org/api/v2/projects/",
+      projectURL: "https://tasks.teachosm.org/projects/",
+      summaryAPI: "queries/summary"
     },
     "OSM Paraguay": {
       abbreviatedOptions: "?abbreviated=true",
