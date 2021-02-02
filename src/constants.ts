@@ -48,9 +48,9 @@ export class CONSTANTS {
     },
     "OSM USA": {
       abbreviatedOptions: "?abbreviated=true",
-      apiURL: "https://tasks.openstreetmap.us/api/v1/project/",
-      projectURL: "https://tasks.openstreetmap.us/project/",
-      summaryAPI: "summary"
+      apiURL: "https://tasks-backend.openstreetmap.us/api/v2/projects/",
+      projectURL: "https://tasks.openstreetmap.us/projects/",
+      summaryAPI: "queries/summary"
     },
     // 'OSM Swiss': {
     //   'abbreviatedOptions': '?abbreviated=true',
