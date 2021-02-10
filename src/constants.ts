@@ -23,10 +23,11 @@ export class CONSTANTS {
       summaryAPI: "summary"
     },
     teachOSM: {
-      abbreviatedOptions: "?abbreviated=true",
-      apiURL: "https://tasking-manager-tm4-teachosm-api.hotosm.org/api/v2/projects/",
+      abbreviatedOptions: "/?abbreviated=true",
+      apiURL:
+        "https://tasking-manager-tm4-teachosm-api.hotosm.org/api/v2/projects/",
       projectURL: "https://tasks.teachosm.org/projects/",
-      summaryAPI: "queries/summary"
+      summaryAPI: "queries/summary/"
     },
     "OSM Paraguay": {
       abbreviatedOptions: "?abbreviated=true",
@@ -47,10 +48,10 @@ export class CONSTANTS {
       summaryAPI: "summary"
     },
     "OSM USA": {
-      abbreviatedOptions: "?abbreviated=true",
+      abbreviatedOptions: "/?abbreviated=true",
       apiURL: "https://tasks-backend.openstreetmap.us/api/v2/projects/",
       projectURL: "https://tasks.openstreetmap.us/projects/",
-      summaryAPI: "queries/summary"
+      summaryAPI: "queries/summary/"
     },
     // 'OSM Swiss': {
     //   'abbreviatedOptions': '?abbreviated=true',
@@ -59,7 +60,7 @@ export class CONSTANTS {
     //   'summaryAPI': 'summary'
     // },
     "OSM Italy": {
-      abbreviatedOptions: "?abbreviated=true",
+      abbreviatedOptions: "/?abbreviated=true",
       apiURL: "https://osmit-tm4.wmcloud.org/api/v2/projects/",
       projectURL: "https://osmit-tm4.wmcloud.org/projects/",
       summaryAPI: "queries/summary/"
