@@ -123,7 +123,7 @@ export default class extends Vue {
   }
 
   get taskingManagers() {
-    return store.constants.TASKING_MANAGER_URLS;
+    return store.constants.TASKING_MANAGER_INFORMATIONS;
   }
 
   get servers() {

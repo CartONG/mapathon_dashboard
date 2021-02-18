@@ -1,12 +1,15 @@
 //Constant values
+//TODO update tag for every TM
 export class CONSTANTS {
   readonly OSM_API_URL = "https://www.openstreetmap.org/api/0.6/";
-  readonly TASKING_MANAGER_URLS: {
+  readonly DEFAULT_TAG = "hotosm-project";
+  readonly TASKING_MANAGER_INFORMATIONS: {
     [key: string]: {
       abbreviatedOptions: string;
       apiURL: string;
       projectURL: string;
       summaryAPI: string;
+      tag?: string;
     };
   } = {
     "Humanitarian OSM Team": {
@@ -14,7 +17,8 @@ export class CONSTANTS {
       apiURL:
         "https://tasking-manager-tm4-production-api.hotosm.org/api/v2/projects/",
       projectURL: "https://tasks.hotosm.org/projects/",
-      summaryAPI: "queries/summary/"
+      summaryAPI: "queries/summary/",
+      tag: "hotosm-project"
     },
     "OSM Earth": {
       abbreviatedOptions: "?abbreviated=true",
@@ -27,7 +31,8 @@ export class CONSTANTS {
       apiURL:
         "https://tasking-manager-tm4-teachosm-api.hotosm.org/api/v2/projects/",
       projectURL: "https://tasks.teachosm.org/projects/",
-      summaryAPI: "queries/summary/"
+      summaryAPI: "queries/summary/",
+      tag: "teachosm-task"
     },
     "OSM Paraguay": {
       abbreviatedOptions: "?abbreviated=true",
@@ -63,7 +68,8 @@ export class CONSTANTS {
       abbreviatedOptions: "/?abbreviated=true",
       apiURL: "https://osmit-tm4.wmcloud.org/api/v2/projects/",
       projectURL: "https://osmit-tm4.wmcloud.org/projects/",
-      summaryAPI: "queries/summary/"
+      summaryAPI: "queries/summary/",
+      tag: "osmitaly"
     },
     "OSM Portugal": {
       abbreviatedOptions: "?abbreviated=true",
@@ -102,4 +108,14 @@ export class CONSTANTS {
   };
   readonly DATETIME_FORMAT = "DD/MM/YYYY HH:mm";
   readonly TIME_FORMAT = "HH:mm:ss";
+
+  getTag(taskinManager: string): string {
+    const informations = this.TASKING_MANAGER_INFORMATIONS[taskinManager];
+    if (!informations.tag) {
+      console.warn("No tag found, default one will be used");
+      return this.DEFAULT_TAG;
+    }
+    console.log(informations.tag);
+    return informations.tag;
+  }
 }

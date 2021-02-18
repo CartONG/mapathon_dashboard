@@ -113,7 +113,9 @@ export class QueryProject {
     //Display the loading message
     store.setLoadingMessage("Retrieving project summary...");
     const taskingManagerObject =
-      store.constants.TASKING_MANAGER_URLS[store.state.chosenTaskingManager];
+      store.constants.TASKING_MANAGER_INFORMATIONS[
+        store.state.chosenTaskingManager
+      ];
     //Build the url according to the store values
     const url =
       taskingManagerObject.apiURL +
@@ -153,7 +155,9 @@ export class QueryProject {
     //Display the loading message
     store.setLoadingMessage("Retrieving project area of interest...");
     const taskingManagerObject =
-      store.constants.TASKING_MANAGER_URLS[store.state.chosenTaskingManager];
+      store.constants.TASKING_MANAGER_INFORMATIONS[
+        store.state.chosenTaskingManager
+      ];
     //Build the url according to the store values
     const url =
       taskingManagerObject.apiURL +
@@ -180,8 +184,10 @@ export class QueryProject {
     //Function to handle the callback of the request
     function getChangesetsFromXml(data: string) {
       //Define the selector used to get the elements wanted
-      const selector =
-        'tag[v*="#hotosm-project-' + store.state.projectId + '"]';
+      console.log(data);
+      const selector = `tag[v*="#${store.constants.getTag(
+        store.state.chosenTaskingManager
+      )}-${store.state.projectId}"]`;
       //Parse the data fetch with the request as XML
       const xmlDoc = new DOMParser().parseFromString(data, "text/xml");
       //Get all the changesets of the XML docuement
