@@ -112,16 +112,11 @@ export class QueryProject {
   private static getProjectSummary() {
     //Display the loading message
     store.setLoadingMessage("Retrieving project summary...");
-    const taskingManagerObject =
-      store.constants.TASKING_MANAGER_INFORMATIONS[
-        store.state.chosenTaskingManager
-      ];
     //Build the url according to the store values
-    const url =
-      taskingManagerObject.apiURL +
-      store.state.projectId +
-      "/" +
-      taskingManagerObject.summaryAPI;
+    const url = store.constants.getProjectSummaryUrl(
+      store.state.chosenTaskingManager,
+      store.state.projectId
+    );
     //Call sendRequest function
     return QueryProject.sendRequest(url).then(
       data => {
@@ -154,15 +149,11 @@ export class QueryProject {
   private static getProjectAreaOfInterest() {
     //Display the loading message
     store.setLoadingMessage("Retrieving project area of interest...");
-    const taskingManagerObject =
-      store.constants.TASKING_MANAGER_INFORMATIONS[
-        store.state.chosenTaskingManager
-      ];
     //Build the url according to the store values
-    const url =
-      taskingManagerObject.apiURL +
-      store.state.projectId +
-      taskingManagerObject.abbreviatedOptions;
+    const url = store.constants.getProjectAreaOfInterest(
+      store.state.chosenTaskingManager,
+      store.state.projectId
+    );
     //Call sendRequest function
     return QueryProject.sendRequest(url).then(data => {
       //Parse the JSON data given as an answer
@@ -184,7 +175,6 @@ export class QueryProject {
     //Function to handle the callback of the request
     function getChangesetsFromXml(data: string) {
       //Define the selector used to get the elements wanted
-      console.log(data);
       const selector = `tag[v*="#${store.constants.getTag(
         store.state.chosenTaskingManager
       )}-${store.state.projectId}"]`;

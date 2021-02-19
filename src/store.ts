@@ -26,7 +26,7 @@ import { FeaturesData } from "./classes/features-data";
 //Constant to expose and manage the store
 //It could be seen as a static class
 export const store = {
-  constants: new CONSTANTS(),
+  constants: CONSTANTS,
   errors: ERRORS,
   state: new State(),
   emptyLoadingMessage() {

@@ -48,7 +48,6 @@ export default class extends Vue {
   }
 
   get isNameFound() {
-    console.log(this.projectName);
     return this.projectName.length != 0;
   }
 
@@ -69,10 +68,9 @@ export default class extends Vue {
   }
 
   get projectUrl(): string {
-    return (
-      store.constants.TASKING_MANAGER_INFORMATIONS[
-        this.currentState.chosenTaskingManager
-      ].projectURL + this.currentState.projectId
+    return store.constants.getProjectUrl(
+      this.currentState.chosenTaskingManager,
+      this.currentState.projectId
     );
   }
 }
