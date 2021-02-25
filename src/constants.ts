@@ -14,7 +14,7 @@ export class CONSTANTS {
     "Humanitarian OSM Team": {
       abbreviatedOptions: "/?abbreviated=true",
       apiURL:
-        "https://tasking-manager-tm4-production-api.hotosm.org//api/v2/projects/",
+        "https://tasking-manager-tm4-production-api.hotosm.org/api/v2/projects/",
       projectURL: "https://tasks.hotosm.org/projects/",
       summaryAPI: "/queries/summary/",
       tag: "hotosm-project"
@@ -74,6 +74,14 @@ export class CONSTANTS {
       apiURL: "https://tarefas.openstreetmap.pt/api/v1/project/",
       projectURL: "https://tarefas.openstreetmap.pt/project/",
       summaryAPI: "/summary"
+    },
+    "OSM Indonesia": {
+      abbreviatedOptions: "/?abbreviated=true",
+      apiURL:
+        "https://tasking-manager-indonesia-api.hotosm.org/api/v2/projects/",
+      projectURL: "https://tasks-indonesia.hotosm.org/projects/",
+      summaryAPI: "/queries/summary/",
+      tag: "hotosm-id-project"
     }
     // NOT SAME TM => API doesn't work the same => https://github.com/hotosm/osm-tasking-manager2/wiki/API
     // "OSM Swiss": {
@@ -87,12 +95,6 @@ export class CONSTANTS {
     //   'abbreviatedOptions': '?abbreviated=true',
     //   'apiURL': 'https://tareas.openstreetmap.es/api/v1/project/',
     //   'projectURL': 'https://tareas.openstreetmap.es/project/',
-    //   'summaryAPI': 'summary'
-    // },
-    // 'OSM Indonesia': {
-    //   'abbreviatedOptions': '?abbreviated=true',
-    //   'apiURL': 'http://tasks.openstreetmap.id/api/v1/project/',
-    //   'projectURL': 'http://tasks.openstreetmap.id/project/',
     //   'summaryAPI': 'summary'
     // },
     // 'OSM India': {

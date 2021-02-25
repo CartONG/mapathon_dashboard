@@ -275,6 +275,7 @@ export class QueryProject {
 
   //Get OSM data (features geometry)
   private static getFeaturesData(): Promise<void> {
+    //TODO SI pas de changesets
     clearTimeout();
     const types = ["building", "highway", "landuse", "waterway"];
     //Display the loading message
