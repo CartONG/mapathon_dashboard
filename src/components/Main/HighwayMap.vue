@@ -28,13 +28,13 @@ import { Component, Vue } from "vue-property-decorator";
 import BaseInput from "./BaseInput.vue";
 import ColorDisplay from "./ColorDisplay.vue";
 
-import { store } from "../../store";
+import { store } from "@/store";
 
 @Component({
   components: {
     BaseInput,
-    ColorDisplay
-  }
+    ColorDisplay,
+  },
 })
 export default class extends Vue {
   private currentState = store.state;
@@ -45,7 +45,8 @@ export default class extends Vue {
       this.currentState.askedLocation = true;
       //Ask the user if he/she accepts to share his/her position for the starting point of the highway map
       navigator.geolocation.getCurrentPosition(
-        function onSuccess(position: Position) {
+        // eslint-disable-next-line
+          function onSuccess(position: Position) {
           store.displayHighwayMap(position);
         },
         function onError() {

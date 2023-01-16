@@ -19,7 +19,7 @@ import ProjectData from "./ProjectData.vue";
 import ProjectHeader from "./ProjectHeader.vue";
 import ProjectLeaderboard from "./ProjectLeaderboard.vue";
 
-import { store } from "./../../store";
+import { store } from "@/store";
 
 @Component({
   components: {
@@ -27,8 +27,8 @@ import { store } from "./../../store";
     Loader,
     ProjectData,
     ProjectHeader,
-    ProjectLeaderboard
-  }
+    ProjectLeaderboard,
+  },
 })
 export default class extends Vue {
   private currentState = store.state;

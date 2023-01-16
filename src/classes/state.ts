@@ -36,7 +36,7 @@ export class State {
   //CheckboxesValues
   checkboxes: Checkboxes;
   //Information messages
-  errorMessage: string | string;
+  errorMessage: string;
   loadingMessage: string;
   //Maps informations
   askedLocation: boolean;
@@ -51,12 +51,8 @@ export class State {
   constructor() {
     this.projectId = 0;
     this.currentTimeZone = this.timezone();
-    this.startDateTime = moment()
-      .add(-60, "m")
-      .set("minute", 0);
-    this.endDateTime = moment()
-      .add(1, "h")
-      .set("minute", 0);
+    this.startDateTime = moment().add(-60, "m").set("minute", 0);
+    this.endDateTime = moment().add(1, "h").set("minute", 0);
     this.chosenServerURL = "";
     this.chosenTaskingManager = "";
     this.loadingMessage = "";
@@ -77,10 +73,7 @@ export class State {
 
   private timezone(): string {
     let valueToReturn = "UTC";
-    let utcOffset = moment
-      .utc()
-      .toDate()
-      .getTimezoneOffset();
+    let utcOffset = moment.utc().toDate().getTimezoneOffset();
 
     if (utcOffset < 0) {
       valueToReturn += "+";
@@ -101,10 +94,6 @@ export class State {
 
   private getBooleanTheme() {
     const theme = localStorage.getItem("theme");
-    if (theme == "black") {
-      return true;
-    } else {
-      return false;
-    }
+    return theme == "black";
   }
 }

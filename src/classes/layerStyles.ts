@@ -14,26 +14,26 @@ const STYLES = {
     color: "#8758f3",
     weight: 4,
     fillOpacity: 1,
-    opacity: 1
+    opacity: 1,
   },
   highway: {
     color: "#f0782c",
     weight: 2,
     fillOpacity: 1,
-    opacity: 1
+    opacity: 1,
   },
   landuse: {
     color: "#9ec658",
     weight: 2,
     fillOpacity: 1,
-    opacity: 1
+    opacity: 1,
   },
   waterway: {
     color: "#58c4f2",
     weight: 4,
     fillOpacity: 1,
-    opacity: 1
-  }
+    opacity: 1,
+  },
 };
 
 //Class to define the different styles according to the layer

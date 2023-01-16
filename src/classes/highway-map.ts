@@ -7,12 +7,12 @@ import { HighwayLayers } from "./highway-layers";
 const attribution = [
   'Map tiles by <a href="https://stamen.com" target="_blank">Stamen Design</a>,',
   '<a href="https://creativecommons.org/licenses/by/3.0" target="_blank">CC BY 3.0</a> <br>Map data &copy; <a href="http://www.openstreetmap.org" target="_blank">OpenStreetMap</a> contributors,',
-  '<a href="http://opendatacommons.org/licenses/odbl/1.0/" target="_blank">ODbL</a>.'
+  '<a href="http://opendatacommons.org/licenses/odbl/1.0/" target="_blank">ODbL</a>.',
 ];
 
 // Options of the highway map
 const HIGHWAY_MAP_OPTIONS = {
-  center: new Object() as L.LatLng,
+  center: {} as L.LatLng,
   zoom: 10,
   layers: [
     L.tileLayer(
@@ -22,10 +22,10 @@ const HIGHWAY_MAP_OPTIONS = {
         subdomains: "abcd",
         minZoom: 0,
         maxZoom: 20,
-        ext: "png"
+        ext: "png",
       } as L.TileLayerOptions
-    )
-  ]
+    ),
+  ],
 };
 
 //Class to define the highway map

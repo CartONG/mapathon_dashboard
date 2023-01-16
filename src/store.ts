@@ -5,7 +5,7 @@ import {
   GeoJsonProperties,
   Geometry,
   MultiPolygon,
-  Point
+  Point,
 } from "geojson";
 import { GeoJSON } from "leaflet";
 
@@ -180,5 +180,5 @@ export const store = {
       refreshData,
       this.state.refreshDelay
     );
-  }
+  },
 };

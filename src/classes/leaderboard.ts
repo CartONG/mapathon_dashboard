@@ -2,12 +2,7 @@ import { FeatureName, generator } from "./feature-name-interface";
 
 import { FeaturesData } from "./features-data";
 
-import {
-  Feature,
-  FeatureCollection,
-  GeoJsonProperties,
-  Geometry
-} from "geojson";
+import { Feature, FeatureCollection } from "geojson";
 
 import lineDistance from "@turf/line-distance";
 import area from "@turf/area";
@@ -21,7 +16,7 @@ export class Leaderboard implements FeatureName {
 
   setFeatureCollection(
     featureName: keyof FeatureName,
-    featuresCollection: FeatureCollection<Geometry>
+    featuresCollection: FeatureCollection
   ) {
     this.set(featureName, featuresCollection.features);
   }
@@ -34,10 +29,7 @@ export class Leaderboard implements FeatureName {
   }
 
   //Function to create and set the leaderboard
-  set(
-    feature: keyof FeatureName,
-    features: Feature<Geometry, GeoJsonProperties>[]
-  ) {
+  set(feature: keyof FeatureName, features: Feature[]) {
     //Create a map<userName,totalCreated> to sort the user and their count
     const mapFeature = new Map<string, number>();
     for (let i = 0; i < features.length; i++) {

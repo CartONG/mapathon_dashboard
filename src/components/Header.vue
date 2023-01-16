@@ -36,8 +36,8 @@ import AnchorImage from "./Header/AnchorImage.vue";
 
 @Component({
   components: {
-    AnchorImage
-  }
+    AnchorImage,
+  },
 })
 export default class extends Vue {}
 </script>

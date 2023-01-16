@@ -16,8 +16,8 @@ import { store } from "./store";
 @Component({
   components: {
     Header,
-    Main
-  }
+    Main,
+  },
 })
 export default class extends Vue {
   mounted() {

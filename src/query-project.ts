@@ -19,6 +19,7 @@ export class QueryProject {
 
   //Function to clear the timeout if any
   private static clearTimeout() {
+    console.log("Clear me", QueryProject.timeoutId);
     if (QueryProject.timeoutId != -1) {
       window.clearTimeout(QueryProject.timeoutId);
     }
@@ -30,7 +31,7 @@ export class QueryProject {
     //Abort requests in progress
     QueryProject.abortRequestInProgress();
     //Clear the timeout to avoid cross requests
-    clearTimeout();
+    QueryProject.clearTimeout();
     //Reset the project checkboxes
     store.resetProjectLoaded();
     //Empty the message displayed
@@ -93,12 +94,12 @@ export class QueryProject {
             break;
         }
       };
-      xhr.onerror = error => {
+      xhr.onerror = (error) => {
         console.warn(error);
         store.emptyLoadingMessage();
         store.setErrorMessage(store.errors.UNKNOWN_ERROR);
       };
-      xhr.ontimeout = timeoutEvent => {
+      xhr.ontimeout = (timeoutEvent) => {
         console.warn(timeoutEvent);
         store.emptyLoadingMessage();
         store.setErrorMessage(store.errors.CONNECTION_TIMEOUT.format(url));
@@ -119,7 +120,7 @@ export class QueryProject {
     );
     //Call sendRequest function
     return QueryProject.sendRequest(url).then(
-      data => {
+      (data) => {
         //Parse the JSON data given as an answer
         const projectData = JSON.parse(data);
         //Store the JSON values wanted in the store
@@ -155,7 +156,7 @@ export class QueryProject {
       store.state.projectId
     );
     //Call sendRequest function
-    return QueryProject.sendRequest(url).then(data => {
+    return QueryProject.sendRequest(url).then((data) => {
       //Parse the JSON data given as an answer
       const projectData = JSON.parse(data);
       //Set the bounding box of the project in the store
@@ -186,7 +187,7 @@ export class QueryProject {
       const tagElmts = xmlDoc.querySelectorAll(selector);
 
       //Get the id of all the elements
-      Array.from(tagElmts).map(currentTagElement => {
+      Array.from(tagElmts).map((currentTagElement) => {
         const parentNode = currentTagElement.parentNode as ChangeSetNode | null;
         if (parentNode != null) {
           changeSetsIds.push(parentNode.id);
@@ -264,11 +265,10 @@ export class QueryProject {
       GeoJsonProperties
     >;
     //Get the geometry according to the changesets we get before
-    const newFeatures = featureCollection.features.filter(
-      feature =>
+    featureCollection.features = featureCollection.features.filter(
+      (feature) =>
         store.state.changeSetsIds.indexOf(feature.properties?.changeset) > -1
     );
-    featureCollection.features = newFeatures;
 
     return featureCollection;
   }
@@ -319,9 +319,7 @@ export class QueryProject {
             `Retrieving project features for ${types.join(", ")}`
           );
 
-          Promise.allSettled(promises)
-            .then(whenAllSettled)
-            .catch(onError);
+          Promise.allSettled(promises).then(whenAllSettled).catch(onError);
         };
         if (timeBeforeRetry > 0) {
           setTimeout(retryToGetFeaturesData, timeBeforeRetry * 1000);
@@ -334,14 +332,12 @@ export class QueryProject {
       }
     };
 
-    return Promise.allSettled(promises)
-      .then(whenAllSettled)
-      .catch(onError);
+    return Promise.allSettled(promises).then(whenAllSettled).catch(onError);
   }
 
   private static createUrlRequest(types: string[]): string[] {
     return types.map(
-      type =>
+      (type) =>
         store.state.chosenServerURL +
         "?data=[bbox:" +
         store.state.boundingBox.toBBoxStringForOverpassAPI() +

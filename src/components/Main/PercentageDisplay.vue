@@ -7,8 +7,9 @@
       class="project-header-percentages-container__percentage-progress"
       :value="percentage"
       max="100"
-      >{{ percentage }}</progress
     >
+      {{ percentage }}
+    </progress>
     {{ percentage }}%
   </div>
 </template>
@@ -36,6 +37,6 @@ export default class extends Vue {
 }
 
 .project-header-percentages-container__percentage-progress {
-  margin: 0px 5px;
+  margin: 0 5px;
 }
 </style>

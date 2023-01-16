@@ -11,7 +11,7 @@ const HIGHWAY_MAP_START_OPTIONS = {
   fillOpacity: 1,
   stroke: true,
   weight: 2,
-  color: "#ffffff"
+  color: "#ffffff",
 };
 
 //Options for the end point
@@ -22,7 +22,7 @@ const HIGHWAY_MAP_END_OPTIONS = {
   fillOpacity: 1,
   stroke: true,
   weight: 2,
-  color: "#ffffff"
+  color: "#ffffff",
 };
 
 //Class for the highway map
@@ -36,7 +36,7 @@ export class HighwayLayers {
   getStyle() {
     return {
       weight: 5,
-      opacity: 0.5
+      opacity: 0.5,
     };
   }
 
@@ -46,7 +46,7 @@ export class HighwayLayers {
     //Center the map on the line layer
     map.fitBounds(this.lineLayer.getBounds(), {
       padding: [16, 16],
-      maxZoom: 18
+      maxZoom: 18,
     });
   }
 
@@ -60,7 +60,7 @@ export class HighwayLayers {
     const startMarker = L.circleMarker(
       [
         startPoint.geometry?.coordinates[1],
-        startPoint.geometry?.coordinates[0]
+        startPoint.geometry?.coordinates[0],
       ],
       HIGHWAY_MAP_START_OPTIONS
     );
@@ -71,7 +71,7 @@ export class HighwayLayers {
     //Create the line
     const line = lineString([
       startPoint.geometry?.coordinates,
-      end.geometry?.coordinates
+      end.geometry?.coordinates,
     ]);
     this.lineLayer = L.geoJSON(line, { style: this.getStyle() });
     //Add markers to the line layer

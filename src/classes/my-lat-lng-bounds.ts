@@ -22,7 +22,7 @@ export class MyLatLngBounds {
       this.bounds.getSouth(),
       this.bounds.getWest(),
       this.bounds.getNorth(),
-      this.bounds.getEast()
+      this.bounds.getEast(),
     ].join(",");
   }
 }

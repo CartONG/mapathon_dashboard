@@ -17,14 +17,14 @@ export class CONSTANTS {
         "https://tasking-manager-tm4-production-api.hotosm.org/api/v2/projects/",
       projectURL: "https://tasks.hotosm.org/projects/",
       summaryAPI: "/queries/summary/",
-      tag: "hotosm-project"
+      tag: "hotosm-project",
     },
     "OSM Earth": {
       abbreviatedOptions: "?abbreviated=true",
       apiURL: "https://osm.earth/api/v1/project/",
       projectURL: "https://osm.earth/project/",
       summaryAPI: "/summary",
-      tag: "osmearth"
+      tag: "osmearth",
     },
     teachOSM: {
       abbreviatedOptions: "/?abbreviated=true",
@@ -32,48 +32,48 @@ export class CONSTANTS {
         "https://tasking-manager-tm4-teachosm-api.hotosm.org//api/v2/projects/",
       projectURL: "https://tasks.teachosm.org/projects/",
       summaryAPI: "/queries/summary/",
-      tag: "teachosm-project"
+      tag: "teachosm-project",
     },
     "OSM Paraguay": {
       abbreviatedOptions: "?abbreviated=true",
       apiURL: "https://tasks.atlasurbano.org/api/v1/project/",
       projectURL: "https://tasks.atlasurbano.org/project/",
       summaryAPI: "/summary",
-      tag: "atlasurbano"
+      tag: "atlasurbano",
     },
     "OSM Colombia": {
       abbreviatedOptions: "?abbreviated=true",
       apiURL: "https://tareas.openstreetmap.co/api/v1/project/",
       projectURL: "https://tareas.openstreetmap.co/project/",
       summaryAPI: "/summary",
-      tag: "osmco-project"
+      tag: "osmco-project",
     },
     "OSM Colorado": {
       abbreviatedOptions: "?abbreviated=true",
       apiURL: "https://osmcolorado.com/api/v1/project/",
       projectURL: "https://osmcolorado.com/project/",
       summaryAPI: "/summary",
-      tag: "osmco-project"
+      tag: "osmco-project",
     },
     "OSM USA": {
       abbreviatedOptions: "/?abbreviated=true",
       apiURL: "https://tasks-backend.openstreetmap.us/api/v2/projects/",
       projectURL: "https://tasks.openstreetmap.us/projects/",
       summaryAPI: "/queries/summary/",
-      tag: "osmus-tasks"
+      tag: "osmus-tasks",
     },
     "OSM Italy": {
       abbreviatedOptions: "/?abbreviated=true",
       apiURL: "https://osmit-tm4.wmcloud.org/api/v2/projects/",
       projectURL: "https://osmit-tm4.wmcloud.org/projects/",
       summaryAPI: "/queries/summary/",
-      tag: "osmitaly"
+      tag: "osmitaly",
     },
     "OSM Portugal": {
       abbreviatedOptions: "?abbreviated=true",
       apiURL: "https://tarefas.openstreetmap.pt/api/v1/project/",
       projectURL: "https://tarefas.openstreetmap.pt/project/",
-      summaryAPI: "/summary"
+      summaryAPI: "/summary",
     },
     "OSM Indonesia": {
       abbreviatedOptions: "/?abbreviated=true",
@@ -81,8 +81,8 @@ export class CONSTANTS {
         "https://tasking-manager-indonesia-api.hotosm.org/api/v2/projects/",
       projectURL: "https://tasks-indonesia.hotosm.org/projects/",
       summaryAPI: "/queries/summary/",
-      tag: "hotosm-id-project"
-    }
+      tag: "hotosm-id-project",
+    },
     // NOT SAME TM => API doesn't work the same => https://github.com/hotosm/osm-tasking-manager2/wiki/API
     // "OSM Swiss": {
     //   abbreviatedOptions: "?abbreviated=true",
@@ -112,7 +112,7 @@ export class CONSTANTS {
   };
   static readonly SERVERS = {
     "overpass-api.de": "https://overpass-api.de/api/interpreter",
-    "overpass.nchc.org": "https://overpass.nchc.org.tw/api/interpreter"
+    "overpass.nchc.org": "https://overpass.nchc.org.tw/api/interpreter",
   };
   static readonly DATETIME_FORMAT = "DD/MM/YYYY HH:mm";
   static readonly TIME_FORMAT = "HH:mm:ss";

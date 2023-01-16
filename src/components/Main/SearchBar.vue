@@ -37,15 +37,15 @@
       v-model="chosenTaskingManager"
     >
       <option disabled value="">Tasking Manager selection</option>
-      <option v-for="(value, key) in taskingManagers" :key="key" :value="key">{{
-        key
-      }}</option>
+      <option v-for="(_, key) in taskingManagers" :key="key" :value="key">
+        {{ key }}
+      </option>
     </select>
     <select :class="serverSelectionClasses" v-model="chosenServerURL">
       <option disabled value="">OSM server selection</option>
-      <option v-for="(value, key) in servers" :key="key" :value="value">{{
-        key
-      }}</option>
+      <option v-for="(value, key) in servers" :key="key" :value="value">
+        {{ key }}
+      </option>
     </select>
     <input :class="submitClasses" type="submit" value="Submit" />
   </form>
@@ -54,14 +54,14 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import moment from "moment";
-import { store } from "../../store";
+import { store } from "@/store";
 
 import BaseInput from "./BaseInput.vue";
 
 @Component({
   components: {
-    BaseInput
-  }
+    BaseInput,
+  },
 })
 export default class extends Vue {
   private currentState = store.state;

@@ -18,8 +18,8 @@ import SwitchThemeButton from "./Main/SwitchThemeButton.vue";
   components: {
     Project,
     SearchBar,
-    SwitchThemeButton
-  }
+    SwitchThemeButton,
+  },
 })
 export default class extends Vue {}
 </script>

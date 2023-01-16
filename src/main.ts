@@ -14,5 +14,5 @@ library.add(faSun, faMoon);
 Vue.component("font-awesome-icon", FontAwesomeIcon);
 
 new Vue({
-  render: h => h(App)
+  render: (h) => h(App),
 }).$mount("#app");

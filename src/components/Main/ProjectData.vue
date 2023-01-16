@@ -71,17 +71,17 @@ import ColorDisplay from "./ColorDisplay.vue";
 import HighwayMap from "./HighwayMap.vue";
 import OverviewMap from "./OverviewMap.vue";
 
-import { store } from "./../../store";
+import { store } from "@/store";
 
-import { FeatureName } from "./../../classes/feature-name-interface";
+import { FeatureName } from "@/classes/feature-name-interface";
 
 @Component({
   components: {
     BaseInput,
     ColorDisplay,
     HighwayMap,
-    OverviewMap
-  }
+    OverviewMap,
+  },
 })
 export default class extends Vue {
   private currentState = store.state;
@@ -136,7 +136,7 @@ export default class extends Vue {
 
 <style lang="scss">
 .project-data-main-container {
-  margin: 0px 16px 16px;
+  margin: 0 16px 16px;
   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2),
     0 1px 5px 0 rgba(0, 0, 0, 0.12);
 }
@@ -180,11 +180,11 @@ export default class extends Vue {
 }
 
 .project-building-data-container__paragraph {
-  margin-bottom: 0px;
+  margin-bottom: 0;
 }
 
 .project-landuse-data-container {
-  margin: 16px 0px;
+  margin: 16px 0;
   padding: 16px;
   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2),
     0 1px 5px 0 rgba(0, 0, 0, 0.12);
@@ -203,11 +203,11 @@ export default class extends Vue {
 }
 
 .project-landuse-data-container__paragraph {
-  margin-bottom: 0px;
+  margin-bottom: 0;
 }
 
 .project-waterway-data-container {
-  margin: 16px 0px;
+  margin: 16px 0;
   padding: 16px;
   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2),
     0 1px 5px 0 rgba(0, 0, 0, 0.12);
@@ -226,7 +226,7 @@ export default class extends Vue {
 }
 
 .project-waterway-data-container__paragraph {
-  margin-bottom: 0px;
+  margin-bottom: 0;
 }
 
 .project-data-main-container__title--dark-theme {

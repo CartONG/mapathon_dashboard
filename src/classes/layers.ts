@@ -2,7 +2,7 @@ import * as L from "leaflet";
 
 import { FeatureName, generator } from "./feature-name-interface";
 
-import { store } from "../store";
+import { store } from "@/store";
 import { FeaturesData } from "./features-data";
 import { LayerStyles } from "./layerStyles";
 
@@ -41,7 +41,7 @@ export class Layers implements FeatureName {
   create(featuresData: FeaturesData) {
     for (const currentLayer of generator()) {
       this[currentLayer] = L.geoJSON(featuresData[currentLayer], {
-        style: this.styles[currentLayer]
+        style: this.styles[currentLayer],
       });
     }
   }

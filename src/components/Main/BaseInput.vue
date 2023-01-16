@@ -15,7 +15,7 @@
 import { Component, Prop, Vue } from "vue-property-decorator";
 
 @Component({
-  inheritAttrs: false
+  inheritAttrs: false,
 })
 export default class extends Vue {
   @Prop() id!: string;
@@ -28,6 +28,7 @@ export default class extends Vue {
     classes += this.type == "text" ? "input-date" : "input-project-id";
     return classes;
   }
+  // eslint-disable-next-line
   get inputListeners(): Record<string, Function | Function[]> {
     // `Object.assign` merges objects together to form a new object
     return Object.assign(
@@ -38,7 +39,7 @@ export default class extends Vue {
       // behavior of some listeners.
       {
         // This ensures that the component works with v-model
-        input: (event: Event) => this.$emit("input", event)
+        input: (event: Event) => this.$emit("input", event),
       }
     );
   }
@@ -47,7 +48,7 @@ export default class extends Vue {
 
 <style lang="scss">
 .label-input {
-  margin-bottom: 0px;
+  margin-bottom: 0;
   margin-right: 5px;
 }
 
