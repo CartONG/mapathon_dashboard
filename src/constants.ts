@@ -83,6 +83,14 @@ export class CONSTANTS {
       summaryAPI: "/queries/summary/",
       tag: "hotosm-id-project",
     },
+    "MapWithAI": {
+      abbreviatedOptions: "/?abbreviated=true",
+      apiURL:
+        "https://mwai-tasking-manager-production-api.mapwith.ai/api/v2/projects/",
+      projectURL: "https://tasks.mapwith.ai/projects",
+      summaryAPI: "/queries/summary/",
+      tag: "mapwithai-project",
+    },
     // NOT SAME TM => API doesn't work the same => https://github.com/hotosm/osm-tasking-manager2/wiki/API
     // "OSM Swiss": {
     //   abbreviatedOptions: "?abbreviated=true",
