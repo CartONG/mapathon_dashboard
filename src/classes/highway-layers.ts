@@ -86,7 +86,7 @@ export class HighwayLayers {
     return this.startLatitude;
   }
 
-  setStartPosition(position: Position) {
+  setStartPosition(position: GeolocationPosition) {
     this.startLatitude = position.coords.latitude;
     this.startLongitude = position.coords.longitude;
   }

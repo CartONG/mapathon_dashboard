@@ -48,7 +48,7 @@ export class HighwayMap {
   }
 
   //Setter for the start position
-  setStartPosition(position: Position) {
+  setStartPosition(position: GeolocationPosition) {
     this.layers.setStartPosition(position);
   }
 

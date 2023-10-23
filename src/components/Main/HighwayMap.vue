@@ -46,7 +46,7 @@ export default class extends Vue {
       //Ask the user if he/she accepts to share his/her position for the starting point of the highway map
       navigator.geolocation.getCurrentPosition(
         // eslint-disable-next-line
-          function onSuccess(position: Position) {
+          function onSuccess(position: GeolocationPosition) {
           store.displayHighwayMap(position);
         },
         function onError() {

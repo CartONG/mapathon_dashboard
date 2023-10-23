@@ -41,7 +41,7 @@ export const store = {
   destroyOverviewMap() {
     this.state.overviewMap.destroy();
   },
-  displayHighwayMap(currentPosition?: Position) {
+  displayHighwayMap(currentPosition?: GeolocationPosition) {
     if (currentPosition) {
       this.state.highwayMap.setStartPosition(currentPosition);
     }

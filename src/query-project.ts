@@ -19,7 +19,6 @@ export class QueryProject {
 
   //Function to clear the timeout if any
   private static clearTimeout() {
-    console.log("Clear me", QueryProject.timeoutId);
     if (QueryProject.timeoutId != -1) {
       window.clearTimeout(QueryProject.timeoutId);
     }
@@ -95,7 +94,7 @@ export class QueryProject {
         }
       };
       xhr.onerror = (error) => {
-        console.warn(error);
+        console.error(error);
         store.emptyLoadingMessage();
         store.setErrorMessage(store.errors.UNKNOWN_ERROR);
       };

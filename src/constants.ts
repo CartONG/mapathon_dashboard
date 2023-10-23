@@ -83,7 +83,7 @@ export class CONSTANTS {
       summaryAPI: "/queries/summary/",
       tag: "hotosm-id-project",
     },
-    "MapWithAI": {
+    "Map With AI": {
       abbreviatedOptions: "/?abbreviated=true",
       apiURL:
         "https://mwai-tasking-manager-production-api.mapwith.ai/api/v2/projects/",
