@@ -31,3 +31,11 @@ npm run lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+### Publish to Github-pages
+Synchronize dist folder from master branch to gh-pages branch :
+```shell
+git checkout gh-pages
+git merge -s subtree master
+git push origin gh-pages
+```
