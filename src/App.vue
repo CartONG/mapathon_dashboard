@@ -19,7 +19,7 @@ import { store } from "./store";
     Main,
   },
 })
-export default class extends Vue {
+export default class App extends Vue {
   mounted() {
     store.initializeTheme();
   }

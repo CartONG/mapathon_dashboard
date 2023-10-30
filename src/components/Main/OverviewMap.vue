@@ -11,7 +11,7 @@ import { Component, Vue } from "vue-property-decorator";
 import { store } from "../../store";
 
 @Component
-export default class extends Vue {
+export default class OverviewMap extends Vue {
   mounted() {
     store.displayOverviewMap();
   }

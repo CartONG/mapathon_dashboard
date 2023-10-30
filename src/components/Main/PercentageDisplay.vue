@@ -18,7 +18,7 @@
 import { Component, Prop, Vue } from "vue-property-decorator";
 
 @Component
-export default class extends Vue {
+export default class PercentageDisplay extends Vue {
   @Prop(String) readonly message!: string;
   @Prop(Number) readonly percentage!: number;
 }

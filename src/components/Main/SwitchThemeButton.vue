@@ -19,7 +19,7 @@ import { Component, Vue } from "vue-property-decorator";
 import { store } from "../../store";
 
 @Component
-export default class extends Vue {
+export default class SwitchThemeButton extends Vue {
   state = store.state;
 
   onChange() {

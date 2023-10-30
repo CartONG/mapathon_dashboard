@@ -6,7 +6,7 @@
 import { Component, Prop, Vue } from "vue-property-decorator";
 
 @Component
-export default class extends Vue {
+export default class ErrorDisplay extends Vue {
   @Prop(String) readonly message!: string;
 }
 //TODO meilleur handler

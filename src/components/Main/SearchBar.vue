@@ -63,7 +63,7 @@ import BaseInput from "./BaseInput.vue";
     BaseInput,
   },
 })
-export default class extends Vue {
+export default class SearchBar extends Vue {
   private currentState = store.state;
   private projectId = this.currentState.projectId;
   private startDateTime = store.state.startDateTime.format(

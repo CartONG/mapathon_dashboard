@@ -21,7 +21,7 @@ import SwitchThemeButton from "./Main/SwitchThemeButton.vue";
     SwitchThemeButton,
   },
 })
-export default class extends Vue {}
+export default class Main extends Vue {}
 </script>
 
 <style lang="scss">

@@ -17,7 +17,7 @@ import { Component, Prop, Vue } from "vue-property-decorator";
 @Component({
   inheritAttrs: false,
 })
-export default class extends Vue {
+export default class BaseInput extends Vue {
   @Prop() id!: string;
   @Prop() label!: string;
   @Prop() type!: string;

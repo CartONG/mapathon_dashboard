@@ -9,7 +9,7 @@
 import { Component, Prop, Vue } from "vue-property-decorator";
 
 @Component
-export default class extends Vue {
+export default class Loader extends Vue {
   @Prop(String) readonly message!: string;
 }
 </script>

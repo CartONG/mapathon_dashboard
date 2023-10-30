@@ -70,7 +70,7 @@ import { Component, Vue } from "vue-property-decorator";
 import { store } from "./../../store";
 
 @Component
-export default class extends Vue {
+export default class ProjectLeaderboard extends Vue {
   private leaderboard = store.state.leaderboard;
 
   get projectLeaderboardTitleClasses(): string {

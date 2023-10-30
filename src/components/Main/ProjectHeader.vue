@@ -35,7 +35,7 @@ import { store } from "@/store";
     PercentageDisplay,
   },
 })
-export default class extends Vue {
+export default class ProjectHeader extends Vue {
   private currentState = store.state;
 
   get projectHeaderTitleClasses(): string {

@@ -3,12 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "build": "vite build",
+    "dev": "vite",
+    "lint": "eslint --ext .js,.vue --ignore-path .gitignore --fix src",
+    "serve": "vite preview"
   },
   "dependencies": {
-    "core-js": "^3.6.5",
     "vue": "^2.6.11",
     "vue-class-component": "^7.2.3",
     "vue-property-decorator": "^8.4.2"
@@ -23,22 +23,19 @@
     "@types/leaflet": "^1.5.19",
     "@typescript-eslint/eslint-plugin": "^5.48.1",
     "@typescript-eslint/parser": "^5.48.1",
-    "@vue/cli-plugin-babel": "~5.0.8",
-    "@vue/cli-plugin-eslint": "~5.0.8",
-    "@vue/cli-plugin-typescript": "~5.0.8",
-    "@vue/cli-service": "~5.0.8",
+    "@vitejs/plugin-vue": "^1.6.1",
     "@vue/eslint-config-prettier": "^7.0.0",
     "@vue/eslint-config-typescript": "^11.0.2",
-    "eslint": "^7.5.0",
+    "eslint": "^8.52.0",
     "eslint-plugin-prettier": "^4.2.1",
-    "eslint-plugin-vue": "^9.9.0",
+    "eslint-plugin-vue": "^8.7.1",
     "leaflet": "^1.7.1",
     "moment": "^2.29.2",
     "osmtogeojson": "^3.0.0-beta.5",
     "prettier": "^2.8.3",
     "sass": "^1.26.5",
-    "sass-loader": "^8.0.2",
     "typescript": "~4.4.4",
-    "vue-template-compiler": "^2.6.11"
+    "vite": "^2.5.4",
+    "vite-plugin-vue2": "1.9.0"
   }
 }

@@ -9,7 +9,7 @@
 import { Component, Prop, Vue } from "vue-property-decorator";
 
 @Component
-export default class extends Vue {
+export default class ColorDisplay extends Vue {
   @Prop(String) readonly backgroundColor!: string;
 }
 </script>

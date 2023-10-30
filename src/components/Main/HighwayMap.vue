@@ -36,7 +36,7 @@ import { store } from "@/store";
     ColorDisplay,
   },
 })
-export default class extends Vue {
+export default class HighwayMap extends Vue {
   private currentState = store.state;
 
   mounted() {

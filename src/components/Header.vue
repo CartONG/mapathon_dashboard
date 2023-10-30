@@ -39,7 +39,7 @@ import AnchorImage from "./Header/AnchorImage.vue";
     AnchorImage,
   },
 })
-export default class extends Vue {}
+export default class Header extends Vue {}
 </script>
 
 <style lang="scss">

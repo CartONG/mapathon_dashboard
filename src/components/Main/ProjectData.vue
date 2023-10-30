@@ -83,7 +83,7 @@ import { FeatureName } from "@/classes/feature-name-interface";
     OverviewMap,
   },
 })
-export default class extends Vue {
+export default class ProjectData extends Vue {
   private currentState = store.state;
   private currentFeaturesInformations = this.currentState.featuresInformations;
 

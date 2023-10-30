@@ -3,7 +3,7 @@
     <img
       :class="activeClasses"
       :id="id"
-      :src="require(`@/assets/${currentImageName}`)"
+      :src="currentImageName"
       :alt="alt"
     />
   </a>
@@ -15,7 +15,7 @@ import { Vue, Component, Prop } from "vue-property-decorator";
 import { store } from "./../../store";
 
 @Component
-export default class extends Vue {
+export default class AnchorImage extends Vue {
   @Prop() link!: string;
   @Prop() id!: string;
   @Prop() imageName!: string;
@@ -35,7 +35,7 @@ export default class extends Vue {
         }
       }
     }
-    return currentImageName;
+    return new URL(`/src/assets/images/${currentImageName}`, import.meta.url).href;
   }
 
   get activeClasses() {

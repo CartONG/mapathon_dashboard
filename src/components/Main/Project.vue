@@ -30,7 +30,7 @@ import { store } from "@/store";
     ProjectLeaderboard,
   },
 })
-export default class extends Vue {
+export default class Project extends Vue {
   private currentState = store.state;
 
   get errorMessage() {
