@@ -14,7 +14,7 @@ export class CONSTANTS {
     "Humanitarian OSM Team": {
       abbreviatedOptions: "/?abbreviated=true",
       apiURL:
-        "https://tasking-manager-tm4-production-api.hotosm.org/api/v2/projects/",
+        "https://tasking-manager-production-api.hotosm.org/api/v2/projects/",
       projectURL: "https://tasks.hotosm.org/projects/",
       summaryAPI: "/queries/summary/",
       tag: "hotosm-project",
