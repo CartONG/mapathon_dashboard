@@ -121,6 +121,7 @@ export class CONSTANTS {
   static readonly SERVERS = {
     "overpass-api.de": "https://overpass-api.de/api/interpreter",
     "overpass.nchc.org": "https://overpass.nchc.org.tw/api/interpreter",
+    "api.fairwaymapper.com": "https://fairwaymapper-proxy.netlify.app/fairwaymapper"
   };
   static readonly DATETIME_FORMAT = "DD/MM/YYYY HH:mm";
   static readonly TIME_FORMAT = "HH:mm:ss";
